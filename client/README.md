@@ -1,36 +1,164 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💸 CostFlow — Frontend (Next.js)
 
-## Getting Started
+Bienvenido al repositorio del **frontend** de **CostFlow**, un sistema integral de gestión para laboratorios como **Laiquén**, enfocado en la automatización del control de costos de producción, insumos, recetas y stock.  
+Este proyecto forma parte de una solución fullstack, y esta carpeta corresponde a la aplicación desarrollada con **Next.js** + **Tailwind CSS** + **TypeScript**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🧠 Objetivo del Proyecto
+
+Digitalizar y automatizar procesos clave del laboratorio Laiquén:  
+📦 Gestión de insumos y productos  
+⚙️ Recetas de producción  
+🧾 Cálculo automático de costos  
+📊 Dashboards interactivos  
+📝 Generación de reportes exportables  
+
+Este frontend consumirá una API REST desarrollada en el backend (ver carpeta `server`).
+
+---
+
+## 👥 Equipo de Desarrollo Frontend
+
+- [Franco Maidana](https://github.com/maidana0)  
+- [Matías Diaconchuk](https://github.com/mdiaconchuk)  
+- [Luis Angel](https://github.com/devjsluis)  
+
+Convención de ramas: `client/feature/...`, siguiendo el flujo **GitFlow**.
+
+### Estructura de Ramas
+- `main`: Rama principal de producción
+- `develop`: Rama de desarrollo
+
+### Convenciones de Commits
+Se sigue una estructura clara para los mensajes de commit:
+- `feat`: Nuevas características
+- `fix`: Correcciones de bugs
+- `docs`: Cambios en documentación
+- `style`: Cambios que no afectan el significado del código
+- `refactor`: Refactorización del código
+- `test`: Añadir o corregir tests
+
+---
+
+## 🚀 Tecnologías Utilizadas
+
+- **Next.js 15** (App Router + Server Actions)
+- **React 19**
+- **TypeScript**
+- **Tailwind CSS 4** + `tw-animate-css`
+- **Zod** (validación de formularios)
+- **React Hook Form** (manejo de formularios)
+- **Zustand** (estado global)
+- **Lucide React** (íconos)
+- **clsx** y **class-variance-authority** (utilidades CSS)
+
+---
+
+## 📂 Estructura del Proyecto
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+client/
+├── public/             # Imágenes públicas, favicons, etc.
+├── src/
+│   ├── actions/        # Server actions para formularios y lógica
+│   ├── app/            # App router de Next.js (layouts, pages, routing)
+│   ├── components/     # Componentes reutilizables de UI
+│   ├── hooks/          # Custom React hooks
+│   ├── layouts/        # Layouts base para páginas
+│   ├── lib/            # Funciones auxiliares y utils compartidos
+│   ├── providers/      # Providers de contexto
+│   ├── store/          # Zustand global store
+│   ├── types/          # Tipos y modelos compartidos (TS)
+│   └── utils/          # Utilidades y helpers generales
+├── .env.example        # Variables de entorno de ejemplo
+├── package.json        # Configuración de dependencias y scripts
+├── tsconfig.json       # Configuración de TypeScript
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+````
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🧪 Casos de Uso
 
-To learn more about Next.js, take a look at the following resources:
+Los casos de uso fueron modelados para cubrir el ciclo completo de:
+- Carga y edición de insumos y productos
+- Generación y edición de recetas
+- Cálculo de costos (manual, automático, con inflación, etc.)
+- Visualización de dashboards
+- Exportación de reportes
+- Registro y autenticación de usuarios
+- Gestión de stock y producción
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Más detalles: [📝 Documento de Casos de Uso](https://github.com/schweigenderFlugel/costflow/blob/main/docs/CUS.pdf)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📦 Instalación Local
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Clona el repositorio:  
+```bash
+git clone https://github.com/schweigenderFlugel/costflow.git
+cd costflow/client
+````
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. Instala las dependencias (usa el gestor que prefieras):
+
+```bash
+# Con Bun
+bun install
+
+# O con npm
+npm install
+```
+
+3. Crea tu archivo `.env.local` a partir de `.env.example`.
+   Por ahora solo es obligatoria:
+
+```
+SERVER_API=http://localhost:3000/api
+```
+
+4. Levanta el servidor de desarrollo:
+
+```bash
+bun run dev
+# o
+npm run dev
+```
+
+---
+
+## 🛠️ Scripts Útiles
+
+```bash
+bun run dev        # Inicia el modo desarrollo
+bun run build      # Compila la app para producción
+bun run start      # Sirve la app compilada
+bun run lint       # Linter con ESLint
+```
+
+---
+
+## 🔗 Enlaces Útiles
+
+* 🌐 **Deploy (pendiente)**
+* 🛠 **Servidor Backend:** *\[link por definir]()
+* 🎨 **Diseño Figma:** *\[link por definir]*
+* 📋 **Miro Board:** *\[link por definir]*
+
+---
+
+## ✨ Próximamente
+
+* Autenticación
+* Dashboard interactivo con filtros
+* Control de stock en tiempo real
+* Exportación a Excel y PDF
+
+---
+
+📌 **Nota:** Este proyecto está en desarrollo activo. Las funcionalidades pueden cambiar.
+
+---
