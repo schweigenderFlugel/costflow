@@ -1,0 +1,28 @@
+{
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#3b3b3b",
+    "activityBar.background": "#3b3b3b",
+    "activityBar.foreground": "#e0e0dc",
+    "activityBar.inactiveForeground": "#e0e0dc99",
+    "activityBarBadge.background": "#435c43",
+    "activityBarBadge.foreground": "#e0e0dc",
+    "statusBar.background": "#435c43",
+    "statusBar.foreground": "#f5f5f5",
+    "statusBarItem.hoverBackground": "#5a7a5a",
+    "statusBarItem.remoteBackground": "#435c43",
+    "statusBarItem.remoteForeground": "#ffffff",
+    "titleBar.activeBackground": "#2f3c2f",
+    "titleBar.activeForeground": "#e0e0dc",
+    "titleBar.inactiveBackground": "#2f3c2f99",
+    "titleBar.inactiveForeground": "#e0e0dc99",
+    "commandCenter.border": "#e0e0dc33",
+    "sash.hoverBorder": "#5a7a5a"
+  }
+}
