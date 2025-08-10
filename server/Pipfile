@@ -16,4 +16,4 @@ pytest = "*"
 
 [requires]
 python_version = "3.13"
-python_full_version = "3.13.1"
+python_full_version = "3.13.2"
