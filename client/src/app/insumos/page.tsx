@@ -1,15 +1,19 @@
+import FeedstockTable from "@/components/feedstock/feedstock-table"
 
 
 export const metadata = {
   title: "Insumos"
 }
 
-export const Page = () => {
+const Page = () => {
 
 
   return (
     <main>
-
+      <FeedstockTable />
     </main>
   )
 }
+
+
+export default Page
