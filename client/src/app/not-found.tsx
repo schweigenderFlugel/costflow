@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+
 
 export default function NotFound() {
     return (
@@ -14,9 +14,9 @@ export default function NotFound() {
                 <p className="text-gray-600 mb-8">
                     Es posible que la página que buscas haya sido eliminada o no esté disponible temporalmente.
                 </p>
-                <Button asChild>
+                <button>
                     <Link href="/">Volver al inicio</Link>
-                </Button>
+                </button>
             </div>
         </div>
     );
