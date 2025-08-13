@@ -56,8 +56,8 @@ def get_products(db: SessionDep, pagination: Pagination = Query()):
 
 }) 
 
-def post_products():
-    return {"Message":"The Products has been created."}
+def post_products(db: SessionDep, pagination: Pagination, jwt: JwtDep):
+    return product_service.create_product(db=db, pagination=pagination)
 
 @router.put("", summary="Update Products", responses={
     200: Response(
@@ -88,8 +88,8 @@ def post_products():
     ).custom_response(), 
 }) 
 
-def put_products():
-     return {"Message":"The Product has updated."}
+def put_products(db: SessionDep, pagination: Pagination, jwt: JwtDep):
+     return product_service.update_product(db=db, pagination=pagination)
 
 @router.delete("", summary="Delete Products", responses={
      200: Response(
@@ -114,5 +114,5 @@ def put_products():
     ).custom_response(), 
 }) 
 
-def delete_products():
-    return {"Message":"The Products has deleted."}
+def delete_products(db: SessionDep, pagination: Pagination, jwt: JwtDep):
+    return product_service.delete_product(db=db, pagination=pagination)
