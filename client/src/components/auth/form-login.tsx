@@ -38,7 +38,7 @@ export default function FormLogin() {
         <PasswordField control={form.control} errors={form.formState.errors} />
 
         <Link
-          href="/forgot-password"
+          href="/olvide-mi-contrasena"
           className="text-sm text-gray-600 hover:text-gray-800 my-2"
         >
           Olvidé mi contraseña
