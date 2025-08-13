@@ -22,16 +22,13 @@ export default function FormForgotPassword() {
 
   const onSubmit = form.handleSubmit((values) => {
     console.log("Valores del formulario:", values);
-    const id = toast(
-      "Hemos enviado un correo para reestablecer su contraseña",
-      {
-        description: "Revise su bandeja de entrada",
-        action: {
-          label: "Cerrar",
-          onClick: () => toast.dismiss(id),
-        },
-      }
-    );
+    const id = toast("Esta página es meramente visual", {
+      description: "No es funcional",
+      action: {
+        label: "Cerrar",
+        onClick: () => toast.dismiss(id),
+      },
+    });
   });
 
   return (

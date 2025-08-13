@@ -21,7 +21,7 @@ export default function RegisterPage() {
               Recuperar contraseña
             </CardTitle>
             <CardDescription className="text-center">
-              Ingresa tu correo electrónico para reestablecer tu contraseña
+              Esta página es meramente visual, no es funcional
             </CardDescription>
           </CardHeader>
           <CardContent>
