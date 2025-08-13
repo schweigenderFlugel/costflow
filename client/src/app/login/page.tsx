@@ -27,7 +27,7 @@ export default function LoginPage() {
       </div>
       <div
         className="w-full md:w-5/8 h-screen md:h-auto bg-cover bg-center"
-        style={{ backgroundImage: "url('assets/costosbg.jpg')" }}
+        style={{ backgroundImage: "url('assets/images/costosbg.jpg')" }}
       ></div>
     </div>
   );

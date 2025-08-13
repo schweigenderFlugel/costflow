@@ -12,7 +12,7 @@ export default function RegisterPage() {
     <div className="flex flex-col md:flex-row h-screen">
       <div
         className="w-full md:w-5/8 h-64 md:h-auto bg-cover bg-center"
-        style={{ backgroundImage: "url('assets/costosbg.jpg')" }}
+        style={{ backgroundImage: "url('assets/images/costosbg.jpg')" }}
       ></div>
       <div className="w-full md:w-3/8 flex items-center justify-center bg-white p-6">
         <Card className="w-full max-w-md border-none shadow-none">
