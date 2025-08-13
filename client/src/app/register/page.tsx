@@ -1,4 +1,4 @@
-import FormRegister from "@/app/register/form-register";
+import FormRegister from "@/components/auth/form-register";
 import {
   Card,
   CardContent,

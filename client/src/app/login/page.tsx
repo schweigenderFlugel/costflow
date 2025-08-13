@@ -1,3 +1,4 @@
+import FormLogin from "@/components/auth/form-login";
 import {
   Card,
   CardContent,
@@ -5,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import FormLogin from "./form-login";
 
 export default function LoginPage() {
   return (
