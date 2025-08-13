@@ -1,6 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from schemas.http_response import Response
-
+from services import product_service 
+from deps.db_session_dep import SessionDep
+from deps.jwt_dep import JwtDep
+from schemas.pagination import Pagination
 router = APIRouter(
   tags=['Product'],
   prefix='/product'
@@ -23,8 +26,8 @@ router = APIRouter(
         message="Internal Server Error"
     ).custom_response(), 
 })
-def get_products():
-    return {"Message":"Products Number 1"}
+def get_products(db: SessionDep, pagination: Pagination = Query()):
+    return product_service.get_products(db=db, pagination=pagination)
 
 
 @router.post("", summary="Create Products", responses={
