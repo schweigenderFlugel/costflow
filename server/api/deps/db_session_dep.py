@@ -3,7 +3,6 @@ from fastapi import FastAPI, Depends
 from contextlib import asynccontextmanager
 from sqlmodel import SQLModel, create_engine, Session
 from dotenv import load_dotenv
-import os
 import sys
 
 from config.envs import DATABASE_URL

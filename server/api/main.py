@@ -11,7 +11,12 @@ from routes import auth_route, user_route, feedstock_route, product_route
 
 load_dotenv()
 
-app = FastAPI(lifespan=create_db_and_tables)
+app = FastAPI(
+  lifespan=create_db_and_tables, 
+  title="Cotzia", 
+  description="The endpoinst documentation", 
+  version="1.0.0"
+)
 
 app.add_middleware(
   CORSMiddleware,
