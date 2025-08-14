@@ -7,7 +7,7 @@ import os
 from config.envs import FRONTEND_URL
 
 from deps.db_session_dep import create_db_and_tables
-from routes import auth_route, user_route, feedstock_route
+from routes import auth_route, user_route, feedstock_route, product_route 
 
 load_dotenv()
 
@@ -24,6 +24,7 @@ app.add_middleware(
 app.include_router(auth_route.router)
 app.include_router(user_route.router)
 app.include_router(feedstock_route.router)
+app.include_router(product_route.router)
 
 @app.get("/")
 def root():
