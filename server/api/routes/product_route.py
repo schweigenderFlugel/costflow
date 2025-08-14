@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Body
 
 from schemas.http_response import Response
 from services import product_service
@@ -10,7 +10,7 @@ from deps.admin_role_dep import AdminRoleDep
 
 
 from schemas.pagination import Pagination
-from models.product_model import Product
+from models.product_model import Product, CreateProduct, UpdateProduct
 
 router = APIRouter(
   tags=['Products'],
@@ -63,10 +63,10 @@ def get_products(db: SessionDep, pagination: Pagination = Query()):
         ).custom_response(),
     }
 ) 
-def create_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, pagination: Pagination):
-    return product_service.create_product(db=db, pagination=pagination)
+def create_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, body: CreateProduct = Body()):
+    return product_service.create_product(db=db, body=body)
 
-@router.put("", 
+@router.put("/{id}", 
     summary="Update Product",
     status_code=201,
     responses={
@@ -97,10 +97,10 @@ def create_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, pagination:
         ).custom_response(),
     }
 ) 
-def update_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, pagination: Pagination):
-     return product_service.update_product(db=db, pagination=pagination)
+def update_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: str, body: UpdateProduct = Body()): # type: ignore
+    return product_service.update_product(db=db, body=body)
 
-@router.delete("", 
+@router.delete("/{id}", 
     summary="Delete Products",
     status_code=200,
     responses={
@@ -126,5 +126,5 @@ def update_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, pagination:
         ).custom_response()
     }
 ) 
-def delete_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, pagination: Pagination):
-    return product_service.delete_product(db=db, pagination=pagination)
+def delete_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: str):
+    return product_service.delete_product(db=db, id=id)
