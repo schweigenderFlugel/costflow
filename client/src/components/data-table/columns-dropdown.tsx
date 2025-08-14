@@ -3,6 +3,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { ChevronDown } from "lucide-react"
 import { Table } from "@tanstack/react-table"
 import { ObjFeedstock } from "@/types/items/feedstock"
+import { translateFeedstockHeaders } from "@/utils/translate/feedstock"
 
 type DropdownProps = {
   table: Table<ObjFeedstock>
@@ -16,7 +17,7 @@ const ColumnsDropdown = ({ table }: DropdownProps) => {
           Columns <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="start">
         {table
           .getAllColumns()
           .filter((column) => column.getCanHide())
@@ -24,13 +25,12 @@ const ColumnsDropdown = ({ table }: DropdownProps) => {
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}
-                className="capitalize"
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) =>
                   column.toggleVisibility(!!value)
                 }
               >
-                {(column.id).split('_').join(' ')}
+                {translateFeedstockHeaders(column.id as keyof ObjFeedstock)}
               </DropdownMenuCheckboxItem>
             )
           })}
