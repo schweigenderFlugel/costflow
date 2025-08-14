@@ -1,4 +1,4 @@
-import { getToken } from "@/utils/getToken";
+import { getToken } from "@/utils/get-token";
 import { NextRequest } from "next/server";
 
 
