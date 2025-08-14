@@ -16,17 +16,18 @@ export enum MeasureUnit {
 export enum Currency {
   USD = 'USD',
   ARS = 'ARS',
-  // OTHER = 'OTHER'
+  OTHER = 'OTHER'
 }
 
 export interface Feedstock {
   name: string,
-  sku: string,
+  // sku: string,
   currency: Currency,
   measure_unit: MeasureUnit,
   unit_cost: number,
   provider?: string,
   //
+  quantity: number,
   entry_date: Date,
 }
 
