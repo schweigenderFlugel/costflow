@@ -12,7 +12,6 @@ from deps.db_session_dep import SessionDep
 from deps.jwt_dep import JwtDep
 from deps.admin_role_dep import AdminRoleDep
 
-
 router = APIRouter(
   tags=['Users'],
   prefix='/users'

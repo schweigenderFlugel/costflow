@@ -10,6 +10,7 @@ psycopg2-binary = "*"
 python-jose = "*"
 passlib = {extras = ["bcrypt"], version = "*"}
 cryptography = "*"
+sendgrid = "*"
 
 [dev-packages]
 pytest = "*"

@@ -2,7 +2,7 @@ from typing import Optional
 from uuid import UUID as uuid, uuid4
 from datetime import datetime, timezone
 from enum import Enum
-from sqlalchemy import Column, VARCHAR, TIMESTAMP
+from sqlalchemy import Column, VARCHAR, TIMESTAMP, TEXT
 import sqlalchemy.dialects.postgresql as pg
 from sqlmodel import SQLModel, Field
 
@@ -11,9 +11,11 @@ class Role(str, Enum):
   EMPLOYEE = "EMPLOYEE"
   CLIENT = "CLIENT"
 
-class UserBase(SQLModel):
+class UserEmail(SQLModel):
   email: str = Field(sa_column=Column(VARCHAR), description='User email')
-  password: str = Field(sa_column=Column(VARCHAR), description='User email')
+
+class UserPassword(SQLModel):
+  password: str = Field(sa_column=Column(VARCHAR), description='User password')
 
 class Timestamp(SQLModel):
   created_at: datetime = Field(sa_column=Column(TIMESTAMP), default_factory=lambda: datetime.now(timezone.utc))
@@ -21,13 +23,20 @@ class Timestamp(SQLModel):
 
 class UserIdRole(SQLModel):
   id: Optional[uuid] = Field(default_factory=uuid4, primary_key=True)
-  role: Optional[Role] = Field(sa_column=Column(pg.ENUM(Role)))
+  role: Optional[Role] = Field(sa_column=Column(pg.ENUM(Role), default='CLIENT'))
 
-class User(Timestamp, UserBase, UserIdRole, table=True):
+class User(Timestamp, UserEmail, UserPassword, UserIdRole, table=True):
   __tablename__ = 'users'
+  recovery_code: Optional[str] = Field(sa_column=Column(TEXT, nullable=True), description='Code for password recovery')
 
-class RegisterUser(UserBase):
+class PasswordRecovery(UserEmail):
   pass
 
-class Login(UserBase):
+class RegisterUser(UserPassword, UserEmail):
   pass
+
+class Login(UserPassword, UserEmail):
+  pass
+
+class ChangePassword(UserPassword):
+  new_password: str = Field(sa_column=Column(VARCHAR), description='New password')
