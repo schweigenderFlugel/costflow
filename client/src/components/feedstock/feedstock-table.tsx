@@ -6,7 +6,7 @@ import { mockFeedstocks } from "@/components/feedstock/mock-feedstocks"
 
 const FeedstockTable = () => {
   return (
-    <section className="max-w-5xl mx-auto py-10 px-5">
+    <section className="max-w-5xl mx-auto my-8 px-5">
 
       <DataTable
         initialData={mockFeedstocks}
