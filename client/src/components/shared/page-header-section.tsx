@@ -8,7 +8,7 @@ type PageHeaderSectionProps = {
 
 
 const PageHeaderSection: FC<PageHeaderSectionProps> = ({ title, description, triggerInfo }) => {
-  return <header className="flex align-middle flex-col justify-start gap-3 max-w-5xl mx-auto px-5">
+  return <header className="flex align-middle flex-col justify-start gap-3 max-w-[calc(100svw-2rem)] w-6xl mx-auto px-1 sm:px-5">
     <h1 className="font-bold text-3xl">
       {title}
     </h1>
