@@ -4,7 +4,7 @@ import { MeasureUnit, Currency } from "@/types/items/feedstock";
 // Esquema para creación
 export const feedstockSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
-  // sku: z.string().min(1, "SKU is required").max(50),
+  sku: z.string().min(1, "SKU is required").max(50),
   currency: z.nativeEnum(Currency, { error: "Currency is required" }),
   measure_unit: z.nativeEnum(MeasureUnit, { error: "Measure unit is required" }),
   unit_cost: z.number({ error: "Unit cost must be a number" }).min(1, "Must be positive"),

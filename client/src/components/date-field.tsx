@@ -29,7 +29,7 @@ const DateField = ({ className, formControl }: { className?: string, formControl
       name="entry_date"
       render={({ field }) => (
         <FormItem className={cn("flex flex-col", className)}>
-          <FormLabel>Entry date</FormLabel>
+          <FormLabel>Fecha de entrada</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>

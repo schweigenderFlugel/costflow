@@ -21,6 +21,7 @@ import {
 import { MeasureUnit, Currency } from "@/types/items/feedstock";
 import { feedstockSchema, FormDataFeedstock } from "@/schemas/feedstock-schema";
 import DateField from "@/components/date-field";
+import { translateMeasureUnit } from "@/utils/translate/feedstock";
 
 interface FormFeedstock {
   defaultValues: Partial<FormDataFeedstock>;
@@ -46,28 +47,14 @@ const FormFeedstock = ({
         id={formId}
       >
         <div className="grid grid-cols-12 gap-x-3 gap-y-4 items-start">
-          {/* <FormField
+          <FormField
             control={form.control}
             name="sku"
             render={({ field }) => (
-              <FormItem className="col-span-12">
+              <FormItem className="col-span-12 sm:col-span-6">
                 <FormLabel>SKU</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter SKU" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
-
-          <FormField
-            control={form.control}
-            name="provider"
-            render={({ field }) => (
-              <FormItem className="col-span-12">
-                <FormLabel>Proveedor</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nombre/alias del proveedor" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -78,7 +65,7 @@ const FormFeedstock = ({
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="col-span-12">
+              <FormItem className="col-span-12 sm:col-span-6">
                 <FormLabel>Nombre</FormLabel>
                 <FormControl>
                   <Input placeholder="Nombre del insumo" {...field} />
@@ -126,7 +113,7 @@ const FormFeedstock = ({
                   <SelectContent>
                     {Object.values(MeasureUnit).map((unit) => (
                       <SelectItem key={unit} value={unit}>
-                        {unit}
+                        {translateMeasureUnit(unit)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -189,6 +176,19 @@ const FormFeedstock = ({
             formControl={form.control}
           />
 
+          <FormField
+            control={form.control}
+            name="provider"
+            render={({ field }) => (
+              <FormItem className="col-span-12">
+                <FormLabel>Proveedor <span className="text-xs text-muted-foreground">(Opcional)</span></FormLabel>
+                <FormControl>
+                  <Input placeholder="Nombre o alias del proveedor" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
         </div>
 

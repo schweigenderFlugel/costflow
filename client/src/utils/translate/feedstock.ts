@@ -13,6 +13,7 @@ const translationsHeaders: Record<keyof ObjFeedstock, string> = {
   is_deleted: "Eliminado",
   created_at: "Creado",
   updated_at: "Actualizado",
+  sku: "SKU"
 };
 
 const translationMeasureUnit: Record<MeasureUnit, string> = {
@@ -21,7 +22,6 @@ const translationMeasureUnit: Record<MeasureUnit, string> = {
   LITERS: "Litros",
   MILLILITERS: "Mililitros",
   UNIT: "Unidad",
-  OTHERS: "Otros",
 }
 
 export const translateFeedstockHeaders = (header: keyof ObjFeedstock) => {

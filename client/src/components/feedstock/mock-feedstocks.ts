@@ -5,7 +5,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Harina de trigo 000",
-    // sku: "HAR-0001",
+    sku: "HAR-0001",
     currency: Currency.ARS,
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 1200,
@@ -19,7 +19,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Azúcar refinada",
-    // sku: "AZU-0002",
+    sku: "AZU-0002",
     currency: Currency.ARS,
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 950,
@@ -33,7 +33,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Aceite de girasol",
-    // sku: "ACE-0003",
+    sku: "ACE-0003",
     currency: Currency.ARS,
     measure_unit: MeasureUnit.LITERS,
     unit_cost: 2100,
@@ -47,7 +47,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Leche entera en polvo",
-    // sku: "LEC-0004",
+    sku: "LEC-0004",
     currency: Currency.USD,
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 8.5,
@@ -61,7 +61,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Cacao en polvo",
-    // sku: "CAC-0005",
+    sku: "CAC-0005",
     currency: Currency.USD,
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 12.3,
@@ -75,7 +75,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Sal fina",
-    // sku: "SAL-0006",
+    sku: "SAL-0006",
     currency: Currency.ARS,
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 450,
@@ -89,7 +89,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Esencia de vainilla",
-    // sku: "ESV-0007",
+    sku: "ESV-0007",
     currency: Currency.ARS,
     measure_unit: MeasureUnit.MILLILITERS,
     unit_cost: 320,
@@ -103,7 +103,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Huevos",
-    // sku: "HUE-0008",
+    sku: "HUE-0008",
     currency: Currency.ARS,
     measure_unit: MeasureUnit.UNIT,
     unit_cost: 120,
@@ -117,7 +117,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Manteca",
-    // sku: "MAN-0009",
+    sku: "MAN-0009",
     currency: Currency.ARS,
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 2700,
@@ -131,7 +131,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Levadura seca",
-    // sku: "LEV-0010",
+    sku: "LEV-0010",
     currency: Currency.USD,
     measure_unit: MeasureUnit.GRAMS,
     unit_cost: 0.5,
@@ -145,7 +145,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Chocolate cobertura",
-    // sku: "CHO-0011",
+    sku: "CHO-0011",
     currency: Currency.USD,
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 14.8,
@@ -159,7 +159,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Mermelada de frutilla",
-    // sku: "MER-0012",
+    sku: "MER-0012",
     currency: Currency.ARS,
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 1800,
@@ -173,7 +173,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Nueces peladas",
-    // sku: "NUE-0013",
+    sku: "NUE-0013",
     currency: Currency.USD,
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 9.4,
@@ -187,7 +187,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Crema de leche",
-    // sku: "CRE-0014",
+    sku: "CRE-0014",
     currency: Currency.ARS,
     measure_unit: MeasureUnit.LITERS,
     unit_cost: 2500,
@@ -201,9 +201,9 @@ export const mockFeedstocks: ObjFeedstock[] = [
   {
     id: randomUUID(),
     name: "Papel manteca",
-    // sku: "PAP-0015",
+    sku: "PAP-0015",
     currency: Currency.ARS,
-    measure_unit: MeasureUnit.OTHERS,
+    measure_unit: MeasureUnit.MILLILITERS,
     unit_cost: 900,
     provider: "Cocina Pro",
     entry_date: new Date("2025-07-02"),
