@@ -5,11 +5,12 @@ import { Table } from "@tanstack/react-table"
 import { ObjFeedstock } from "@/types/items/feedstock"
 import { translateFeedstockHeaders } from "@/utils/translate/feedstock"
 
-type DropdownProps = {
-  table: Table<ObjFeedstock>
+type DropdownProps<T> = {
+  table: Table<T>,
+  columnsTo: "feedstock" | "product"
 }
 
-const ColumnsDropdown = ({ table }: DropdownProps) => {
+const ColumnsDropdown = <TData,>({ table, columnsTo }: DropdownProps<TData>) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,7 +31,11 @@ const ColumnsDropdown = ({ table }: DropdownProps) => {
                   column.toggleVisibility(!!value)
                 }
               >
-                {translateFeedstockHeaders(column.id as keyof ObjFeedstock)}
+                {
+                  columnsTo == "feedstock"
+                    ? translateFeedstockHeaders(column.id as keyof ObjFeedstock)
+                    : column.id
+                }
               </DropdownMenuCheckboxItem>
             )
           })}

@@ -1,10 +1,9 @@
 import NoResult from "@/components/data-table/no-results"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ObjFeedstock } from "@/types/items/feedstock"
 import { flexRender, Table as ITTable } from "@tanstack/react-table"
 
 
-const OnlyTable = ({ table, colSpan }: { table: ITTable<ObjFeedstock>, colSpan: number }) => (
+const OnlyTable = <TData,>({ table, colSpan }: { table: ITTable<TData>, colSpan: number }) => (
   <Table>
     <TableHeader>
       {table.getHeaderGroups().map((headerGroup) => (

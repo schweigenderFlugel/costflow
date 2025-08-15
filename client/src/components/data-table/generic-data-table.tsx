@@ -1,6 +1,6 @@
 "use client"
 
-import { FC, useState } from "react"
+import { useState } from "react"
 import OnlyTable from "@/components/data-table/only-table"
 import {
   ColumnDef,
@@ -13,23 +13,22 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table"
-import { ObjFeedstock } from "@/types/items/feedstock"
 import PaginationTable from "@/components/data-table/pagination-table"
 import HeaderTable from "@/components/data-table/header-table"
 
-interface DataTableProps {
-  initialData: ObjFeedstock[],
-  columns: ColumnDef<ObjFeedstock>[],
+interface GenericDataTableProps<TData> {
+  initialData: TData[]
+  columns: ColumnDef<TData>[],
+  columnsTo?: "product" | "feedstock"
 }
 
-const DataTable: FC<DataTableProps> = ({ initialData, columns }) => {
+const GenericDataTable = <TData,>({ initialData, columns, columnsTo = "feedstock" }: GenericDataTableProps<TData>) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
 
-
-  const table = useReactTable<ObjFeedstock>({
+  const table = useReactTable<TData>({
     data: initialData,
     columns,
     onSortingChange: setSorting,
@@ -50,18 +49,15 @@ const DataTable: FC<DataTableProps> = ({ initialData, columns }) => {
 
   return (
     <div className="w-full">
-
-      <HeaderTable table={table} />
+      <HeaderTable <TData> columnsTo={columnsTo} table={table} />
 
       <div className="overflow-hidden rounded-md border">
-        <OnlyTable table={table} colSpan={columns.length} />
+        <OnlyTable <TData> table={table} colSpan={columns.length} />
       </div>
 
-
-      <PaginationTable table={table} />
+      <PaginationTable <TData> table={table} />
     </div>
   )
 }
 
-
-export default DataTable;
+export default GenericDataTable
