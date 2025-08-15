@@ -1,28 +1,26 @@
 import FormRegister from "@/components/auth/form-register";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function RegisterPage() {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div
-        className="w-full md:w-5/8 h-64 md:h-auto bg-cover bg-center"
-        style={{ backgroundImage: "url('assets/images/costosbg.jpg')" }}
+        className="hidden md:block w-full md:w-5/8 md:h-auto bg-cover bg-center"
+        style={{ backgroundImage: "url('assets/images/gradientelogin.jpg')" }}
       ></div>
-      <div className="w-full md:w-3/8 flex items-center justify-center bg-white p-6">
-        <Card className="w-full max-w-md border-none shadow-none">
+
+      <div className="w-full md:w-3/8 flex items-center justify-center md:p-6">
+        <Card className="w-full md:w-10/12 h-auto md:h-auto border-none shadow-none bg-login-mobile rounded-none text-white md:text-black">
           <CardHeader>
-            <CardTitle className="text-center text-2xl font-bold">
+            <div>
+              <p className="text-center text-4xl md:hidden m-20 font-bold">
+                Cotzia
+              </p>
+            </div>
+
+            <CardTitle className="text-left text-2xl md:text-3xl font-bold md:mb-10 mb-7">
               Crear cuenta
             </CardTitle>
-            <CardDescription className="text-center">
-              Ingresa tus datos para llevar a cabo el registro
-            </CardDescription>
           </CardHeader>
           <CardContent>
             <FormRegister />
