@@ -172,7 +172,7 @@ const FormFeedstock = ({
           />
 
           <DateField
-            className="col-span-12"
+            className="col-span-12 sm:col-span-6"
             formControl={form.control}
           />
 
@@ -180,7 +180,7 @@ const FormFeedstock = ({
             control={form.control}
             name="provider"
             render={({ field }) => (
-              <FormItem className="col-span-12">
+              <FormItem className="col-span-12 sm:col-span-6">
                 <FormLabel>Proveedor <span className="text-xs text-muted-foreground">(Opcional)</span></FormLabel>
                 <FormControl>
                   <Input placeholder="Nombre o alias del proveedor" {...field} />
