@@ -7,7 +7,7 @@ import { ObjFeedstock } from "@/types/items/feedstock"
 
 const FeedstockTable = () => {
   return (
-    <section className="max-w-5xl mx-auto my-8 px-5">
+    <section className="max-w-[calc(100svw-2rem)] w-6xl mx-auto my-8 px-1 sm:px-5">
 
       <GenericDataTable
         <ObjFeedstock>
