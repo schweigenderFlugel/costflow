@@ -1,7 +1,9 @@
 "use client"
+import FeedstockActions from "@/components/feedstock/feedstock-actions"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Currency, ObjFeedstock } from "@/types/items/feedstock"
+import { translateMeasureUnit } from "@/utils/translate/feedstock"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 
@@ -51,12 +53,27 @@ const columns: ColumnDef<ObjFeedstock>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          Nombre
           <ArrowUpDown />
         </Button>
       )
     },
     cell: ({ row }) => <div>{row.getValue("name")}</div>,
+  },
+  {
+    accessorKey: "quantity",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Cantidad
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div>{row.getValue("quantity")}</div>,
   },
   {
     accessorKey: "measure_unit",
@@ -66,36 +83,39 @@ const columns: ColumnDef<ObjFeedstock>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Measure Unit
+          Unidad
           <ArrowUpDown />
         </Button>
       )
     },
-    cell: ({ row }) => <div>{row.getValue("measure_unit")}</div>,
+    cell: ({ row }) => <div>{translateMeasureUnit(row.getValue("measure_unit"))}</div>,
   },
   {
     accessorKey: "currency",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Currency
-          <ArrowUpDown />
-        </Button>
+        <div className="text-center">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Moneda
+            <ArrowUpDown />
+          </Button>
+        </div>
       )
     },
     cell: ({ row }) => {
-      const unit_cost = parseFloat(row.getValue("unit_cost"))
+      // const unit_cost = parseFloat(row.getValue("unit_cost"))
 
-      const formatted = (new Intl.NumberFormat("es-AR", {
-        style: "currency",
-        currency: Currency[row.original.currency]
-      }).format(unit_cost)).split(/(\s+)/)
+      // const formatted = (new Intl.NumberFormat("es-AR", {
+      //   style: "currency",
+      //   currency: Currency[row.original.currency]
+      // }).format(unit_cost)).split(/(\s+)/)
 
-      return (<div title={row.getValue("currency")} className="text-right pr-2">
-        {formatted[0]}
+      return (<div title={row.getValue("currency")} className="text-center">
+        {/* {formatted[0]} */}
+        {row.getValue("currency")}
       </div>)
     },
   },
@@ -108,7 +128,7 @@ const columns: ColumnDef<ObjFeedstock>[] = [
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Unit Cost
+            Monto
             <ArrowUpDown />
           </Button>
         </div>
@@ -124,7 +144,7 @@ const columns: ColumnDef<ObjFeedstock>[] = [
       }).format(unit_cost)).split(/(\s+)/)
 
 
-      return <div className="font-medium text-left pl-2">
+      return <div className="font-medium text-right pl-2">
         {/* <span className="block">{formatted[0]}</span> */}
         {formatted[2]}
       </div>
@@ -138,7 +158,7 @@ const columns: ColumnDef<ObjFeedstock>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Provider
+          Proveedor
           <ArrowUpDown />
         </Button>
       )
@@ -153,13 +173,21 @@ const columns: ColumnDef<ObjFeedstock>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Entry date
+          F. de entrada
           <ArrowUpDown />
         </Button>
       )
     },
-    cell: ({ row }) => <div className="text-center">{new Date(row.getValue("entry_date")).toLocaleDateString()}</div>,
+    cell: ({ row }) => <div>{new Date(row.getValue("entry_date")).toLocaleDateString()}</div>,
   },
+  {
+    accessorKey: "actions",
+    header: "",
+    cell: ({ row }) => <FeedstockActions feedstock={row.original} />,
+    enableSorting: false,
+    enableHiding: false,
+  },
+
 ]
 
 
