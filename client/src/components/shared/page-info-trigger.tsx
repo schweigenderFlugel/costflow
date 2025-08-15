@@ -3,19 +3,19 @@ import { Button } from "@/components/ui/button";
 import { usePageInfoDialog } from "@/hooks/use-page-info-dialog";
 import { Info } from "lucide-react";
 
-const InfoFeedstock = () => {
+const PageInfoTrigger = () => {
   const { open } = usePageInfoDialog()
 
   return (<Button
     type="button"
     variant={"ghost"}
-    title="Información sobre insumos"
+    title="Información sobre página"
     className="cursor-pointer"
-    data-slot="feedstock-info-dialog-trigger"
+    data-slot="page-info-dialog-trigger"
     onClick={open}
   >
     <Info className="size-full" />
   </Button>)
 }
 
-export default InfoFeedstock;
+export default PageInfoTrigger;
