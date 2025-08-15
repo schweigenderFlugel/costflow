@@ -1,14 +1,16 @@
 
-import DataTable from "@/components/data-table/data-table"
+import GenericDataTable from "@/components/data-table/generic-data-table"
 import columns from "@/components/feedstock/columns"
 import { mockFeedstocks } from "@/components/feedstock/mock-feedstocks"
+import { ObjFeedstock } from "@/types/items/feedstock"
 
 
 const FeedstockTable = () => {
   return (
     <section className="max-w-5xl mx-auto my-8 px-5">
 
-      <DataTable
+      <GenericDataTable
+        <ObjFeedstock>
         initialData={mockFeedstocks}
         columns={columns}
       />

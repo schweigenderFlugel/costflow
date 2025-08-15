@@ -1,5 +1,5 @@
 import FeedstockTable from "@/components/feedstock/feedstock-table"
-import InfoFeedstock from "@/components/feedstock/modal/trigger/info-feedstock-trigger"
+import PageInfoTrigger from "@/components/shared/page-info-trigger"
 import PageHeaderSection from "@/components/shared/page-header-section"
 import dynamic from "next/dynamic"
 
@@ -31,7 +31,7 @@ const Page = () => {
       <PageHeaderSection
         title="Insumos y materia prima"
         description="Cargá y administrá todos los materiales que necesitás para producir. Mantené actualizadas las cantidades, precios y unidades para que el cálculo de costos sea preciso y automático."
-        triggerInfo={<InfoFeedstock />}
+        triggerInfo={<PageInfoTrigger />}
       />
       <FeedstockTable />
       <CreateFeedstock />

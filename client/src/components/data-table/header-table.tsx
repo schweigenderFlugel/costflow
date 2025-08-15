@@ -1,25 +1,17 @@
 import ColumnsDropdown from "@/components/data-table/columns-dropdown";
 import CreateFeedstockTrigger from "@/components/feedstock/modal/trigger/create-feedstock-trigger";
+import CreateProductTrigger from "@/components/product/modal/trigger/create-product-trigger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ObjFeedstock } from "@/types/items/feedstock";
 import { Table } from "@tanstack/react-table";
 import { Download, ListFilter } from "lucide-react";
 
 
-const HeaderTable = ({ table }: { table: Table<ObjFeedstock> }) => (
+const HeaderTable = <T,>({ table, columnsTo }: { table: Table<T>, columnsTo: "product" | "feedstock" }) => (
   <header className="flex items-center justify-between pt-4 pb-6 gap-4 sm:flex-nowrap flex-wrap">
 
     <div className="flex gap-2 justify-between items-center sm:w-auto w-full">
-      {/* <Input
-        placeholder="Filter sku..."
-        value={(table.getColumn("sku")?.getFilterValue() as string) ?? ""}
-        onChange={(event) =>
-          table.getColumn("sku")?.setFilterValue(event.target.value)
-        }
-        className="max-w-sm"
-      /> */}
-      <ColumnsDropdown table={table} />
+      <ColumnsDropdown <T> columnsTo={columnsTo} table={table} />
       <Input
         placeholder="Buscar por nombre..."
         value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -38,7 +30,11 @@ const HeaderTable = ({ table }: { table: Table<ObjFeedstock> }) => (
         <Download />
         Importar
       </Button>
-      <CreateFeedstockTrigger />
+      {
+        columnsTo == "feedstock"
+          ? <CreateFeedstockTrigger />
+          : <CreateProductTrigger />
+      }
     </div>
   </header >
 )
