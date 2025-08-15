@@ -22,9 +22,9 @@ export function EmailField<T extends { email: string } & FieldValues>({
       control={control}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Correo</FormLabel>
+          <FormLabel className="text-xl">Usuario</FormLabel>
           <FormControl>
-            <Input type="text" {...field} />
+            <Input type="text" placeholder="Ingresá tu usuario" className="placeholder:italic py-6 bg-white"{...field} />
           </FormControl>
           {errors?.email && (
             <p className="text-red-500 text-sm">

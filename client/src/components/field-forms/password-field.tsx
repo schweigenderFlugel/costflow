@@ -28,18 +28,20 @@ export function PasswordField<T extends { password: string } & FieldValues>({
       control={control}
       render={({ field }) => (
         <FormItem>
-          <FormLabel htmlFor="password">Contraseña</FormLabel>
+          <FormLabel htmlFor="password" className="text-xl">Contraseña</FormLabel>
           <FormControl>
             <div className="relative">
               <Input
                 id="password"
                 type={seePassword ? "text" : "password"}
+                placeholder="Ingresá tu contraseña"
+                className="placeholder:italic py-6 bg-white"
                 {...field}
               />
               <button
                 type="button"
                 onClick={() => setSeePassword((prev) => !prev)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
                 aria-label={
                   seePassword ? "Ocultar contraseña" : "Mostrar contraseña"
                 }
