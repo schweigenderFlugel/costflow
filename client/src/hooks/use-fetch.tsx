@@ -1,37 +1,31 @@
 "use client"
+import { useUpdateDataTable } from "@/hooks/use-update-data-table"
+import { fetcher } from "@/utils/fetcher"
 import { useEffect, useState, useTransition } from "react"
 
-const API = process.env.SERVER_API
-
-
-const useFetch = (inputRequest: string, localFetch: boolean = true) => {
-  const [data, setData] = useState()
+const useFetch = <T,>(inputRequest: "product" | "feedstock" = "feedstock", initialData: T | [] = []
+) => {
+  const [data, setData] = useState<T | []>(initialData)
   const [error, setError] = useState<string>()
+  const { state } = useUpdateDataTable(inputRequest)
   const [isPending, startTransition] = useTransition()
 
-
-  const fetcher = async () => {
+  const fetchToData = async () => {
     try {
-      const res = await fetch(`${localFetch ? "/api" : API}/${inputRequest}`)
-      const data = await res.json()
-      setData(data)
+      const res = await fetcher({ input: `/api/${inputRequest}` })
+      setData(res)
     } catch (err) {
       setError((err as Error).message)
     }
   }
 
-
-
   useEffect(() => {
-    startTransition(fetcher)
-  }, [inputRequest, localFetch])
+    if (state != null && !isPending) {
+      startTransition(fetchToData)
+    }
+  }, [state])
 
-
-  return {
-    data,
-    error,
-    isPending
-  }
+  return { data, error, isPending }
 }
 
 
