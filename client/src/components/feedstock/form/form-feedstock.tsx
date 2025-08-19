@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { MeasureUnit, Currency } from "@/types/items/feedstock";
 import { feedstockSchema, FormDataFeedstock } from "@/schemas/feedstock-schema";
-import DateField from "@/components/date-field";
+// import DateField from "@/components/date-field";
 import { translateMeasureUnit } from "@/utils/translate/feedstock";
 
 interface FormFeedstock {
@@ -75,7 +75,7 @@ const FormFeedstock = ({
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="quantity"
             render={({ field }) => (
@@ -93,7 +93,7 @@ const FormFeedstock = ({
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           <FormField
             control={form.control}
@@ -171,10 +171,10 @@ const FormFeedstock = ({
             )}
           />
 
-          <DateField
+          {/* <DateField
             className="col-span-12 sm:col-span-6"
             formControl={form.control}
-          />
+          /> */}
 
           <FormField
             control={form.control}
