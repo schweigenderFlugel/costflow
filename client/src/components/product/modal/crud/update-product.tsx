@@ -4,9 +4,12 @@ import ProductForm from "@/components/product/form/product-form";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useUpdateProductDialog } from "@/hooks/use-product-dialog";
+import { useUpdateDataTable } from "@/hooks/use-update-data-table";
 import { FormDataProduct } from "@/schemas/product-schema";
+import { fetcher } from "@/utils/fetcher";
 import { ClipboardCheck } from "lucide-react";
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
 
 
 const UpdateFeedstock = () => {
@@ -14,15 +17,20 @@ const UpdateFeedstock = () => {
   const [alreadyUpdated, setAlreadyUpdated] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
   const [isPending, startTransition] = useTransition()
+  const { toggle: tableToggle } = useUpdateDataTable("product")
 
   if (product === null) return;
 
   const handleUpdate = async (values: FormDataProduct) => {
     startTransition(async () => {
-      return new Promise((resolve) => setTimeout(resolve, 2000)).then(() => {
-        console.log("Updating product:", values)
+      const data = await fetcher({ input: `/api/product/${product.id}`, method: "PUT", body: JSON.stringify(values) })
+      if (data.error) setErrorMessage(data.errro)
+      else {
         setAlreadyUpdated(true)
-      })
+        toast(data.description || data.message)
+        tableToggle()
+
+      }
     })
   };
 

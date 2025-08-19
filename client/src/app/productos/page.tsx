@@ -32,7 +32,7 @@ const Page = () => {
       <PageHeaderSection
         title="Productos"
         description="Definí cada producto a partir de su “receta” combinando insumos y costos indirectos. Registrá las cantidades exactas que necesita, y el sistema calculará automáticamente su costo final para que tengas precios claros y precisos."
-        triggerInfo={<PageInfoTrigger />}
+        triggerInfo
       />
       <ProductTable />
       <CreateProduct />

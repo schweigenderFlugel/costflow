@@ -1,8 +1,8 @@
-import { Product } from "@/types/items/product";
+import { ObjProduct } from "@/types/items/product";
 import { create } from "zustand"
 
 type ProductDialogState = {
-  product: Product | null;
+  product: ObjProduct | null;
   createProductDialog: boolean;
   updateProductDialog: boolean;
   deleteProductDialog: boolean;
@@ -10,7 +10,7 @@ type ProductDialogState = {
 }
 
 type ProductDialogActions = {
-  setProduct: (product: Product | null) => void;
+  setProduct: (product: ObjProduct | null) => void;
   setCreateProductDialog: (open: boolean) => void;
   setUpdateProductDialog: (open: boolean) => void;
   setDeleteProductDialog: (open: boolean) => void;
