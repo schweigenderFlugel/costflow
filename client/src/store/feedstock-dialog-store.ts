@@ -1,10 +1,10 @@
 
 
-import { Feedstock } from "@/types/items/feedstock";
+import { ObjFeedstock } from "@/types/items/feedstock";
 import { create } from "zustand"
 
 type DialogState = {
-  feedstock: Feedstock | null;
+  feedstock: ObjFeedstock | null;
   createFeedstockDialog: boolean;
   updateFeedstockDialog: boolean;
   deleteFeedstockDialog: boolean;
@@ -12,7 +12,7 @@ type DialogState = {
 }
 
 type DialogActions = {
-  setFeedstock: (fs: Feedstock | null) => void;
+  setFeedstock: (fs: ObjFeedstock | null) => void;
   setCreateFeedstockDialog: (open: boolean) => void;
   setUpdateFeedstockDialog: (open: boolean) => void;
   setDeleteFeedstockDialog: (open: boolean) => void;

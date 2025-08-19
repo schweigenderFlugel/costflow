@@ -31,7 +31,7 @@ const Page = () => {
       <PageHeaderSection
         title="Insumos y materia prima"
         description="Cargá y administrá todos los materiales que necesitás para producir. Mantené actualizadas las cantidades, precios y unidades para que el cálculo de costos sea preciso y automático."
-        triggerInfo={<PageInfoTrigger />}
+        triggerInfo
       />
       <FeedstockTable />
       <CreateFeedstock />

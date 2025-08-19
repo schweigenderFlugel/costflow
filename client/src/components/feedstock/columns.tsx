@@ -60,20 +60,35 @@ const columns: ColumnDef<ObjFeedstock>[] = [
     },
     cell: ({ row }) => <div>{row.getValue("name")}</div>,
   },
+  // {
+  //   accessorKey: "quantity",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Cantidad
+  //         <ArrowUpDown />
+  //       </Button>
+  //     )
+  //   },
+  //   cell: ({ row }) => <div>{row.getValue("quantity")}</div>,
+  // },
   {
-    accessorKey: "quantity",
+    accessorKey: "id",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Cantidad
+          Id
           <ArrowUpDown />
         </Button>
       )
     },
-    cell: ({ row }) => <div>{row.getValue("quantity")}</div>,
+    cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
     accessorKey: "measure_unit",
@@ -165,21 +180,21 @@ const columns: ColumnDef<ObjFeedstock>[] = [
     },
     cell: ({ row }) => <div>{row.getValue("provider")}</div>,
   },
-  {
-    accessorKey: "entry_date",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          F. de entrada
-          <ArrowUpDown />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div>{new Date(row.getValue("entry_date")).toLocaleDateString()}</div>,
-  },
+  // {
+  //   accessorKey: "entry_date",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         F. de entrada
+  //         <ArrowUpDown />
+  //       </Button>
+  //     )
+  //   },
+  //   cell: ({ row }) => <div>{new Date(row.getValue("entry_date")).toLocaleDateString()}</div>,
+  // },
   {
     accessorKey: "actions",
     header: "",

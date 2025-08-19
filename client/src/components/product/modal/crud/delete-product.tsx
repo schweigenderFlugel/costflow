@@ -9,10 +9,14 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useDeleteProductDialog } from "@/hooks/use-product-dialog"
+import { useUpdateDataTable } from "@/hooks/use-update-data-table"
+import { fetcher } from "@/utils/fetcher"
 import { translateMeasureUnit } from "@/utils/translate/feedstock"
+import { toast } from "sonner"
 
 const DeleteProduct = () => {
   const { isOpen, setIsOpen, product, setProduct } = useDeleteProductDialog()
+  const { toggle: tableToggle } = useUpdateDataTable("product")
   if (product === null) return;
 
 
@@ -21,6 +25,12 @@ const DeleteProduct = () => {
       setProduct(null)
     }
     setIsOpen(open)
+  }
+
+  const handleClick = async () => {
+    const data = await fetcher({ input: `/api/product/${product.id}`, method: "DELETE" })
+    toast(data.description || data.message || data.error)
+    tableToggle()
   }
 
   return (
@@ -46,7 +56,7 @@ const DeleteProduct = () => {
               setProduct(null)
             }}
           >Cancelar</AlertDialogCancel>
-          <AlertDialogAction className="cursor-pointer">Continuar</AlertDialogAction>
+          <AlertDialogAction className="cursor-pointer" onClick={handleClick}>Continuar</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

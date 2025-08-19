@@ -18,10 +18,12 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import { MeasureUnit } from "@/types/items/feedstock";
+import { MeasureUnit, ObjFeedstock } from "@/types/items/feedstock";
 import { productSchema, FormDataProduct } from "@/schemas/product-schema";
 import { translateMeasureUnit } from "@/utils/translate/feedstock";
 import { Textarea } from "@/components/ui/textarea";
+import { useEffect, useState } from "react";
+import { fetcher } from "@/utils/fetcher";
 
 interface ProductFormProps {
   defaultValues: Partial<FormDataProduct>;
@@ -38,6 +40,13 @@ const ProductForm = ({
     resolver: zodResolver(productSchema),
     defaultValues,
   })
+  const [feedstocks, setFeedstocks] = useState<ObjFeedstock[]>([])
+  useEffect(() => {
+    fetcher({ input: "/api/feedstock" })
+      .then(data => {
+        if (!(data.error)) setFeedstocks(data);
+      })
+  }, [])
 
   return (
     <Form {...form}>
@@ -61,7 +70,7 @@ const ProductForm = ({
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="product_feedstock"
             render={({ field }) => (
@@ -70,6 +79,41 @@ const ProductForm = ({
                 <FormControl>
                   <Input placeholder="Id del insumo?" {...field} />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          /> */}
+
+          <FormField
+            control={form.control}
+            name="product_feedstock"
+            render={({ field }) => (
+              <FormItem className="col-span-6">
+                <FormLabel>Insumo del producto</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value as string}
+                >
+                  <FormControl className="w-full">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccionar insumo" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {
+                      feedstocks.length ?
+                        feedstocks.map(fs => (
+                          <SelectItem key={fs.id} value={fs.id}>
+                            {fs.name}
+                          </SelectItem>
+                        ))
+                        :
+                        <SelectItem value={"null"} disabled>
+                          No existen insumos
+                        </SelectItem>
+                    }
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

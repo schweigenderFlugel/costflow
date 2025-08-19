@@ -8,10 +8,22 @@ export const feedstockSchema = z.object({
   currency: z.nativeEnum(Currency, { error: "Currency is required" }),
   measure_unit: z.nativeEnum(MeasureUnit, { error: "Measure unit is required" }),
   unit_cost: z.number({ error: "Unit cost must be a number" }).min(1, "Must be positive"),
-  quantity: z.number({ error: "Quantity cost must be a number" }).min(1, "Must be positive"),
+  // quantity: z.number({ error: "Quantity cost must be a number" }).min(1, "Must be positive"),
   provider: z.string().max(100).optional(),
-  entry_date: z.date({ error: "Entry date is required" }),
+  // entry_date: z.date({ error: "Entry date is required" }),
 });
+
+/*
+    "name": "string",
+    "sku": "string",
+    "currency": "string",
+    "measure_unit": "GRAMS",
+    "unit_cost": 0,
+    "provider": "string",
+    faltan:
+    quantity
+    entry_date
+*/
 
 export type FormDataFeedstock = z.infer<typeof feedstockSchema>;
 

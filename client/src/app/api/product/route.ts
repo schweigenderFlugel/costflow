@@ -12,12 +12,13 @@ export async function GET() {
   }
 
   const data = await fetcher({
-    input: `${process.env.SERVER_API}/feedstocks`,
+    input: `${process.env.SERVER_API}/product`,
     headers: {
       "Authorization": `Bearer ${token}`,
     },
   });
 
+  revalidateTag("products")
   return NextResponse.json(data);
 }
 
@@ -29,13 +30,13 @@ export async function POST(req: NextRequest) {
   }
 
   const data = await fetcher({
-    input: `${process.env.SERVER_API}/feedstocks`,
+    input: `${process.env.SERVER_API}/product`,
     method: "POST",
     body: req.body,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
   });
-  revalidateTag("feedstocks")
+  revalidateTag("products")
   return NextResponse.json(data);
 }

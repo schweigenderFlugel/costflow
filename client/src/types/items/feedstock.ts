@@ -4,11 +4,9 @@ import { UUID } from "crypto"
 
 export enum MeasureUnit {
   GRAMS = 'GRAMS',
-  //
-  KILOGRAMS = 'KILOGRAMS',
-  LITERS = 'LITERS',
-  MILLILITERS = 'MILLILITERS',
-  // CUBIC_CENTIMETERS = 'CM3',
+  // KILOGRAMS = 'KILOGRAMS',
+  // LITERS = 'LITERS',
+  // MILLILITERS = 'MILLILITERS',
   UNIT = 'UNIT',
 }
 
@@ -25,8 +23,8 @@ export interface Feedstock {
   unit_cost: number,
   provider?: string,
   //
-  quantity: number,
-  entry_date: Date,
+  // quantity: number,
+  // entry_date: Date,
 }
 
 export interface ObjFeedstock extends Feedstock, Timestamp {
