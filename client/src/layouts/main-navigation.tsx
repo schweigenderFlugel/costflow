@@ -14,10 +14,10 @@ const MainNavigation = () => {
       "sm:relative sm:rounded-[6px] sm:w-fit",
       "fixed bottom-0 left-0 w-full rounded-none "
     )}>
-      <ul className="flex sm:gap-1 max-w-full">
+      <ul className="flex sm:gap-1">
         {mainNavigation.map((item) => {
           return (
-            <li key={item.title} className={`w-1/${mainNavigation.length} sm:w-auto`}>
+            <li key={item.title} className={`w-1/5 sm:w-auto`}>
               <NavItem item={item} isActive={pathname == item.href} />
             </li>
           )
