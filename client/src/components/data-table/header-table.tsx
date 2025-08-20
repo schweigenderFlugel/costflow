@@ -8,7 +8,7 @@ import { Download, ListFilter } from "lucide-react";
 
 
 const HeaderTable = <T,>({ table, columnsTo }: { table: Table<T>, columnsTo: "product" | "feedstock" }) => (
-  <header className="flex items-center justify-between pt-4 pb-6 gap-4 sm:flex-nowrap flex-wrap">
+  <header className="flex items-center justify-between pt-4 pb-6 gap-4 lg:flex-nowrap flex-wrap">
 
     <div className="flex gap-2 justify-between items-center sm:w-auto w-full">
       <ColumnsDropdown <T> columnsTo={columnsTo} table={table} />

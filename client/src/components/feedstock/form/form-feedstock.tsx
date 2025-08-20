@@ -156,27 +156,6 @@ const FormFeedstock = ({
 
           <FormField
             control={form.control}
-            name="quantity"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Cantidad</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={0}
-                    step="0.01"
-                    placeholder="Cantidad del insumo"
-                    value={field.value || ""}
-                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
             name="unit_cost"
             render={({ field }) => (
               <FormItem className="col-span-6">

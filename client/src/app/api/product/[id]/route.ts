@@ -4,38 +4,49 @@ import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 
-export async function GET() {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const token = await getToken()
 
   if (!token) {
     return NextResponse.json(JSON.stringify({ error: "No estas autorizado." }), { status: 401 });
   }
-
+  const { id } = await params;
   const data = await fetcher({
-    input: `${process.env.SERVER_API}/feedstocks`,
+    input: `${process.env.SERVER_API}/product/${id}`,
+    method: "DELETE",
     headers: {
       "Authorization": `Bearer ${token}`,
     },
   });
 
+  revalidateTag("products")
   return NextResponse.json(data);
 }
 
-export async function POST(req: NextRequest) {
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const token = await getToken()
 
   if (!token) {
     return NextResponse.json(JSON.stringify({ error: "No estas autorizado." }), { status: 401 });
   }
+  const { id } = await params;
 
   const data = await fetcher({
-    input: `${process.env.SERVER_API}/feedstocks`,
-    method: "POST",
+    input: `${process.env.SERVER_API}/product/${id}`,
+    method: "PUT",
     body: req.body,
     headers: {
       "Authorization": `Bearer ${token}`,
     }
   });
-  revalidateTag("feedstocks")
+
+  revalidateTag("products")
   return NextResponse.json(data);
 }

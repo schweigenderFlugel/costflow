@@ -3,7 +3,6 @@ import FeedstockActions from "@/components/feedstock/feedstock-actions"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ObjFeedstock } from "@/types/items/feedstock"
-import { Currency } from "@/types/measure/currency"
 import { translateMeasureUnit, translateStateMatter } from "@/utils/translate/items-translate"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
@@ -66,28 +65,6 @@ const columns: ColumnDef<ObjFeedstock>[] = [
     ),
   },
   {
-    accessorKey: "quantity",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Cantidad
-          <ArrowUpDown />
-        </Button>
-      )
-    },
-    cell: ({ row }) => (
-      <div className="text-right">
-        {new Intl.NumberFormat("es-AR", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2,
-        }).format(row.getValue("quantity"))}
-      </div>
-    ),
-  },
-  {
     accessorKey: "measure_unit",
     header: ({ column }) => {
       return (
@@ -120,15 +97,44 @@ const columns: ColumnDef<ObjFeedstock>[] = [
     cell: ({ row }) => {
       const unit_cost = parseFloat(row.getValue("unit_cost"))
 
-      // Format the amount as a currency amount
+      // Format the amount as a number without currency symbol
       const formatted = new Intl.NumberFormat("es-AR", {
-        style: "currency",
-        currency: row.original.currency,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
       }).format(unit_cost)
 
       return <div className="font-medium text-right pl-2">
         {formatted}
       </div>
+    },
+  },
+  {
+    accessorKey: "currency",
+    header: ({ column }) => {
+      return (
+        <div className="text-center">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Moneda
+            <ArrowUpDown />
+          </Button>
+        </div>
+      )
+    },
+    cell: ({ row }) => {
+      const currency = row.getValue("currency") as string
+      return (
+        <div className="text-center font-medium" title={`Moneda: ${currency}`}>
+          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${currency === 'USD'
+            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+            : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+            }`}>
+            {currency}
+          </span>
+        </div>
+      )
     },
   },
   {

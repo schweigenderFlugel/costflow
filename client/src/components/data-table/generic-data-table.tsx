@@ -15,6 +15,7 @@ import {
 } from "@tanstack/react-table"
 import PaginationTable from "@/components/data-table/pagination-table"
 import HeaderTable from "@/components/data-table/header-table"
+import useFetch from "@/hooks/use-fetch"
 
 interface GenericDataTableProps<TData> {
   initialData: TData[]
@@ -22,14 +23,21 @@ interface GenericDataTableProps<TData> {
   columnsTo?: "product" | "feedstock"
 }
 
-const GenericDataTable = <TData,>({ initialData, columns, columnsTo = "feedstock" }: GenericDataTableProps<TData>) => {
+const GenericDataTable = <TData,>({ columns, columnsTo = "feedstock", initialData }: GenericDataTableProps<TData>) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
 
+  const {
+    data,
+    error,
+    isPending
+  } = useFetch<TData[]>(columnsTo, initialData)
+
+
   const table = useReactTable<TData>({
-    data: initialData,
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -47,12 +55,18 @@ const GenericDataTable = <TData,>({ initialData, columns, columnsTo = "feedstock
     },
   })
 
+  if (error) return (
+    <div className="flex sm:flex-row flex-col justify-between place-items-start sm:items-center px-5 py-3 border rounded-md bg-muted/80">
+      <p className="text-red-400">Error: {error}</p>
+    </div>
+  )
+
   return (
     <div className="w-full">
       <HeaderTable <TData> columnsTo={columnsTo} table={table} />
 
       <div className="overflow-hidden rounded-md border">
-        <OnlyTable <TData> table={table} colSpan={columns.length} />
+        <OnlyTable <TData> table={table} colSpan={columns.length} isLoading={isPending} />
       </div>
 
       <PaginationTable <TData> table={table} />

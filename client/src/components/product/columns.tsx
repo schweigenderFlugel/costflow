@@ -87,7 +87,7 @@ const columns: ColumnDef<ObjProduct>[] = [
   {
     accessorKey: "subtotal",
     header: ({ column }) => (
-      <div className="text-right">
+      <div>
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -99,13 +99,13 @@ const columns: ColumnDef<ObjProduct>[] = [
     ),
     cell: ({ row }) => {
       const subtotal = parseFloat(row.getValue("subtotal"))
-      return <div className="font-medium text-right">{subtotal.toFixed(2)}</div>
+      return <div className="font-medium">{subtotal.toFixed(2)}</div>
     },
   },
   {
     accessorKey: "indirect_cost",
     header: ({ column }) => (
-      <div className="text-right">
+      <div>
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -117,13 +117,13 @@ const columns: ColumnDef<ObjProduct>[] = [
     ),
     cell: ({ row }) => {
       const cost = parseFloat(row.getValue("indirect_cost"))
-      return <div className="text-right">{cost.toFixed(2)}</div>
+      return <div>{cost.toFixed(2)}</div>
     },
   },
   {
     accessorKey: "resale_percentage",
     header: ({ column }) => (
-      <div className="text-right">
+      <div>
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -135,13 +135,13 @@ const columns: ColumnDef<ObjProduct>[] = [
     ),
     cell: ({ row }) => {
       const perc = parseFloat(row.getValue("resale_percentage"))
-      return <div className="text-right">{perc}%</div>
+      return <div>{perc}%</div>
     },
   },
   {
     accessorKey: "public_percentage",
     header: ({ column }) => (
-      <div className="text-right">
+      <div>
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -153,7 +153,7 @@ const columns: ColumnDef<ObjProduct>[] = [
     ),
     cell: ({ row }) => {
       const perc = parseFloat(row.getValue("public_percentage"))
-      return <div className="text-right">{perc}%</div>
+      return <div>{perc}%</div>
     },
   },
   {

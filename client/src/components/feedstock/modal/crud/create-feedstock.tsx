@@ -4,9 +4,12 @@ import FormFeedstockFooter from "@/components/feedstock/form/form-feedstock-foot
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useCreateFeedstockDialog } from "@/hooks/use-feedstock-dialog";
+import { useUpdateDataTable } from "@/hooks/use-update-data-table";
 import { FormDataFeedstock } from "@/schemas/feedstock-schema";
+import { fetcher } from "@/utils/fetcher";
 import { ClipboardCheck } from "lucide-react";
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
 
 
 const CreateFeedstock = () => {
@@ -14,13 +17,18 @@ const CreateFeedstock = () => {
   const [alreadyCreated, setAlreadyCreated] = useState<boolean>(false)
   const [isPending, startTransition] = useTransition()
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
+  const { toggle: tableToggle } = useUpdateDataTable("feedstock")
+
 
   const handleCreate = async (values: FormDataFeedstock) => {
     startTransition(async () => {
-      return new Promise((resolve) => setTimeout(resolve, 2000)).then(() => {
-        console.log("Creating feedstock:", values)
+      const data = await fetcher({ input: `/api/feedstock`, method: "POST", body: JSON.stringify(values) })
+      if (data.error) setErrorMessage(data.errro)
+      else {
         setAlreadyCreated(true)
-      })
+        toast(data.description || data.message)
+        tableToggle()
+      }
     })
   };
 

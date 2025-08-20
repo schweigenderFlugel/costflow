@@ -9,9 +9,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useDeleteFeedstockDialog } from "@/hooks/use-feedstock-dialog"
+import { useUpdateDataTable } from "@/hooks/use-update-data-table"
+import { fetcher } from "@/utils/fetcher"
+import { toast } from "sonner"
 
 const DeleteFeedstock = () => {
   const { isOpen, setIsOpen, feedstock, setFeedstock } = useDeleteFeedstockDialog()
+  const { toggle: tableToggle } = useUpdateDataTable("feedstock")
   if (feedstock === null) return;
 
 
@@ -20,6 +24,12 @@ const DeleteFeedstock = () => {
       setFeedstock(null)
     }
     setIsOpen(open)
+  }
+
+  const handleClick = async () => {
+    const data = await fetcher({ input: `/api/feedstock/${feedstock.id}`, method: "DELETE" })
+    toast(data.description || data.message || data.error)
+    tableToggle()
   }
 
   return (
@@ -37,9 +47,9 @@ const DeleteFeedstock = () => {
           <p className="block text-md">
             Nombre: {feedstock.name}
           </p>
-          <p className="block text-md">
+          {/* <p className="block text-md">
             Cantidad: {feedstock.quantity}
-          </p>
+          </p> */}
           <p className="block text-md">
             Unidad de medida: {feedstock.measure_unit}
           </p>
@@ -55,7 +65,7 @@ const DeleteFeedstock = () => {
               setFeedstock(null)
             }}
           >Cancelar</AlertDialogCancel>
-          <AlertDialogAction className="cursor-pointer">Continuar</AlertDialogAction>
+          <AlertDialogAction className="cursor-pointer" onClick={handleClick}>Continuar</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

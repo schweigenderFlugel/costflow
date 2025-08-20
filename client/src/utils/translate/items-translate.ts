@@ -9,12 +9,11 @@ const translationsFeedstockHeaders: Record<keyof ObjFeedstock, string> = {
   is_deleted: "Eliminado",
   created_at: "Creado",
   updated_at: "Actualizado",
-  // Información del producto
+  // Información del insumo
   name: "Nombre",
   //
   state: "Estado",
   measure_unit: "Unidad",
-  quantity: "Cantidad",
   //
   provider: "Proveedor",
   currency: "Moneda",
