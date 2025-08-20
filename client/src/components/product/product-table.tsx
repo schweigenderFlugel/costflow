@@ -1,7 +1,7 @@
 
 import GenericDataTable from "@/components/data-table/generic-data-table"
 import columns from "@/components/product/columns"
-import { mockProducts } from "@/components/product/mock-product"
+// import { mockProducts } from "@/components/product/mock-product"
 import { ObjProduct } from "@/types/items/product"
 import { fetcher } from "@/utils/fetcher"
 import { getToken } from "@/utils/get-token"
@@ -40,7 +40,7 @@ const ProductTable = async () => {
       <GenericDataTable
         <ObjProduct>
         columnsTo="product"
-        initialData={!(data.detail || data.error) ? data : mockProducts}
+        initialData={!(data.detail || data.error) ? data : []}
         columns={columns}
       />
 

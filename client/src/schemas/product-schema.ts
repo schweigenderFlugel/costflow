@@ -1,5 +1,5 @@
+import { MeasureUnit } from "@/types/measure/measure-unit";
 import { z } from "zod";
-import { MeasureUnit } from "@/types/items/feedstock";
 
 // Esquema base para creación
 export const productSchema = z.object({

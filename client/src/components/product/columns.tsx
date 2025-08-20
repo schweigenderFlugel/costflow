@@ -3,7 +3,7 @@ import ProductActions from "@/components/product/product-actions"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ObjProduct } from "@/types/items/product"
-import { translateMeasureUnit } from "@/utils/translate/feedstock"
+import { translateMeasureUnit } from "@/utils/translate/shared-translate"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 

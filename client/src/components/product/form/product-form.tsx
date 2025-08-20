@@ -18,12 +18,13 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import { MeasureUnit, ObjFeedstock } from "@/types/items/feedstock";
+import { ObjFeedstock } from "@/types/items/feedstock";
 import { productSchema, FormDataProduct } from "@/schemas/product-schema";
-import { translateMeasureUnit } from "@/utils/translate/feedstock";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import { fetcher } from "@/utils/fetcher";
+import { translateMeasureUnit } from "@/utils/translate/shared-translate";
+import { MeasureUnit } from "@/types/measure/measure-unit";
 
 interface ProductFormProps {
   defaultValues: Partial<FormDataProduct>;

@@ -10,6 +10,5 @@ export interface Feedstock extends Omit<ItemMeasure, "quantity"> {
   provider?: string,
 }
 
-// @ts-ignore
 // This interface intentionally left empty to satisfy type requirements.
 export interface ObjFeedstock extends Feedstock, BackendProperties { }

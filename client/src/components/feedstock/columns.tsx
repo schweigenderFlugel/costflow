@@ -3,7 +3,7 @@ import FeedstockActions from "@/components/feedstock/feedstock-actions"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ObjFeedstock } from "@/types/items/feedstock"
-import { translateMeasureUnit, translateStateMatter } from "@/utils/translate/items-translate"
+import { translateMeasureUnit, translateStateMatter } from "@/utils/translate/shared-translate"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 

@@ -1,5 +1,5 @@
 import { Feedstock, ObjFeedstock } from "@/types/items/feedstock";
-import { translateMeasureUnit } from "@/utils/translate/items-translate";
+import { translateMeasureUnit } from "@/utils/translate/shared-translate";
 
 
 const DetailFeedstock = ({ feedstock }: { feedstock: ObjFeedstock | Feedstock | null }) => {

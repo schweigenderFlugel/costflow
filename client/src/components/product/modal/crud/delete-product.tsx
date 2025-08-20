@@ -11,7 +11,7 @@ import {
 import { useDeleteProductDialog } from "@/hooks/use-product-dialog"
 import { useUpdateDataTable } from "@/hooks/use-update-data-table"
 import { fetcher } from "@/utils/fetcher"
-import { translateMeasureUnit } from "@/utils/translate/feedstock"
+import { translateMeasureUnit } from "@/utils/translate/shared-translate"
 import { toast } from "sonner"
 
 const DeleteProduct = () => {

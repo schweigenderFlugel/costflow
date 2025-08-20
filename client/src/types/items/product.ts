@@ -28,7 +28,6 @@ export interface Product extends ItemMeasure {
   feedstocks: ProductFeedstockInput[],
 }
 
-// @ts-ignore
 // This interface intentionally left empty to satisfy type requirements.
 export interface ObjProduct extends BackendProperties, ItemMeasure {
   name: string

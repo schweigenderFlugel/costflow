@@ -22,14 +22,15 @@ import {
   StateMatter,
   SolidMeasure,
   LiquidMeasure,
-  GasMeasure
+  GasMeasure,
+  MeasureUnit
 } from "@/types/measure/measure-unit";
 import { Currency } from "@/types/measure/currency";
 import { feedstockSchema, FormDataFeedstock } from "@/schemas/feedstock-schema";
 import {
   translateMeasureUnit,
   translateStateMatter
-} from "@/utils/translate/items-translate";
+} from "@/utils/translate/shared-translate";
 
 interface FormFeedstock {
   defaultValues: Partial<FormDataFeedstock>;
@@ -67,7 +68,7 @@ const FormFeedstock = ({
   // Reset measure_unit when state changes
   const handleStateChange = (value: StateMatter) => {
     form.setValue("state", value);
-    form.setValue("measure_unit", "" as any); // Reset measure unit
+    form.setValue("measure_unit", "" as MeasureUnit); // Reset measure unit
   };
 
   return (
@@ -158,7 +159,7 @@ const FormFeedstock = ({
                 <SelectContent>
                   {getAvailableMeasureUnits().map((unit) => (
                     <SelectItem key={unit} value={unit}>
-                      {translateMeasureUnit(unit as any)}
+                      {translateMeasureUnit(unit as unknown as MeasureUnit)}
                     </SelectItem>
                   ))}
                 </SelectContent>
