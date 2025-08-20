@@ -61,7 +61,7 @@ export default function FormLogin() {
           </Button>
         </div>
 
-        <div className="flex gap-2 justify-center mt-18 text-gray-500">
+        <div className="flex gap-2 justify-center mt-16 text-gray-500">
           <p className="text-sm">¿Necesitas ayuda con COTZIA?</p>
           <Link
             href="/register"

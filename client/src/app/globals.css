@@ -123,15 +123,22 @@
   }
 }
 
+/* Mobile y tablet: fondo con imagen */
 .bg-login-mobile {
   background-image: url('/assets/images/gradientelogin.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  height: 100vh; /* para que cubra toda la pantalla */
 }
-@media (min-width: 768px) {
+
+/* Desktop grande: quitar imagen y poner blanco */
+@media (min-width: 1025px) {
   .bg-login-mobile {
     background-image: none;
     background-color: white;
   }
+
+
+
 }
