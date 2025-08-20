@@ -74,7 +74,7 @@ const CreateFeedstock = () => {
                   measure_unit: undefined,
                   unit_cost: 0,
                   provider: "",
-                  entry_date: new Date(),
+                  state: undefined,
                 }}
                 onSubmit={handleCreate}
                 formId="create-feedstock-form"

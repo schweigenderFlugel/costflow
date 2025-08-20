@@ -46,9 +46,6 @@ const DeleteFeedstock = () => {
           <p className="block text-md">
             Costo unitario: {feedstock.unit_cost}
           </p>
-          <p className="block text-md">
-            Fecha de entrada: {new Date(feedstock.entry_date).toLocaleDateString()}
-          </p>
         </div>
 
         <AlertDialogFooter className="grid grid-cols-2 gap-4 sm:gap-8 w-full justify-between items-center">

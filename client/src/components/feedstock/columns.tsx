@@ -2,8 +2,9 @@
 import FeedstockActions from "@/components/feedstock/feedstock-actions"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Currency, ObjFeedstock } from "@/types/items/feedstock"
-import { translateMeasureUnit } from "@/utils/translate/feedstock"
+import { ObjFeedstock } from "@/types/items/feedstock"
+import { Currency } from "@/types/measure/currency"
+import { translateMeasureUnit, translateStateMatter } from "@/utils/translate/items-translate"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 
@@ -31,21 +32,6 @@ const columns: ColumnDef<ObjFeedstock>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "sku",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          SKU
-          <ArrowUpDown />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div>{row.getValue("sku")}</div>,
-  },
-  {
     accessorKey: "name",
     header: ({ column }) => {
       return (
@@ -58,7 +44,26 @@ const columns: ColumnDef<ObjFeedstock>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div>{row.getValue("name")}</div>,
+    cell: ({ row }) => <div className="font-medium">{row.getValue("name")}</div>,
+  },
+  {
+    accessorKey: "state",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Estado
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    cell: ({ row }) => (
+      <div className="capitalize">
+        {translateStateMatter(row.getValue("state"))}
+      </div>
+    ),
   },
   {
     accessorKey: "quantity",
@@ -73,7 +78,14 @@ const columns: ColumnDef<ObjFeedstock>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div>{row.getValue("quantity")}</div>,
+    cell: ({ row }) => (
+      <div className="text-right">
+        {new Intl.NumberFormat("es-AR", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        }).format(row.getValue("quantity"))}
+      </div>
+    ),
   },
   {
     accessorKey: "measure_unit",
@@ -91,35 +103,6 @@ const columns: ColumnDef<ObjFeedstock>[] = [
     cell: ({ row }) => <div>{translateMeasureUnit(row.getValue("measure_unit"))}</div>,
   },
   {
-    accessorKey: "currency",
-    header: ({ column }) => {
-      return (
-        <div className="text-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Moneda
-            <ArrowUpDown />
-          </Button>
-        </div>
-      )
-    },
-    cell: ({ row }) => {
-      // const unit_cost = parseFloat(row.getValue("unit_cost"))
-
-      // const formatted = (new Intl.NumberFormat("es-AR", {
-      //   style: "currency",
-      //   currency: Currency[row.original.currency]
-      // }).format(unit_cost)).split(/(\s+)/)
-
-      return (<div title={row.getValue("currency")} className="text-center">
-        {/* {formatted[0]} */}
-        {row.getValue("currency")}
-      </div>)
-    },
-  },
-  {
     accessorKey: "unit_cost",
     header: ({ column }) => {
       return (
@@ -128,7 +111,7 @@ const columns: ColumnDef<ObjFeedstock>[] = [
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Monto
+            Costo Unitario
             <ArrowUpDown />
           </Button>
         </div>
@@ -137,16 +120,14 @@ const columns: ColumnDef<ObjFeedstock>[] = [
     cell: ({ row }) => {
       const unit_cost = parseFloat(row.getValue("unit_cost"))
 
-      // Format the amount as a dollar amount
-      const formatted = (new Intl.NumberFormat("es-AR", {
+      // Format the amount as a currency amount
+      const formatted = new Intl.NumberFormat("es-AR", {
         style: "currency",
-        currency: Currency[row.original.currency]
-      }).format(unit_cost)).split(/(\s+)/)
-
+        currency: row.original.currency,
+      }).format(unit_cost)
 
       return <div className="font-medium text-right pl-2">
-        {/* <span className="block">{formatted[0]}</span> */}
-        {formatted[2]}
+        {formatted}
       </div>
     },
   },
@@ -163,22 +144,11 @@ const columns: ColumnDef<ObjFeedstock>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div>{row.getValue("provider")}</div>,
-  },
-  {
-    accessorKey: "entry_date",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          F. de entrada
-          <ArrowUpDown />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div>{new Date(row.getValue("entry_date")).toLocaleDateString()}</div>,
+    cell: ({ row }) => (
+      <div className="max-w-[150px] truncate" title={row.getValue("provider")}>
+        {row.getValue("provider") || "-"}
+      </div>
+    ),
   },
   {
     accessorKey: "actions",

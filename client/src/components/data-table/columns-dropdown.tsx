@@ -3,7 +3,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { ChevronDown } from "lucide-react"
 import { Table } from "@tanstack/react-table"
 import { ObjFeedstock } from "@/types/items/feedstock"
-import { translateFeedstockHeaders } from "@/utils/translate/feedstock"
+import { translateFeedstockHeaders } from "@/utils/translate/items-translate"
 
 type DropdownProps<T> = {
   table: Table<T>,

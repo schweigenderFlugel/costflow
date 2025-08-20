@@ -18,10 +18,18 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import { MeasureUnit, Currency } from "@/types/items/feedstock";
+import {
+  StateMatter,
+  SolidMeasure,
+  LiquidMeasure,
+  GasMeasure
+} from "@/types/measure/measure-unit";
+import { Currency } from "@/types/measure/currency";
 import { feedstockSchema, FormDataFeedstock } from "@/schemas/feedstock-schema";
-import DateField from "@/components/date-field";
-import { translateMeasureUnit } from "@/utils/translate/feedstock";
+import {
+  translateMeasureUnit,
+  translateStateMatter
+} from "@/utils/translate/items-translate";
 
 interface FormFeedstock {
   defaultValues: Partial<FormDataFeedstock>;
@@ -37,7 +45,30 @@ const FormFeedstock = ({
   const form = useForm<FormDataFeedstock>({
     resolver: zodResolver(feedstockSchema),
     defaultValues,
-  })
+  });
+
+  // Obtener el estado actual seleccionado para filtrar las unidades de medida
+  const selectedState = form.watch("state");
+
+  // Función para obtener las unidades de medida disponibles según el estado
+  const getAvailableMeasureUnits = () => {
+    switch (selectedState) {
+      case StateMatter.SOLID:
+        return Object.values(SolidMeasure);
+      case StateMatter.LIQUID:
+        return Object.values(LiquidMeasure);
+      case StateMatter.GAS:
+        return Object.values(GasMeasure);
+      default:
+        return [];
+    }
+  };
+
+  // Reset measure_unit when state changes
+  const handleStateChange = (value: StateMatter) => {
+    form.setValue("state", value);
+    form.setValue("measure_unit", "" as any); // Reset measure unit
+  };
 
   return (
     <Form {...form}>
@@ -47,14 +78,15 @@ const FormFeedstock = ({
         id={formId}
       >
         <div className="grid grid-cols-12 gap-x-3 gap-y-4 items-start">
+
           <FormField
             control={form.control}
-            name="sku"
+            name="name"
             render={({ field }) => (
-              <FormItem className="col-span-12 sm:col-span-6">
-                <FormLabel>SKU</FormLabel>
+              <FormItem className="col-span-12">
+                <FormLabel>Nombre</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter SKU" {...field} />
+                  <Input placeholder="Nombre del insumo" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -63,13 +95,60 @@ const FormFeedstock = ({
 
           <FormField
             control={form.control}
-            name="name"
+            name="state"
             render={({ field }) => (
               <FormItem className="col-span-12 sm:col-span-6">
-                <FormLabel>Nombre</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nombre del insumo" {...field} />
-                </FormControl>
+                <FormLabel>Estado de la materia</FormLabel>
+                <Select
+                  onValueChange={handleStateChange}
+                  value={field.value}
+                >
+                  <FormControl className="w-full">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccionar estado" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {Object.values(StateMatter).map((state) => (
+                      <SelectItem key={state} value={state}>
+                        {translateStateMatter(state)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="measure_unit"
+            render={({ field }) => (
+              <FormItem className="col-span-12 sm:col-span-6">
+                <FormLabel>Unidad de medida</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  disabled={!selectedState}
+                >
+                  <FormControl className="w-full">
+                    <SelectTrigger>
+                      <SelectValue placeholder={
+                        selectedState
+                          ? "Seleccionar unidad"
+                          : "Primero selecciona el estado de la materia"
+                      } />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {getAvailableMeasureUnits().map((unit) => (
+                      <SelectItem key={unit} value={unit}>
+                        {translateMeasureUnit(unit as any)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -85,39 +164,12 @@ const FormFeedstock = ({
                   <Input
                     type="number"
                     min={0}
+                    step="0.01"
                     placeholder="Cantidad del insumo"
-                    value={field.value as number}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                   />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="measure_unit"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Unidad de medida</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value as string}
-                >
-                  <FormControl className="w-full">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar unidad" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Object.values(MeasureUnit).map((unit) => (
-                      <SelectItem key={unit} value={unit}>
-                        {translateMeasureUnit(unit)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -128,14 +180,15 @@ const FormFeedstock = ({
             name="unit_cost"
             render={({ field }) => (
               <FormItem className="col-span-6">
-                <FormLabel>Monto unitario</FormLabel>
+                <FormLabel>Costo unitario</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
                     min={0}
-                    placeholder="Monto unitario del insumo"
-                    value={field.value as number}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    step="0.01"
+                    placeholder="Costo unitario del insumo"
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -151,17 +204,17 @@ const FormFeedstock = ({
                 <FormLabel>Moneda</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  value={field.value as string}
+                  value={field.value}
                 >
                   <FormControl className="w-full">
                     <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar tipo" />
+                      <SelectValue placeholder="Seleccionar moneda" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {Object.values(Currency).map((cur) => (
-                      <SelectItem key={cur} value={cur}>
-                        {cur}
+                    {Object.values(Currency).map((currency) => (
+                      <SelectItem key={currency} value={currency}>
+                        {currency}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -171,16 +224,11 @@ const FormFeedstock = ({
             )}
           />
 
-          <DateField
-            className="col-span-12 sm:col-span-6"
-            formControl={form.control}
-          />
-
           <FormField
             control={form.control}
             name="provider"
             render={({ field }) => (
-              <FormItem className="col-span-12 sm:col-span-6">
+              <FormItem className="col-span-6">
                 <FormLabel>Proveedor <span className="text-xs text-muted-foreground">(Opcional)</span></FormLabel>
                 <FormControl>
                   <Input placeholder="Nombre o alias del proveedor" {...field} />
@@ -191,8 +239,6 @@ const FormFeedstock = ({
           />
 
         </div>
-
-
       </form>
     </Form>
   );
