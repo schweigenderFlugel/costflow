@@ -2,14 +2,15 @@
 import FeedstockForm from "@/components/feedstock/form/form-feedstock";
 import FormFeedstockFooter from "@/components/feedstock/form/form-feedstock-footer";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useUpdateFeedstockDialog } from "@/hooks/use-feedstock-dialog";
 import { useUpdateDataTable } from "@/hooks/use-update-data-table";
 import { FormDataFeedstock } from "@/schemas/feedstock-schema";
+import { itemToasts } from "@/components/item-toasts";
 import { fetcher } from "@/utils/fetcher";
 import { ClipboardCheck } from "lucide-react";
 import { useState, useTransition } from "react";
-import { toast } from "sonner";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import DetailFeedstock from "@/components/feedstock/modal/crud/detail-feedstock";
 
 
 const UpdateFeedstock = () => {
@@ -24,10 +25,18 @@ const UpdateFeedstock = () => {
   const handleUpdate = async (values: FormDataFeedstock) => {
     startTransition(async () => {
       const data = await fetcher({ input: `/api/feedstock/${feedstock.id}`, method: "PUT", body: JSON.stringify(values) })
-      if (data.error) setErrorMessage(data.errro)
+
+      // (aún) no existe una estructura clara de error como respuesta
+      if (!data.message?.includes("successfully")) {
+        let posibleMessage = data.description || data.message || data.detail
+        if (Array.isArray(posibleMessage)) {
+          posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
+        }
+        setErrorMessage(posibleMessage)
+      }
       else {
         setAlreadyUpdated(true)
-        toast(data.description || data.message)
+        itemToasts.updateSuccess({ description: data.name })
         tableToggle()
       }
     })
@@ -48,30 +57,37 @@ const UpdateFeedstock = () => {
 
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-[calc(100svw-3rem)] sm md:max-w-[calc(100%-6rem)] sm:min-w-[330px] sm:w-3/4 md:w-2xl overflow-y-auto max-h-[80svh] p-6 gap-8">
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+      <SheetContent className="overflow-y-auto py-6 px-4 gap-10 justify-start">
 
-        <DialogHeader className={alreadyUpdated ? "sr-only" : ""}>
-          <DialogTitle>Editar insumo</DialogTitle>
-          <DialogDescription className="text-left">
+        <SheetHeader className={alreadyUpdated ? "sr-only" : " p-0"}>
+          <SheetTitle className="text-xl">Editar insumo</SheetTitle>
+          <SheetDescription className="text-left">
             Actualizá la información de un insumo ya cargado, modificando su nombre, cantidad, valor o cualquier otro dato relevante para mantener tus registros siempre correctos y actualizados.
-          </DialogDescription>
-        </DialogHeader>
+          </SheetDescription>
+        </SheetHeader>
 
         {
           alreadyUpdated
             ?
-            <div className="flex flex-col items-center justify-between gap-5 my-5">
-              <ClipboardCheck className="size-24 text-muted-foreground" />
-              <p className="text-lg font-semibold text-center">
-                Cambios guardados
-              </p>
-              <p className="text-md text-muted-foreground">
-                La información del insumo se actualizó correctamente.
-              </p>
-              <Button onClick={handleClose} variant="outline" className="w-3/4"       >
-                Cerrar
-              </Button>
+            <div className="flex flex-col gap-6 my-auto">
+
+              <div className="flex items-center flex-col gap-1 text-center">
+                <ClipboardCheck className="size-24 text-muted-foreground" />
+                <p className="text-lg font-semibold">Cambios guardados</p>
+                <p className="text-md text-muted-foreground">
+                  La información del insumo se actualizó correctamente.
+                </p>
+              </div>
+
+              <DetailFeedstock feedstock={feedstock} />
+
+              <div className="grid grid-cols-2 gap-4 w-full justify-between items-center">
+                <Button onClick={handleClose} variant="outline" className="cursor-pointer rounded-xs">Cerrar</Button>
+                <Button onClick={() => setAlreadyUpdated(false)} variant="default" className="cursor-pointer rounded-xs">
+                  Volver a editar
+                </Button>
+              </div>
             </div>
             :
             <>
@@ -91,8 +107,8 @@ const UpdateFeedstock = () => {
               />
             </>
         }
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
 
   );
 }

@@ -76,148 +76,147 @@ const FormFeedstock = ({
         autoComplete="off"
         onSubmit={form.handleSubmit(onSubmit)}
         id={formId}
+        className="flex flex-col gap-5 px-1.5"
       >
-        <div className="grid grid-cols-12 gap-x-3 gap-y-4 items-start">
 
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="col-span-12">
-                <FormLabel>Nombre</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nombre del insumo" {...field} />
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nombre</FormLabel>
+              <FormControl>
+                <Input placeholder="Nombre del insumo" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="provider"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Proveedor <span className="text-xs text-muted-foreground">(Opcional)</span></FormLabel>
+              <FormControl>
+                <Input placeholder="Nombre o alias del proveedor" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="state"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Estado de la materia</FormLabel>
+              <Select
+                onValueChange={handleStateChange}
+                value={field.value}
+              >
+                <FormControl className="w-full">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar estado" />
+                  </SelectTrigger>
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                <SelectContent>
+                  {Object.values(StateMatter).map((state) => (
+                    <SelectItem key={state} value={state}>
+                      {translateStateMatter(state)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-          <FormField
-            control={form.control}
-            name="state"
-            render={({ field }) => (
-              <FormItem className="col-span-12 sm:col-span-6">
-                <FormLabel>Estado de la materia</FormLabel>
-                <Select
-                  onValueChange={handleStateChange}
-                  value={field.value}
-                >
-                  <FormControl className="w-full">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar estado" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Object.values(StateMatter).map((state) => (
-                      <SelectItem key={state} value={state}>
-                        {translateStateMatter(state)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="measure_unit"
-            render={({ field }) => (
-              <FormItem className="col-span-12 sm:col-span-6">
-                <FormLabel>Unidad de medida</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  disabled={!selectedState}
-                >
-                  <FormControl className="w-full">
-                    <SelectTrigger>
-                      <SelectValue placeholder={
-                        selectedState
-                          ? "Seleccionar unidad"
-                          : "Primero selecciona el estado de la materia"
-                      } />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {getAvailableMeasureUnits().map((unit) => (
-                      <SelectItem key={unit} value={unit}>
-                        {translateMeasureUnit(unit as any)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="unit_cost"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Costo unitario</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={0}
-                    step="0.01"
-                    placeholder="Costo unitario del insumo"
-                    value={field.value || ""}
-                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                  />
+        <FormField
+          control={form.control}
+          name="measure_unit"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Unidad de medida</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                value={field.value}
+                disabled={!selectedState}
+              >
+                <FormControl className="w-full">
+                  <SelectTrigger>
+                    <SelectValue placeholder={
+                      selectedState
+                        ? "Seleccionar unidad"
+                        : "Primero selecciona el estado de la materia"
+                    } />
+                  </SelectTrigger>
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                <SelectContent>
+                  {getAvailableMeasureUnits().map((unit) => (
+                    <SelectItem key={unit} value={unit}>
+                      {translateMeasureUnit(unit as any)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-          <FormField
-            control={form.control}
-            name="currency"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Moneda</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                >
-                  <FormControl className="w-full">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar moneda" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Object.values(Currency).map((currency) => (
-                      <SelectItem key={currency} value={currency}>
-                        {currency}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <FormField
+          control={form.control}
+          name="unit_cost"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Costo unitario</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  min={0}
+                  step="0.01"
+                  placeholder="Costo unitario del insumo"
+                  value={field.value || ""}
+                  onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-          <FormField
-            control={form.control}
-            name="provider"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Proveedor <span className="text-xs text-muted-foreground">(Opcional)</span></FormLabel>
-                <FormControl>
-                  <Input placeholder="Nombre o alias del proveedor" {...field} />
+        <FormField
+          control={form.control}
+          name="currency"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Moneda</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                value={field.value}
+              >
+                <FormControl className="w-full">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar moneda" />
+                  </SelectTrigger>
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                <SelectContent>
+                  {Object.values(Currency).map((currency) => (
+                    <SelectItem key={currency} value={currency}>
+                      {currency}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-        </div>
       </form>
     </Form>
   );

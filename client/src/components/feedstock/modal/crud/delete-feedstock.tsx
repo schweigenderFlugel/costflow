@@ -11,7 +11,8 @@ import {
 import { useDeleteFeedstockDialog } from "@/hooks/use-feedstock-dialog"
 import { useUpdateDataTable } from "@/hooks/use-update-data-table"
 import { fetcher } from "@/utils/fetcher"
-import { toast } from "sonner"
+import { itemToasts } from "@/components/item-toasts"
+import DetailFeedstock from "@/components/feedstock/modal/crud/detail-feedstock"
 
 const DeleteFeedstock = () => {
   const { isOpen, setIsOpen, feedstock, setFeedstock } = useDeleteFeedstockDialog()
@@ -28,8 +29,28 @@ const DeleteFeedstock = () => {
 
   const handleClick = async () => {
     const data = await fetcher({ input: `/api/feedstock/${feedstock.id}`, method: "DELETE" })
-    toast(data.description || data.message || data.error)
-    tableToggle()
+
+    if (!data.message?.includes("successfully")) {
+      let message = data.description || data.message || data.detail
+      if (Array.isArray(message)) {
+        message = (message.map(detail => detail.msg)).join(". \n")
+      }
+
+      // Usar el toast de error personalizado
+      itemToasts.error({
+        description: feedstock.name,
+        message
+      })
+    }
+    else {
+      // Usar el toast de éxito personalizado
+      itemToasts.deleteSuccess({
+        description: feedstock.name,
+      })
+      handleOpenChange(false)
+      tableToggle()
+    }
+
   }
 
   return (
@@ -39,24 +60,9 @@ const DeleteFeedstock = () => {
           <AlertDialogTitle>¿Estás seguro de eliminar este insumo?</AlertDialogTitle>
         </AlertDialogHeader>
 
-        <div className="text-muted-foreground" data-slot="alert-dialog-description">
-          {/* detalles del insumo a eliminar */}
-          <p className="block text-md">
-            Proveedor: {feedstock.provider}
-          </p>
-          <p className="block text-md">
-            Nombre: {feedstock.name}
-          </p>
-          {/* <p className="block text-md">
-            Cantidad: {feedstock.quantity}
-          </p> */}
-          <p className="block text-md">
-            Unidad de medida: {feedstock.measure_unit}
-          </p>
-          <p className="block text-md">
-            Costo unitario: {feedstock.unit_cost}
-          </p>
-        </div>
+
+        <DetailFeedstock feedstock={feedstock} data-slot="alert-dialog-description" />
+
 
         <AlertDialogFooter className="grid grid-cols-2 gap-4 sm:gap-8 w-full justify-between items-center">
           <AlertDialogCancel className="cursor-pointer"

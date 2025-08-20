@@ -41,6 +41,7 @@ export const itemToasts = {
       ),
       duration,
       className: "!bg-gradient-to-r !from-green-50 !to-emerald-100",
+      position: "bottom-left"
     })
   },
 
@@ -55,6 +56,7 @@ export const itemToasts = {
       ),
       duration,
       className: "!bg-gradient-to-r !from-blue-50 to-cyan-100",
+      position: "bottom-left"
     })
   },
 
