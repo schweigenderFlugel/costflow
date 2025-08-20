@@ -32,7 +32,7 @@ def register(db: SessionDep, body: RegisterUser):
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def login(db: SessionDep, body: Login):

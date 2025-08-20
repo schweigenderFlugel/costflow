@@ -12,15 +12,32 @@ from deps.admin_role_dep import AdminRoleDep
 from schemas.pagination import Pagination
 from models.product_model import Product, CreateProduct, UpdateProduct
 
+from schemas.product_response import ProductResponse
+
 router = APIRouter(
   tags=['Products'],
-  prefix='/product'
+  prefix='/products'
 )
 
 @router.get("", 
     summary="Get Products", 
     status_code=200,
     response_model=List[Product],
+    responses={
+        500: Response(
+            description="Internal Server Error", 
+            content_type="application/json",
+            message="Internal Server Error"
+        ).custom_response(),
+    }
+)
+def get_products(db: SessionDep, pagination: Pagination = Query()):
+    return product_service.get_products(db=db, pagination=pagination)
+
+@router.get("/{id}", 
+    summary="Get Products", 
+    status_code=200,
+    response_model=ProductResponse,
     responses={
         404: Response(
             description="Product Not Found",
@@ -34,8 +51,8 @@ router = APIRouter(
         ).custom_response(),
     }
 )
-def get_products(db: SessionDep, pagination: Pagination = Query()):
-    return product_service.get_products(db=db, pagination=pagination)
+def get_product_by_id(db: SessionDep, id: str):
+    return product_service.get_product_by_id(db=db, id=id)
 
 @router.post("", 
     summary="Create Product",
@@ -70,7 +87,7 @@ def create_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, body: Creat
     summary="Update Product",
     status_code=201,
     responses={
-        200: Response(
+        201: Response(
             description="Product Updated",
             content_type="application/json",
             message="Product Updated"
@@ -98,7 +115,7 @@ def create_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, body: Creat
     }
 ) 
 def update_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: str, body: UpdateProduct = Body()): # type: ignore
-    return product_service.update_product(db=db, body=body)
+    return product_service.update_product(db=db, id=id,  body=body)
 
 @router.delete("/{id}", 
     summary="Delete Products",
@@ -109,15 +126,15 @@ def update_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: str, bo
             content_type="application/json",
             message="Product Deleted"
         ).custom_response(),
-        404: Response(
-            description="Product Not Found",
-            content_type="application/json",
-            message="Product Not Found"
-        ).custom_response(),
         403:Response(
             description="Forbidden",
             content_type="application/json",
             message="Forbidden"
+        ).custom_response(),
+        404: Response(
+            description="Product Not Found",
+            content_type="application/json",
+            message="Product Not Found"
         ).custom_response(),
         500: Response(
             description="Internal Server Error", 
