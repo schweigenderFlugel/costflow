@@ -1,35 +1,15 @@
-import { Timestamp } from "@/types/items/shared"
-import { UUID } from "crypto"
+import { Currency } from "@/types/measure/currency"
+import { BackendProperties } from "@/types/items/shared"
+import { ItemMeasure } from "@/types/measure/measure-unit"
 
 
-export enum MeasureUnit {
-  GRAMS = 'GRAMS',
-  //
-  KILOGRAMS = 'KILOGRAMS',
-  LITERS = 'LITERS',
-  MILLILITERS = 'MILLILITERS',
-  // CUBIC_CENTIMETERS = 'CM3',
-  UNIT = 'UNIT',
-}
-
-export enum Currency {
-  USD = 'USD',
-  ARS = 'ARS',
-}
-
-export interface Feedstock {
+export interface Feedstock extends ItemMeasure {
   name: string,
-  sku: string,
   currency: Currency,
-  measure_unit: MeasureUnit,
   unit_cost: number,
   provider?: string,
-  //
-  quantity: number,
-  entry_date: Date,
 }
 
-export interface ObjFeedstock extends Feedstock, Timestamp {
-  id: UUID
-  is_deleted: boolean
-}
+// @ts-ignore
+// This interface intentionally left empty to satisfy type requirements.
+export interface ObjFeedstock extends Feedstock, BackendProperties { }
