@@ -24,7 +24,7 @@ export function EmailField<T extends { email: string } & FieldValues>({
         <FormItem>
           <FormLabel className="text-xl">Usuario</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="Ingresá tu usuario" className="placeholder:italic py-6 bg-white"{...field} />
+            <Input type="text" placeholder="Ingresá tu usuario" className="placeholder:italic py-5 md:py-6 bg-white text-black"{...field} />
           </FormControl>
           {errors?.email && (
             <p className="text-red-500 text-sm">

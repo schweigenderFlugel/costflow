@@ -33,7 +33,7 @@ export default function FormLogin() {
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-y-6" onSubmit={onSubmit}>
+      <form className="flex flex-col gap-y-5 xl:gap-y-6" onSubmit={onSubmit}>
         <EmailField control={form.control} errors={form.formState.errors} />
         <PasswordField control={form.control} errors={form.formState.errors} />
         <Link
@@ -61,7 +61,7 @@ export default function FormLogin() {
           </Button>
         </div>
 
-        <div className="flex gap-2 justify-center mt-16 text-gray-500">
+        <div className="flex gap-2 justify-center mt-10 text-gray-500">
           <p className="text-sm">¿Necesitas ayuda con COTZIA?</p>
           <Link
             href="/register"

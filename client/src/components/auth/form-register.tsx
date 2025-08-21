@@ -43,12 +43,14 @@ export default function FormRegister() {
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-y-6" onSubmit={onSubmit}>
+      <form className="flex flex-col gap-y-5 xl:gap-y-6 bg-transparent" onSubmit={onSubmit}>
         <TextField<RegisterFormSchema>
           name="name"
           label="Nombre"
           control={form.control}
           errors={form.formState.errors}
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black"
+          placeholder="Ingresá tu nombre"
         />
 
         <TextField<RegisterFormSchema>
@@ -56,6 +58,8 @@ export default function FormRegister() {
           label="Apellido"
           control={form.control}
           errors={form.formState.errors}
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black"
+          placeholder="Ingresá tu apellido"
         />
 
         <TextField<RegisterFormSchema>
@@ -64,6 +68,8 @@ export default function FormRegister() {
           type="email"
           control={form.control}
           errors={form.formState.errors}
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black"
+          placeholder="Ingresá tu E-Mail corporativo"
         />
 
         <PasswordField control={form.control} errors={form.formState.errors} />
@@ -117,7 +123,7 @@ export default function FormRegister() {
           </Button>
         </div>
 
-        <div className="flex gap-2 justify-center mt-14 text-gray-500">
+        <div className="flex gap-2 justify-center md:mt-8 text-gray-500">
           <p className="text-sm">¿Necesitas ayuda con COTZIA?</p>
           <Link
             href="/register"
