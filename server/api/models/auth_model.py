@@ -9,7 +9,16 @@ from sqlmodel import SQLModel, Field
 class Role(str, Enum):
   ADMIN = "ADMIN"
   EMPLOYEE = "EMPLOYEE"
-  CLIENT = "CLIENT"
+
+class State(str, Enum):
+  PENDING = "PENDING"
+  REJECTED = "REJECTED"
+  ACCEPTED = "ACCEPTED"
+
+class UserBase(SQLModel):
+  name: str = Field(sa_column=Column(VARCHAR), description='The name of the user')
+  lastname: str = Field(sa_column=Column(VARCHAR), description='The lastname of the user')
+  workstation: str = Field(sa_column=Column(VARCHAR), description='The workstation')
 
 class UserEmail(SQLModel):
   email: str = Field(sa_column=Column(VARCHAR), description='User email')
@@ -23,16 +32,17 @@ class Timestamp(SQLModel):
 
 class UserIdRole(SQLModel):
   id: Optional[uuid] = Field(default_factory=uuid4, primary_key=True)
-  role: Optional[Role] = Field(sa_column=Column(pg.ENUM(Role), default='CLIENT'))
+  role: Optional[Role] = Field(sa_column=Column(pg.ENUM(Role), default='EMPLOYEE'))
 
-class User(Timestamp, UserEmail, UserPassword, UserIdRole, table=True):
+class User(Timestamp, UserEmail, UserBase, UserPassword, UserIdRole, table=True):
   __tablename__ = 'users'
   recovery_code: Optional[str] = Field(sa_column=Column(TEXT, nullable=True), description='Code for password recovery')
+  state: Optional[State] = Field(sa_column=Column(pg.ENUM(State)), default='PENDING', description='Code for password recovery')
 
 class PasswordRecovery(UserEmail):
   pass
 
-class RegisterUser(UserPassword, UserEmail):
+class RegisterUser(UserPassword, UserEmail, UserBase):
   pass
 
 class Login(UserPassword, UserEmail):

@@ -7,7 +7,7 @@ import binascii
 from deps.db_session_dep import SessionDep
 from deps.jwt_dep import JwtPayload
 
-from models.auth_model import User, RegisterUser, Login, UserEmail, UserPassword, ChangePassword
+from models.auth_model import User, RegisterUser, Login, UserEmail, UserPassword, ChangePassword, State
 from utils.jwt_utils import get_password_hash, verify_password, create_access_token, create_refresh_token, verify_refresh_token
 from utils.encryption_utils import encrypt, decrypt
 from utils.sendgrid_utils import send_email
@@ -22,7 +22,7 @@ def register(db: SessionDep, body: RegisterUser):
             raise HTTPException(status_code=409, detail="Email already registered!")
 
         hashed = get_password_hash(body.password)
-        user = User(email=body.email, password=hashed)
+        user = User(email=body.email, password=hashed, name=body.name, lastname=body.lastname, workstation=body.workstation)
 
         db.add(user)
         db.commit()
@@ -34,13 +34,15 @@ def register(db: SessionDep, body: RegisterUser):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
 def login(db: SessionDep, body: Login):
     try:
         user_found: User = db.exec(select(User).where(User.email == body.email)).first()
 
         if not user_found or not verify_password(body.password, user_found.password):
-            raise HTTPException(status_code=401, detail="Invalid credentials")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+        
+        if not user_found.state == State.ACCEPTED:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed to login")
 
         user_id = str(user_found.id)
         access_token = create_access_token(data={"sub": user_id, "role": user_found.role})
@@ -106,7 +108,7 @@ def recover_password(db: SessionDep, body: UserEmail):
         text = f"{raw_code}.{str(expiration)}"
         recovery_code_dict = encrypt(text)
         recovery_code =  ".".join(str(v) for v in recovery_code_dict.values())
-        link = f"{FRONTEND_URL}/reset-password?code={recovery_code}"
+        link = f"{FRONTEND_URL}/cambiar-contrasena?code={recovery_code}"
         print(link)
         # mail = send_email(email=body.email, subject="Recuperaciòn de contraseña", content=link)
 

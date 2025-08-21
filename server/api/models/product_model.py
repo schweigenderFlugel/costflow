@@ -1,6 +1,6 @@
-from typing import Optional, TYPE_CHECKING, List
+from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship
-from sqlalchemy import Column, INTEGER, String, TEXT, FLOAT, BOOLEAN, TIMESTAMP, Float
+from sqlalchemy import Column, INTEGER, String, TEXT, BOOLEAN, TIMESTAMP, FLOAT
 from sqlalchemy.dialects.postgresql import ENUM
 from enum import Enum
 from uuid import UUID as uuid, uuid4
@@ -11,19 +11,28 @@ from .product_feedstock_model import ProductFeedstock
 from .feedstock_model import Feedstock
 
 class MeasureUnit(str, Enum):
-    GRAMS = 'GRAMS'
-    CUBIC_CENTIMETERS = 'CM3'
-    UNIT = 'UNIT'
-    OTHERS = 'OTHERS'
+    GRAMS = "GRAMS"
+    KILOGRAMS = "KILOGRAMS"
+    TONNES = "TONNES"
+    UNITS = "UNITS"
+    BOXES = "BOXES"
+    METERS = "METERS"
+    SQUARE_METERS = "SQUARE_METERS"
+    LITERS = "LITERS"
+    MILLILITERS = "MILLILITERS"
+    GALLONS = "GALLONS"
+    CUBIC_METERS = "CUBIC_METERS"
+    LITERS_GAS = "LITERS_GAS"
 
 class MatterState(str, Enum):
-  SOLID = "SOLID"
-  LIQUID = "LIQUID" 
-  GASEOUS = "GASEOUS"
+    SOLID = "SOLID"
+    LIQUID = "LIQUID" 
+    GASEOUS = "GASEOUS"
 
 class ProductBase(SQLModel):
     name: str = Field(sa_column=Column(String), description='Name of the product')
     description: Optional[str] = Field(sa_column=Column(TEXT), description='Description of the product')
+    sku: str = Field(sa_column=Column(String), description='Sku of the product')
     state: MatterState = Field(sa_column=Column(ENUM(MatterState)), description='The matter state of the feedstock')
     measure_unit: MeasureUnit = Field(sa_column=Column(ENUM(MeasureUnit)), description='Unit measure for the product')
     quantity: int = Field(sa_column=Column(INTEGER), description='antity of units')
@@ -40,7 +49,7 @@ class Product(Timestamp, ProductBase, table=True):
 
 class ProductFeedstockInput(SQLModel):
     feedstock_id: uuid = Field(description='Related feedstock id')
-    quantity_required: float = Field(sa_column=Column(Float), description='The quantity required for the product')
+    quantity_required: float = Field(sa_column=Column(FLOAT), description='The quantity required for the product')
 
 class CreateProduct(ProductBase):
     feedstocks: List[ProductFeedstockInput]

@@ -15,15 +15,13 @@ class FeedstockEntries(BaseModel):
   quantity_required: float = 23.6
 
 class ProductResponse(BaseModel):
-  description: str = "It schows the entire description of the product"
-  measure_unit: MeasureUnit
-  resale_percentage: float = 2.5
-  created_at: datetime
   id: uuid
   name: str = "Product name"
+  sku: str
+  description: str = "It schows the entire description of the product"
+  measure_unit: MeasureUnit
   quantity: int = 20
-  indirect_cost: float = 16.5
-  public_percentage: float = 1.5
-  updated_at: datetime
   subtotal: float
+  created_at: datetime
+  updated_at: datetime
   feedstocks: List[FeedstockEntries]
