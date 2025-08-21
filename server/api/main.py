@@ -35,7 +35,6 @@ app.include_router(product_route.router)
 
 @app.get("/")
 def root():
-  get_dolar_current_price()
   return {"message": "API is running 🚀"}
 
 if __name__ == "__main__":
