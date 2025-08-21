@@ -43,13 +43,16 @@ export default function FormRegister() {
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-y-5 xl:gap-y-6 bg-transparent" onSubmit={onSubmit}>
+      <form
+        className="grid xl:grid-cols-2 gap-x-4 gap-y-5 bg-login-transparent"
+        onSubmit={onSubmit}
+      >
         <TextField<RegisterFormSchema>
           name="name"
           label="Nombre"
           control={form.control}
           errors={form.formState.errors}
-          className="placeholder:italic py-5 xl:py-6 bg-white text-black"
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
           placeholder="Ingresá tu nombre"
         />
 
@@ -58,27 +61,65 @@ export default function FormRegister() {
           label="Apellido"
           control={form.control}
           errors={form.formState.errors}
-          className="placeholder:italic py-5 xl:py-6 bg-white text-black"
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
           placeholder="Ingresá tu apellido"
         />
 
         <TextField<RegisterFormSchema>
+          name="socialReason"
+          label="Razón Social de la empresa"
+          control={form.control}
+          errors={form.formState.errors}
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          placeholder="Ingresá la Razón social de tu empresa"
+        />
+
+        <TextField<RegisterFormSchema>
+          name="cuit"
+          label="CUIT de la empresa"
+          control={form.control}
+          errors={form.formState.errors}
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          placeholder="CUIT de la empresa"
+        />
+
+        <TextField<RegisterFormSchema>
           name="email"
-          label="Correo"
+          label="E-Mail"
           type="email"
           control={form.control}
           errors={form.formState.errors}
-          className="placeholder:italic py-5 xl:py-6 bg-white text-black"
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
           placeholder="Ingresá tu E-Mail corporativo"
         />
 
+        <TextField<RegisterFormSchema>
+          name="phone"
+          label="Teléfono"
+          type="phone"
+          control={form.control}
+          errors={form.formState.errors}
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          placeholder="Ingresá tu número telefónico"
+        />
+
         <PasswordField control={form.control} errors={form.formState.errors} />
+
+        <TextField<RegisterFormSchema>
+          name="passwordConfirmation"
+          label="Confirmar contraseña"
+          type="email"
+          control={form.control}
+          errors={form.formState.errors}
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          placeholder="Ingresá tu contraseña nuevamente"
+        />
 
         <FormField
           name="terms"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+            <FormItem className="flex flex-row items-center space-x-3 space-y-0 col-span-full">
               <FormControl>
                 <Checkbox
                   checked={field.value}
@@ -87,28 +128,27 @@ export default function FormRegister() {
               </FormControl>
               <FormLabel className="text-sm font-normal">
                 Acepto los
-                <Link
-                  href="#"
-                  className="underline underline-offset-2"
-                  // target="_blank"
-                  // rel="noopener noreferrer"
-                >
+                <Link href="#" className="underline underline-offset-2">
                   términos y condiciones
                 </Link>
               </FormLabel>
+
             </FormItem>
           )}
+
         />
         {form.formState.errors.terms && (
-          <p className="text-red-500 text-sm">
+          <p className="text-red-500 text-sm col-span-full">
             {form.formState.errors.terms.message}
           </p>
         )}
 
-        <div className="md:flex md:gap-2 md:*:flex-1 *:text-lg *:font-bold *:w-full *:p-6">
-          <Button variant="default">Crear cuenta</Button>
+        <div className="flex flex-col md:flex-row gap-2 col-span-full mt-4 *:font-bold *:text-lg">
+          <Button variant="default" className="p-6 w-full md:flex-1">
+            Crear cuenta
+          </Button>
 
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center md:hidden my-2">
             <div className="flex-1 h-px bg-gray-300"></div>
             <span className="px-2 text-gray-500">o</span>
             <div className="flex-1 h-px bg-gray-300"></div>
@@ -117,17 +157,17 @@ export default function FormRegister() {
           <Button
             asChild
             variant="ghost"
-            className="bg-gray-900 text-white md:text-black hover:bg-gray-800 md:bg-transparent md:hover:bg-gray-100"
+            className=" p-6 w-full md:flex-1 bg-gray-900 text-white md:text-black hover:bg-gray-800 md:bg-transparent md:hover:bg-gray-100"
           >
             <Link href="/login">Iniciar sesión</Link>
           </Button>
         </div>
 
-        <div className="flex gap-2 justify-center md:mt-8 text-gray-500">
-          <p className="text-sm">¿Necesitas ayuda con COTZIA?</p>
+        <div className="flex gap-2 justify-center xl:mt-8 mb-5 text-gray-500 text-sm col-span-full">
+          <p>¿Necesitas ayuda con COTZIA?</p>
           <Link
             href="/register"
-            className="text-sm underline text-blue-600 hover:text-blue-800"
+            className="underline text-blue-600 hover:text-blue-800"
           >
             Clickea aquí
           </Link>
