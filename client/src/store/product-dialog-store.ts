@@ -6,6 +6,7 @@ type ProductDialogState = {
   createProductDialog: boolean;
   updateProductDialog: boolean;
   deleteProductDialog: boolean;
+  isLoadingProduct: boolean;
   // detailProductDialog: boolean;
 }
 
@@ -14,6 +15,7 @@ type ProductDialogActions = {
   setCreateProductDialog: (open: boolean) => void;
   setUpdateProductDialog: (open: boolean) => void;
   setDeleteProductDialog: (open: boolean) => void;
+  setIsLoadingProduct: (loading: boolean) => void;
   // setDetailProductDialog: (open: boolean) => void;
 }
 
@@ -27,6 +29,7 @@ const useProductDialogStore = create<ProductDialogStore>()(
     updateProductDialog: false,
     deleteProductDialog: false,
     product: null,
+    isLoadingProduct: false,
     // detailProductDialog: false,
 
     // set
@@ -34,6 +37,7 @@ const useProductDialogStore = create<ProductDialogStore>()(
     setUpdateProductDialog: (open) => set({ updateProductDialog: open }),
     setDeleteProductDialog: (open) => set({ deleteProductDialog: open }),
     setProduct: (product) => set({ product }),
+    setIsLoadingProduct: (loading) => set({ isLoadingProduct: loading }),
     // setDetailProductDialog: (open) => set({ detailProductDialog: open }),
   })
 )

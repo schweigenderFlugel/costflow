@@ -28,6 +28,9 @@ export const feedstockSchema = z.object({
   measure_unit: z.nativeEnum(MeasureUnit, {
     error: () => ({ message: "La unidad de medida es requerida" })
   }),
+  sku: z.string()
+    .min(1, "El SKU es requerido")
+    .max(100, "El SKU no puede exceder 100 caracteres")
 }).refine((data) => {
   // Validación condicional de unidades de medida según el estado de la materia
   if (data.state === StateMatter.SOLID) {
@@ -36,7 +39,7 @@ export const feedstockSchema = z.object({
   if (data.state === StateMatter.LIQUID) {
     return Object.values(LiquidMeasure).includes(data.measure_unit as unknown as LiquidMeasure);
   }
-  if (data.state === StateMatter.GAS) {
+  if (data.state === StateMatter.GASEOUS) {
     return Object.values(GasMeasure).includes(data.measure_unit as unknown as GasMeasure);
   }
   return false;
