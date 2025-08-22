@@ -2,29 +2,18 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
-import { ObjFeedstock } from "@/types/items/feedstock";
+import { Form } from "@/components/ui/form";
 import { productSchema, FormDataProduct } from "@/schemas/product-schema";
-import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
-import { fetcher } from "@/utils/fetcher";
-import { translateMeasureUnit } from "@/utils/translate/shared-translate";
-import { MeasureUnit } from "@/types/measure/measure-unit";
+import { useMeasureUnitLogic } from "@/hooks/form/use-measure-unit-logic";
+import {
+  SkuField,
+  NameField,
+  QuantityField,
+  StateMatterField,
+  MeasureUnitField,
+  DescriptionField,
+  FeedstockSelector
+} from "@/components/shared/form-fields";
 
 interface ProductFormProps {
   defaultValues: Partial<FormDataProduct>;
@@ -39,15 +28,16 @@ const ProductForm = ({
 }: ProductFormProps) => {
   const form = useForm<FormDataProduct>({
     resolver: zodResolver(productSchema),
-    defaultValues,
-  })
-  const [feedstocks, setFeedstocks] = useState<ObjFeedstock[]>([])
-  useEffect(() => {
-    fetcher({ input: "/api/feedstock" })
-      .then(data => {
-        if (!(data.error)) setFeedstocks(data);
-      })
-  }, [])
+    defaultValues: {
+      ...defaultValues,
+      feedstocks: defaultValues.feedstocks || []
+    },
+  });
+
+  const { selectedState, getAvailableMeasureUnits, handleStateChange } = useMeasureUnitLogic({
+    watch: form.watch,
+    setValue: form.setValue
+  });
 
   return (
     <Form {...form}>
@@ -56,218 +46,57 @@ const ProductForm = ({
         onSubmit={form.handleSubmit(onSubmit)}
         id={formId}
       >
-        <div className="grid grid-cols-12 gap-x-3 gap-y-4 items-start">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="col-span-12 sm:col-span-6">
-                <FormLabel>Nombre</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nombre del producto" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 px-2 sm:px-4">
 
-          {/* <FormField
-            control={form.control}
-            name="product_feedstock"
-            render={({ field }) => (
-              <FormItem className="col-span-12 sm:col-span-6">
-                <FormLabel>Insumo del producto ?</FormLabel>
-                <FormControl>
-                  <Input placeholder="Id del insumo?" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
+          <div className="flex flex-col col-span-1 gap-y-4">
+            <SkuField
+              control={form.control}
+              placeholder="Código SKU del producto"
+            />
 
-          <FormField
-            control={form.control}
-            name="product_feedstock"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Insumo del producto</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value as string}
-                >
-                  <FormControl className="w-full">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar insumo" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {
-                      feedstocks.length ?
-                        feedstocks.map(fs => (
-                          <SelectItem key={fs.id} value={fs.id}>
-                            {fs.name}
-                          </SelectItem>
-                        ))
-                        :
-                        <SelectItem value={"null"} disabled>
-                          No existen insumos
-                        </SelectItem>
-                    }
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <NameField
+              control={form.control}
+              label="Nombre del producto"
+              placeholder="Nombre del producto"
+            />
 
-          <FormField
-            control={form.control}
-            name="quantity"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Cantidad</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={0}
-                    placeholder="Cantidad del producto"
-                    value={field.value as number}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <StateMatterField
+              control={form.control}
+              onStateChange={handleStateChange}
+            />
 
-          <FormField
-            control={form.control}
-            name="measure_unit"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Unidad de medida</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value as string}
-                >
-                  <FormControl className="w-full">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar unidad" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Object.values(MeasureUnit).map((unit) => (
-                      <SelectItem key={unit} value={unit}>
-                        {translateMeasureUnit(unit)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <MeasureUnitField
+              control={form.control}
+              availableUnits={getAvailableMeasureUnits()}
+              disabled={!selectedState}
+              className="truncate"
+              placeholderDisabled="Primero selecciona el estado de la materia"
+            />
 
-          <FormField
-            control={form.control}
-            name="subtotal"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Subtotal</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={0}
-                    placeholder="Subtotal del producto?"
-                    value={field.value as number}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <QuantityField
+              control={form.control}
+              label="Cantidad del producto"
+              placeholder="Cantidad del producto"
+            />
 
-          <FormField
-            control={form.control}
-            name="indirect_cost"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Costo indirecto?</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={0}
-                    placeholder="Costo indirecto del producto?"
-                    value={field.value as number}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <DescriptionField
+              control={form.control}
+              placeholder="Descripción del producto"
+              className=""
+            />
+          </div>
 
-          <FormField
+          {/* Búsqueda y selección de insumos */}
+          <FeedstockSelector
             control={form.control}
-            name="resale_percentage"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Porcentaje de reventa?</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={0}
-                    placeholder="Porcentaje de reventa del producto?"
-                    value={field.value as number}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="public_percentage"
-            render={({ field }) => (
-              <FormItem className="col-span-6">
-                <FormLabel>Porcentaje público?</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={0}
-                    placeholder="Porcentaje público del producto?"
-                    value={field.value as number}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="col-span-12">
-                <FormLabel>Descripción <span className="text-xs text-muted-foreground">(Opcional)</span></FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Descripción del producto" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            formRegister={form.register}
+            formErrors={form.formState.errors}
           />
 
         </div>
-
-
       </form>
     </Form>
   );
 }
-
 
 export default ProductForm
