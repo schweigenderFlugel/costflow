@@ -60,16 +60,6 @@ export default function FormLogin() {
             <Link href="/register">Crear cuenta</Link>
           </Button>
         </div>
-
-        <div className="flex gap-2 justify-center mt-10 text-gray-500">
-          <p className="text-sm">¿Necesitas ayuda con COTZIA?</p>
-          <Link
-            href="/register"
-            className="text-sm underline text-blue-600 hover:text-blue-800"
-          >
-            Clickea aquí
-          </Link>
-        </div>
       </form>
     </Form>
   );
