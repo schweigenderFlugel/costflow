@@ -3,7 +3,8 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { ChevronDown } from "lucide-react"
 import { Table } from "@tanstack/react-table"
 import { ObjFeedstock } from "@/types/items/feedstock"
-import { translateFeedstockHeaders } from "@/utils/translate/feedstock"
+import { translateFeedstockHeaders, translateProductsHeaders } from "@/utils/translate/items-translate"
+import { ObjProduct } from "@/types/items/product"
 
 type DropdownProps<T> = {
   table: Table<T>,
@@ -34,7 +35,7 @@ const ColumnsDropdown = <TData,>({ table, columnsTo }: DropdownProps<TData>) => 
                 {
                   columnsTo == "feedstock"
                     ? translateFeedstockHeaders(column.id as keyof ObjFeedstock)
-                    : column.id
+                    : translateProductsHeaders(column.id as keyof ObjProduct)
                 }
               </DropdownMenuCheckboxItem>
             )

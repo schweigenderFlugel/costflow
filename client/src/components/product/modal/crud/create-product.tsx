@@ -1,32 +1,50 @@
 "use client"
 import ProductForm from "@/components/product/form/product-form";
 import FormProductFooter from "@/components/feedstock/form/form-feedstock-footer";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useCreateProductDialog } from "@/hooks/use-product-dialog";
 import { FormDataProduct } from "@/schemas/product-schema";
-import { ClipboardCheck } from "lucide-react";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { fetcher } from "@/utils/fetcher";
-import { toast } from "sonner";
+import { Product } from "@/types/items/product";
+import { itemToasts } from "@/components/item-toasts";
 import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import ProductCreated from "@/components/product/modal/crud/already/product-created";
 
 
 const CreateProduct = () => {
-  const { isOpen, setIsOpen, close } = useCreateProductDialog()
   const [alreadyCreated, setAlreadyCreated] = useState<boolean>(false)
-  const [isPending, startTransition] = useTransition()
+  const [currentProduct, setCurrentProduct] = useState<null | Product>(null)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
-  const { toggle: tableToggle } = useUpdateDataTable("product")
+  const { isOpen, setIsOpen, close } = useCreateProductDialog()
+  const [isPending, startTransition] = useTransition()
+  const { toggle: updateTable } = useUpdateDataTable("product")
 
   const handleCreate = async (values: FormDataProduct) => {
     startTransition(async () => {
-      const data = await fetcher({ input: `/api/product`, method: "POST", body: JSON.stringify(values) })
-      if (data.error) setErrorMessage(data.errro)
+      const productDTO = {
+        ...values,
+        feedstocks: values.feedstocks.map(fs => ({
+          feedstock_id: fs.feedstock_id,
+          quantity_required: fs.quantity_required
+        }))
+      }
+
+      const data = await fetcher({ input: `/api/product`, method: "POST", body: JSON.stringify(productDTO) })
+
+      if (data.error || !data.message?.includes("successfully")) {
+        let posibleMessage = data.error || data.description || data.message || data.detail
+        if (Array.isArray(posibleMessage)) {
+          posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
+        }
+        console.error(data)
+        setErrorMessage(posibleMessage)
+      }
       else {
+        setCurrentProduct(values)
         setAlreadyCreated(true)
-        toast(data.description || data.message)
-        tableToggle()
+        itemToasts.createSuccess({ description: values.name, type: "producto" })
+        updateTable()
       }
     })
   };
@@ -34,6 +52,7 @@ const CreateProduct = () => {
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setAlreadyCreated(false)
+      setErrorMessage(undefined)
     }
     setIsOpen(open)
   }
@@ -41,48 +60,50 @@ const CreateProduct = () => {
   const handleClose = () => {
     setIsOpen(false)
     setAlreadyCreated(false)
+    setErrorMessage(undefined)
   }
 
-  return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-[calc(100svw-3rem)] sm md:max-w-[calc(100%-6rem)] sm:min-w-[330px] sm:w-3/4 md:w-2xl overflow-y-auto max-h-[80svh] p-6 gap-8">
+  useEffect(() => {
+    if (currentProduct) setCurrentProduct(null)
+  }, [currentProduct])
 
-        <DialogHeader className={alreadyCreated ? "sr-only" : ""}>
-          <DialogTitle>Agregar producto</DialogTitle>
-          <DialogDescription className="text-left">
+  useEffect(() => {
+    if (errorMessage && alreadyCreated) setErrorMessage(undefined)
+  }, [alreadyCreated, errorMessage])
+
+  return (
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+      <SheetContent className="py-6 px-4 gap-10 justify-start sm:max-w-xl">
+
+        <SheetHeader className={alreadyCreated ? "sr-only" : "p-0"}>
+          <SheetTitle className="text-xl">Agregar producto</SheetTitle>
+          <SheetDescription className="text-left">
             Acá vas a cargar y mantener la lista de {(" ")}
             <strong>
               productos
             </strong>.
-          </DialogDescription>
-        </DialogHeader>
+          </SheetDescription>
+        </SheetHeader>
 
         {
           alreadyCreated
             ?
-            <div className="flex flex-col items-center justify-between gap-5 my-5">
-              <ClipboardCheck className="size-24 text-muted-foreground" />
-              <p className="text-lg font-semibold">Producto agregado exitosamente</p>
-              <div className="grid grid-cols-2 gap-4">
-                <Button onClick={handleClose} variant="outline">Cerrar</Button>
-                <Button onClick={() => setAlreadyCreated(false)} variant="default">
-                  Volver al formulario
-                </Button>
-              </div>
-            </div>
+            <ProductCreated
+              product={currentProduct}
+              handleClose={handleClose}
+              handleReturn={() => setAlreadyCreated(false)}
+            />
             :
             <>
               <ProductForm
                 defaultValues={{
                   name: "",
                   description: "",
-                  product_feedstock: "",
+                  feedstocks: [],
                   measure_unit: undefined,
-                  quantity: undefined,
-                  subtotal: undefined,
-                  indirect_cost: undefined,
-                  resale_percentage: undefined,
-                  public_percentage: undefined,
+                  quantity: 0,
+                  sku: "",
+                  state: undefined
                 }}
                 onSubmit={handleCreate}
                 formId="create-product-form"
@@ -99,8 +120,8 @@ const CreateProduct = () => {
             </>
         }
 
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
 
 
   );
