@@ -46,7 +46,7 @@ export default function FormRegister() {
   return (
     <Form {...form}>
       <form
-        className="grid xl:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-5 bg-login-transparent"
+        className="grid xl:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-5 bg-login-transparent max-w-md md:max-w-full w-full mx-auto"
         onSubmit={onSubmit}
       >
         <TextField<RegisterFormSchema>
@@ -77,12 +77,12 @@ export default function FormRegister() {
 
         <TextField<RegisterFormSchema>
           name="email"
-          label="E-Mail"
+          label="Correo electrónico"
           type="email"
           control={form.control}
           errors={form.formState.errors}
           className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
-          placeholder="Ingresá tu E-Mail"
+          placeholder="Ingresá tu correo electrónico"
         />
 
         <PasswordField
@@ -127,7 +127,7 @@ export default function FormRegister() {
           </p>
         )}
 
-        <div className="flex flex-col md:flex-row gap-2 col-span-full mt-4 *:font-bold *:text-lg">
+        <div className="flex flex-col md:flex-row gap-2 col-span-full mt-4 *:font-bold ">
           <Button variant="default" className="p-6 w-full md:flex-1">
             Crear cuenta
           </Button>
@@ -141,7 +141,7 @@ export default function FormRegister() {
           <Button
             asChild
             variant="ghost"
-            className="p-6 w-full md:flex-1 bg-gray-900 text-white lg:text-black hover:bg-gray-800 lg:bg-transparent lg:hover:bg-gray-100"
+            className="p-6 w-full md:flex-1 bg-gray-900 text-white lg:text-black hover:bg-gray-800 hover:text-white lg:bg-transparent lg:hover:bg-gray-100 lg:hover:text-black"
           >
             <Link href="/login">Iniciar sesión</Link>
           </Button>

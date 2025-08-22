@@ -32,7 +32,7 @@ export function TextField<T extends FieldValues>({
       control={control}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-xl">{label}</FormLabel>
+          <FormLabel>{label}</FormLabel>
           <FormControl>
             <Input
               type={type}

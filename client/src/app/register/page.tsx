@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function RegisterPage() {
   return (
-    <div className="flex flex-col lg:flex-row lg:h-screen">
+    <div className="flex flex-col lg:flex-row ">
       <div
-        className="hidden md:block w-full md:w-4/8 lg:h-auto bg-cover bg-center"
+        className="hidden md:block w-full md:w-5/8 lg:h-auto bg-cover bg-center"
         style={{ backgroundImage: "url('assets/images/gradientelogin.jpg')" }}
       ></div>
 
@@ -17,12 +17,12 @@ export default function RegisterPage() {
         <Card className="w-full lg:w-10/12 h-auto border-none shadow-none rounded-none text-white lg:text-black bg-transparent">
           <CardHeader>
             <div>
-              <p className="text-center text-4xl lg:hidden my-8 font-bold">
+              <p className="text-center text-3xl lg:hidden my-8 font-bold">
                 Cotzia
               </p>
             </div>
 
-            <CardTitle className="text-left text-2xl lg:text-3xl font-bold lg:mb-0 mb-1">
+            <CardTitle className="text-center text-2xl lg:text-xl font-bold lg:text-left">
               Crear cuenta
             </CardTitle>
           </CardHeader>

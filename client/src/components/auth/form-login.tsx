@@ -33,7 +33,10 @@ export default function FormLogin() {
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-y-5 xl:gap-y-6" onSubmit={onSubmit}>
+      <form
+        className="flex flex-col gap-y-5 lg:gap-y-6 max-w-lg mx-auto"
+        onSubmit={onSubmit}
+      >
         <EmailField control={form.control} errors={form.formState.errors} />
         <PasswordField
           control={form.control}
@@ -44,15 +47,15 @@ export default function FormLogin() {
         />
         <Link
           href="/olvide-mi-contrasena"
-          className="text-sm text-gray-600 hover:text-gray-800 text-right"
+          className="text-sm text-gray-600 text-right hover:text-gray-200 lg:hover:text-gray-700"
         >
           ¿Olvidaste la contraseña?
         </Link>
 
-        <div className="md:flex md:gap-2 md:*:flex-1 *:text-lg *:font-bold *:w-full *:p-6">
+        <div className="lg:flex lg:gap-2 lg:*:flex-1 *:font-bold *:w-full *:p-6">
           <Button variant="default">Iniciar sesión</Button>
 
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center lg:hidden">
             <div className="flex-1 h-px bg-gray-300"></div>
             <span className="px-2 text-gray-500">o</span>
             <div className="flex-1 h-px bg-gray-300"></div>
@@ -61,7 +64,7 @@ export default function FormLogin() {
           <Button
             asChild
             variant="ghost"
-            className="bg-gray-900 text-white md:text-black hover:bg-gray-800 md:bg-transparent md:hover:bg-gray-100"
+            className="p-6 w-full lg:flex-1 bg-gray-900 text-white lg:text-black hover:bg-gray-800 hover:text-white lg:bg-transparent lg:hover:bg-gray-100 lg:hover:text-black"
           >
             <Link href="/register">Crear cuenta</Link>
           </Button>

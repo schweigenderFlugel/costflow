@@ -32,16 +32,14 @@ export function PasswordField<T extends FieldValues>({
       control={control}
       render={({ field }) => (
         <FormItem>
-          <FormLabel htmlFor={name} className="text-xl">
-            {label}
-          </FormLabel>
+          <FormLabel htmlFor={name}>{label}</FormLabel>
           <FormControl>
             <div className="relative">
               <Input
                 id={name}
                 type={seePassword ? "text" : "password"}
                 placeholder={placeholder}
-                className="placeholder:italic py-5 xl:py-6 bg-white text-black"
+                className="placeholder:italic py-5 bg-white text-black"
                 {...field}
               />
               <button
