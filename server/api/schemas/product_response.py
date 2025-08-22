@@ -19,6 +19,7 @@ class ProductResponse(BaseModel):
   name: str = "Product name"
   sku: str
   description: str = "It schows the entire description of the product"
+  state: str
   measure_unit: MeasureUnit
   quantity: int = 20
   subtotal: float

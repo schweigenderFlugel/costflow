@@ -1,3 +1,4 @@
+from typing import Annotated
 from fastapi import Depends
 from redis import Redis
 
@@ -11,4 +12,4 @@ def get_cache():
         password=REDIS_PASSWORD
     )
 
-CacheDep = Depends[Redis, Depends(get_cache)]
+CacheDep = Annotated[Redis, Depends(get_cache)]

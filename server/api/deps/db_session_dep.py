@@ -9,7 +9,7 @@ from config.envs import DATABASE_URL
 
 load_dotenv()
 
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL)
 
 try:
     with engine.connect() as conn:

@@ -12,6 +12,8 @@ passlib = {extras = ["bcrypt"], version = "*"}
 cryptography = "*"
 sendgrid = "*"
 redis = "*"
+premailer = "*"
+sse-starlette = "*"
 
 [dev-packages]
 pytest = "*"

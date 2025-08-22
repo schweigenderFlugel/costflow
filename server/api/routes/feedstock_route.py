@@ -2,14 +2,16 @@ from typing import List
 
 from fastapi import APIRouter, Body, Query
 
-from models.feedstock_model import Feedstock, CreateFeedstock, UpdateFeedstock
+from models.feedstock_model import CreateFeedstock, UpdateFeedstock
 
 from services import feedstock_service
 
 from schemas.http_response import Response
 from schemas.pagination import Pagination
+from schemas.feedstock_response import FeedstockResponse
 
 from deps.db_session_dep import SessionDep
+from deps.cache_dep import CacheDep
 from deps.jwt_dep import JwtDep
 from deps.admin_role_dep import AdminRoleDep
 
@@ -21,7 +23,7 @@ router = APIRouter(
 @router.get("",
   status_code=200,
   summary='Get a list of feedstocks',
-  response_model=List[Feedstock],
+  response_model=List[FeedstockResponse],
   responses={
     500: Response(
       description='Unexpected error has ocurred', 
@@ -30,14 +32,14 @@ router = APIRouter(
     ).custom_response(),
   },            
 )
-def get_feedstocks(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, pagination: Pagination = Query()):
-  return feedstock_service.get_feedstocks(db=session, pagination=pagination)
+def get_feedstocks(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRole: AdminRoleDep, pagination: Pagination = Query()):
+  return feedstock_service.get_feedstocks(db=session, cache=cache, pagination=pagination)
 
 @router.get("/{id}",
   status_code=200,
   tags=['Feedstocks'], 
   summary='Get a feedstock',
-  response_model=Feedstock,
+  response_model=FeedstockResponse,
   responses={
     500: Response(
       description='Unexpected error has ocurred', 
@@ -46,8 +48,8 @@ def get_feedstocks(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, pa
     ).custom_response(),
   },            
 )
-def get_feedstock_by_id(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str):
-  return feedstock_service.get_feedstock_by_id(db=session, id=id)
+def get_feedstock_by_id(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str):
+  return feedstock_service.get_feedstock_by_id(db=session, cache=cache, id=id)
 
 @router.post("",
   status_code=201,
@@ -104,8 +106,8 @@ def create_feedstock(session: SessionDep, jwt: JwtDep, admin: AdminRoleDep, body
     ).custom_response(),
   },            
 )
-def update_feedstock(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str, body: UpdateFeedstock = Body()): # type: ignore
-  return feedstock_service.update_feedstock(db=session, id=id, body=body)
+def update_feedstock(session: SessionDep,  cache: CacheDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str, body: UpdateFeedstock = Body()): # type: ignore
+  return feedstock_service.update_feedstock(db=session, cache=cache, id=id, body=body)
 
 @router.delete("/{id}",
   status_code=201, 
@@ -133,5 +135,5 @@ def update_feedstock(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, 
     ).custom_response(),
   },            
 )
-def delete_feedstock(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str):
-  return feedstock_service.delete_feedstock(db=session, id=id)
+def delete_feedstock(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str):
+  return feedstock_service.delete_feedstock(db=session, cache=cache, id=id)

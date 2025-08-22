@@ -1,10 +1,11 @@
-from typing import Optional
+from typing import Optional, Annotated
 from uuid import UUID as uuid, uuid4
 from datetime import datetime, timezone
 from enum import Enum
 from sqlalchemy import Column, VARCHAR, TIMESTAMP, TEXT
 import sqlalchemy.dialects.postgresql as pg
 from sqlmodel import SQLModel, Field
+from pydantic import EmailStr
 
 class Role(str, Enum):
   ADMIN = "ADMIN"
@@ -21,7 +22,7 @@ class UserBase(SQLModel):
   workstation: str = Field(sa_column=Column(VARCHAR), description='The workstation')
 
 class UserEmail(SQLModel):
-  email: str = Field(sa_column=Column(VARCHAR), description='User email')
+  email: EmailStr = Field(sa_column=Column(VARCHAR),  description='User email')
 
 class UserPassword(SQLModel):
   password: str = Field(sa_column=Column(VARCHAR), description='User password')
@@ -47,6 +48,9 @@ class RegisterUser(UserPassword, UserEmail, UserBase):
 
 class Login(UserPassword, UserEmail):
   pass
+
+class AssignRole(SQLModel):
+  role: Role = Field(sa_column=Column(pg.ENUM(Role)))
 
 class ChangePassword(UserPassword):
   new_password: str = Field(sa_column=Column(VARCHAR), description='New password')

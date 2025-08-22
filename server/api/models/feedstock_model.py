@@ -37,7 +37,7 @@ class FeedstockBase(SQLModel):
     state: MatterState = Field(sa_column=Column(ENUM(MatterState)), description='The matter state of the feedstock')
     measure_unit: MeasureUnit = Field(sa_column=Column(ENUM(MeasureUnit)), description='Unit measure for feedstock')
     unit_cost: float = Field(sa_column=Column(FLOAT), description='The cost per unit')
-    provider: Optional[str] = Field(sa_column=Column(VARCHAR), description='The provider of the feedstock')
+    provider: Optional[str] = Field(sa_column=Column(VARCHAR), default=None, description='The provider of the feedstock')
 
 class Timestamp(SQLModel):
     created_at: datetime = Field(sa_column=Column(TIMESTAMP), default_factory=lambda: datetime.now(timezone.utc))
@@ -51,10 +51,9 @@ class Feedstock(Timestamp, FeedstockBase, table=True):
 class CreateFeedstock(FeedstockBase):
     pass
 
-optional_fields = {field: (Optional[typ], None) for field, typ in FeedstockBase.__annotations__.items()}
+optional_fields = {field: (Optional[typ], None) for field, typ in CreateFeedstock.__annotations__.items()}
 
 UpdateFeedstock = create_model(
     "UpdateFeedstock",
-    __base__=FeedstockBase,
     **optional_fields
 )

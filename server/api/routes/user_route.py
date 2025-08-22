@@ -1,8 +1,8 @@
 from typing import List
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Body
 
-from models.auth_model import User
+from models.auth_model import User, AssignRole
 
 from services import user_service
 
@@ -91,15 +91,15 @@ def get_all_users(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep):
 def get_user_by_id(id: str, session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep):
   return user_service.get_user_by_id(db=session, user_id=id)
 
-@router.get('/enable/{id}',
-            status_code=200,
+@router.get('/accept/{id}',
+  status_code=200,
   tags=['Users'], 
-  summary='Enable user',
+  summary='Accept user',
   responses={
     200: Response(
-      description="User successfully enabled",
+      description="User successfully accepted",
       content_type="application/json",
-      message="User successfully enabled"
+      message="User successfully accepted"
     ).custom_response(), 
     401: Response(
       description='Invalid or expired creadentials', 
@@ -118,5 +118,65 @@ def get_user_by_id(id: str, session: SessionDep, jwt: JwtDep, adminRole: AdminRo
     ).custom_response(),
   },            
 )
-def enable_user(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str):
-  return user_service.enable_user(db=session, id=id)
+def accept_user(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str):
+  return user_service.accept_user(db=session, id=id)
+
+@router.get('/reject/{id}',
+  status_code=200,
+  tags=['Users'], 
+  summary='Reject user',
+  responses={
+    200: Response(
+      description="User successfully rejected",
+      content_type="application/json",
+      message="User successfully rejected"
+    ).custom_response(), 
+    401: Response(
+      description='Invalid or expired creadentials', 
+      content_type='application/json',
+      message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+      description='Not allowed because invalid role', 
+      content_type='application/json',
+      message='Not allowed to access',
+    ).custom_response(),
+    500: Response(
+      description='Unexpected internal error has ocurred', 
+      content_type='application/json',
+      message="Internal server error"
+    ).custom_response(),
+  },            
+)
+def reject_user(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str):
+  return user_service.reject_user(db=session, id=id)
+
+@router.get('/assign-role/{id}',
+  status_code=200,
+  tags=['Users'], 
+  summary='Assign role',
+  responses={
+    200: Response(
+      description="Role successfully assigned",
+      content_type="application/json",
+      message="Role successfully assigned"
+    ).custom_response(), 
+    401: Response(
+      description='Invalid or expired creadentials', 
+      content_type='application/json',
+      message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+      description='Not allowed because invalid role', 
+      content_type='application/json',
+      message='Not allowed to access',
+    ).custom_response(),
+    500: Response(
+      description='Unexpected internal error has ocurred', 
+      content_type='application/json',
+      message="Internal server error"
+    ).custom_response(),
+  },            
+)
+def assign_role(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str, body: AssignRole = Body()):
+  return user_service.assign_role(db=session, id=id, body=body)
