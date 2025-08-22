@@ -1,50 +1,41 @@
 "use client"
-import FeedstockForm from "@/components/feedstock/form/form-feedstock";
+import FeedstockForm from "@/components/feedstock/form/feedstock-form";
 import FormFeedstockFooter from "@/components/feedstock/form/form-feedstock-footer";
-import { Button } from "@/components/ui/button";
 import { useCreateFeedstockDialog } from "@/hooks/use-feedstock-dialog";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
 import { FormDataFeedstock } from "@/schemas/feedstock-schema";
 import { itemToasts } from "@/components/item-toasts";
 import { fetcher } from "@/utils/fetcher";
-import { ClipboardCheck } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Feedstock } from "@/types/items/feedstock";
-import DetailFeedstock from "@/components/feedstock/modal/crud/detail-feedstock";
+import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import FeedstockCreated from "@/components/feedstock/modal/crud/already/feedstock-created";
 
 
 const CreateFeedstock = () => {
-  const { isOpen, setIsOpen, close } = useCreateFeedstockDialog()
   const [alreadyCreated, setAlreadyCreated] = useState<boolean>(false)
   const [currentFeedstock, setCurrentFeedstock] = useState<null | Feedstock>(null)
-  const [isPending, startTransition] = useTransition()
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
+  const { isOpen, setIsOpen, close } = useCreateFeedstockDialog()
+  const [isPending, startTransition] = useTransition()
   const { toggle: tableToggle } = useUpdateDataTable("feedstock")
-
-  useEffect(() => {
-    setErrorMessage(undefined)
-    setCurrentFeedstock(null)
-  }, [])
 
   const handleCreate = async (values: FormDataFeedstock) => {
     startTransition(async () => {
       const data = await fetcher({ input: `/api/feedstock`, method: "POST", body: JSON.stringify(values) })
 
-      // (aún) no existe una estructura clara de error como respuesta
-      if (!data.message?.includes("successfully")) {
-        let posibleMessage = data.description || data.message || data.detail
+      if (data.error || !data.message?.includes("successfully")) {
+        let posibleMessage = data.error || data.description || data.message || data.detail
         if (Array.isArray(posibleMessage)) {
-
           posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
         }
+        console.error(data)
         setErrorMessage(posibleMessage)
       }
       else {
         setCurrentFeedstock(values)
         setAlreadyCreated(true)
-        itemToasts.createSuccess({ description: data.name })
-        // toast.success(successMessage)
+        itemToasts.createSuccess({ description: values.name })
         tableToggle()
       }
     })
@@ -53,6 +44,7 @@ const CreateFeedstock = () => {
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setAlreadyCreated(false)
+      setErrorMessage(undefined)
     }
     setIsOpen(open)
   }
@@ -60,11 +52,20 @@ const CreateFeedstock = () => {
   const handleClose = () => {
     setIsOpen(false)
     setAlreadyCreated(false)
+    setErrorMessage(undefined)
   }
+
+  useEffect(() => {
+    if (currentFeedstock) setCurrentFeedstock(null)
+  }, [currentFeedstock])
+
+  useEffect(() => {
+    if (errorMessage) setErrorMessage(undefined)
+  }, [errorMessage, alreadyCreated])
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-      <SheetContent className="overflow-y-auto py-6 px-4 gap-10 justify-start">
+      <SheetContent className="py-6 px-4 gap-10 justify-start">
 
         <SheetHeader className={alreadyCreated ? "sr-only" : " p-0"}>
           <SheetTitle className="text-xl">Crear insumo</SheetTitle>
@@ -80,25 +81,16 @@ const CreateFeedstock = () => {
         {
           alreadyCreated
             ?
-            <div className="flex flex-col gap-6 my-auto">
-              <div className="flex items-center flex-col gap-1">
-                <ClipboardCheck className="size-24 text-muted-foreground" />
-                <p className="text-lg font-semibold">Insumo agregado</p>
-              </div>
-
-              <DetailFeedstock feedstock={currentFeedstock} />
-
-              <div className="grid grid-cols-2 gap-4 w-full justify-between items-center">
-                <Button onClick={handleClose} variant="outline" className="cursor-pointer rounded-xs">Cerrar</Button>
-                <Button onClick={() => setAlreadyCreated(false)} variant="default" className="cursor-pointer rounded-xs">
-                  Agregar otro
-                </Button>
-              </div>
-            </div>
+            <FeedstockCreated
+              feedstock={currentFeedstock}
+              handleClose={handleClose}
+              handleReturn={() => setAlreadyCreated(false)}
+            />
             :
             <>
               <FeedstockForm
                 defaultValues={{
+                  sku: "",
                   name: "",
                   currency: undefined,
                   measure_unit: undefined,

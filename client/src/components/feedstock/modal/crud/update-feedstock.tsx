@@ -1,24 +1,30 @@
 "use client"
-import FeedstockForm from "@/components/feedstock/form/form-feedstock";
+import FeedstockForm from "@/components/feedstock/form/feedstock-form";
 import FormFeedstockFooter from "@/components/feedstock/form/form-feedstock-footer";
-import { Button } from "@/components/ui/button";
 import { useUpdateFeedstockDialog } from "@/hooks/use-feedstock-dialog";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
 import { FormDataFeedstock } from "@/schemas/feedstock-schema";
 import { itemToasts } from "@/components/item-toasts";
 import { fetcher } from "@/utils/fetcher";
-import { ClipboardCheck } from "lucide-react";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import DetailFeedstock from "@/components/feedstock/modal/crud/detail-feedstock";
+import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import FeedstockUpdated from "@/components/feedstock/modal/crud/already/feedstock-updated";
 
 
 const UpdateFeedstock = () => {
   const { isOpen, setIsOpen, feedstock, setFeedstock } = useUpdateFeedstockDialog()
   const [alreadyUpdated, setAlreadyUpdated] = useState<boolean>(false)
+  const [updatedFeedstockData, setUpdatedFeedstockData] = useState<FormDataFeedstock | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
   const [isPending, startTransition] = useTransition()
   const { toggle: tableToggle } = useUpdateDataTable("feedstock")
+
+  // Limpiar mensaje de error cuando se actualiza exitosamente
+  useEffect(() => {
+    if (errorMessage && alreadyUpdated) {
+      setErrorMessage(undefined)
+    }
+  }, [alreadyUpdated, errorMessage])
 
   if (feedstock === null) return;
 
@@ -26,15 +32,16 @@ const UpdateFeedstock = () => {
     startTransition(async () => {
       const data = await fetcher({ input: `/api/feedstock/${feedstock.id}`, method: "PUT", body: JSON.stringify(values) })
 
-      // (aún) no existe una estructura clara de error como respuesta
-      if (!data.message?.includes("successfully")) {
-        let posibleMessage = data.description || data.message || data.detail
+      if (data.error || !data.message?.includes("successfully")) {
+        let posibleMessage = data.error || data.description || data.message || data.detail
         if (Array.isArray(posibleMessage)) {
           posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
         }
+        console.error(data)
         setErrorMessage(posibleMessage)
       }
       else {
+        setUpdatedFeedstockData(values)
         setAlreadyUpdated(true)
         itemToasts.updateSuccess({ description: data.name })
         tableToggle()
@@ -45,6 +52,8 @@ const UpdateFeedstock = () => {
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setAlreadyUpdated(false)
+      setUpdatedFeedstockData(null)
+      setErrorMessage(undefined)
     }
     setIsOpen(open)
   }
@@ -53,12 +62,13 @@ const UpdateFeedstock = () => {
     setIsOpen(false)
     setFeedstock(null)
     setAlreadyUpdated(false)
+    setUpdatedFeedstockData(null)
+    setErrorMessage(undefined)
   }
-
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-      <SheetContent className="overflow-y-auto py-6 px-4 gap-10 justify-start">
+      <SheetContent className="py-6 px-4 gap-10 justify-start">
 
         <SheetHeader className={alreadyUpdated ? "sr-only" : " p-0"}>
           <SheetTitle className="text-xl">Editar insumo</SheetTitle>
@@ -70,30 +80,16 @@ const UpdateFeedstock = () => {
         {
           alreadyUpdated
             ?
-            <div className="flex flex-col gap-6 my-auto">
-
-              <div className="flex items-center flex-col gap-1 text-center">
-                <ClipboardCheck className="size-24 text-muted-foreground" />
-                <p className="text-lg font-semibold">Cambios guardados</p>
-                <p className="text-md text-muted-foreground">
-                  La información del insumo se actualizó correctamente.
-                </p>
-              </div>
-
-              <DetailFeedstock feedstock={feedstock} />
-
-              <div className="grid grid-cols-2 gap-4 w-full justify-between items-center">
-                <Button onClick={handleClose} variant="outline" className="cursor-pointer rounded-xs">Cerrar</Button>
-                <Button onClick={() => setAlreadyUpdated(false)} variant="default" className="cursor-pointer rounded-xs">
-                  Volver a editar
-                </Button>
-              </div>
-            </div>
+            <FeedstockUpdated
+              feedstock={updatedFeedstockData || feedstock}
+              handleClose={handleClose}
+              handleReturn={() => setAlreadyUpdated(false)}
+            />
             :
             <>
               <FeedstockForm
                 formId="update-feedstock-form"
-                defaultValues={feedstock}
+                defaultValues={updatedFeedstockData || feedstock}
                 onSubmit={handleUpdate}
               />
 

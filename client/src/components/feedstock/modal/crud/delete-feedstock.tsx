@@ -4,19 +4,21 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useDeleteFeedstockDialog } from "@/hooks/use-feedstock-dialog"
-import { useUpdateDataTable } from "@/hooks/use-update-data-table"
 import { fetcher } from "@/utils/fetcher"
 import { itemToasts } from "@/components/item-toasts"
 import DetailFeedstock from "@/components/feedstock/modal/crud/detail-feedstock"
+import { useUpdateDataTable } from "@/hooks/use-update-data-table"
 
 const DeleteFeedstock = () => {
   const { isOpen, setIsOpen, feedstock, setFeedstock } = useDeleteFeedstockDialog()
   const { toggle: tableToggle } = useUpdateDataTable("feedstock")
+
   if (feedstock === null) return;
 
 
@@ -28,36 +30,41 @@ const DeleteFeedstock = () => {
   }
 
   const handleClick = async () => {
-    const data = await fetcher({ input: `/api/feedstock/${feedstock.id}`, method: "DELETE" })
+    try {
+      const data = await fetcher({ input: `/api/feedstock/${feedstock.id}`, method: "DELETE" })
 
-    if (!data.message?.includes("successfully")) {
-      let message = data.description || data.message || data.detail
-      if (Array.isArray(message)) {
-        message = (message.map(detail => detail.msg)).join(". \n")
+      if (data.error || !data.message?.includes("successfully")) {
+        let posibleMessage = data.error || data.description || data.message || data.detail
+
+        if (Array.isArray(posibleMessage)) {
+          posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
+        }
+        console.error(data)
+        itemToasts.error({ description: feedstock.name, message: posibleMessage })
       }
-
-      // Usar el toast de error personalizado
+      else {
+        // Usar el toast de éxito personalizado
+        itemToasts.deleteSuccess({
+          description: feedstock.name,
+        })
+        handleOpenChange(false)
+        tableToggle()
+      }
+    } catch (error) {
+      console.error(error)
       itemToasts.error({
         description: feedstock.name,
-        message
+        message: "Error inesperado al eliminar el insumo"
       })
     }
-    else {
-      // Usar el toast de éxito personalizado
-      itemToasts.deleteSuccess({
-        description: feedstock.name,
-      })
-      handleOpenChange(false)
-      tableToggle()
-    }
-
   }
 
   return (
     <AlertDialog open={isOpen} onOpenChange={handleOpenChange}>
-      <AlertDialogContent className="w-md max-w-[calc(100swh-3rem)] p-6 gap-8">
+      <AlertDialogContent className="w-md max-w-[calc(100svw-3rem)] p-6 gap-8" data-slot="alert-dialog-delete-product">
         <AlertDialogHeader>
           <AlertDialogTitle>¿Estás seguro de eliminar este insumo?</AlertDialogTitle>
+          <AlertDialogDescription className="sr-only"></AlertDialogDescription>
         </AlertDialogHeader>
 
 
