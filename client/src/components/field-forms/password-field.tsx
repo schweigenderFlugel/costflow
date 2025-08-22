@@ -12,13 +12,17 @@ import { Control, FieldErrors, FieldValues, Path } from "react-hook-form";
 interface PasswordFieldProps<T extends FieldValues> {
   control: Control<T>;
   errors: FieldErrors<T>;
-  name?: Path<T>;
+  name: Path<T>; // obligatorio
+  label?: string; // opcional
+  placeholder?: string;
 }
 
-export function PasswordField<T extends { password: string } & FieldValues>({
+export function PasswordField<T extends FieldValues>({
   control,
   errors,
-  name = "password" as Path<T>,
+  name,
+  label = "Contraseña",
+  placeholder = "Ingresá tu contraseña",
 }: PasswordFieldProps<T>) {
   const [seePassword, setSeePassword] = useState(false);
 
@@ -28,13 +32,15 @@ export function PasswordField<T extends { password: string } & FieldValues>({
       control={control}
       render={({ field }) => (
         <FormItem>
-          <FormLabel htmlFor="password" className="text-xl">Contraseña</FormLabel>
+          <FormLabel htmlFor={name} className="text-xl">
+            {label}
+          </FormLabel>
           <FormControl>
             <div className="relative">
               <Input
-                id="password"
+                id={name}
                 type={seePassword ? "text" : "password"}
-                placeholder="Ingresá tu contraseña"
+                placeholder={placeholder}
                 className="placeholder:italic py-5 xl:py-6 bg-white text-black"
                 {...field}
               />

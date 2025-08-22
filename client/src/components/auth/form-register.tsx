@@ -25,6 +25,8 @@ export default function FormRegister() {
       lastname: "",
       email: "",
       password: "",
+      passwordConfirmation: "",
+      workstation: "",
       terms: false,
     },
   });
@@ -83,15 +85,19 @@ export default function FormRegister() {
           placeholder="Ingresá tu E-Mail"
         />
 
-        <PasswordField control={form.control} errors={form.formState.errors} />
-
-        <TextField<RegisterFormSchema>
-          name="passwordConfirmation"
-          label="Confirmar contraseña"
-          type="email"
+        <PasswordField
           control={form.control}
           errors={form.formState.errors}
-          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          name="password"
+          label="Contraseña"
+          placeholder="Ingresá tu contraseña"
+        />
+
+        <PasswordField
+          control={form.control}
+          errors={form.formState.errors}
+          name="passwordConfirmation"
+          label="Confirmar contraseña"
           placeholder="Ingresá de nuevo tu contraseña"
         />
 

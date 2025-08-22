@@ -34,7 +34,13 @@ export function TextField<T extends FieldValues>({
         <FormItem>
           <FormLabel className="text-xl">{label}</FormLabel>
           <FormControl>
-            <Input type={type} {...field} className={className} placeholder={placeholder} />
+            <Input
+              type={type}
+              {...field}
+              value={field.value ?? ""}
+              className={className}
+              placeholder={placeholder}
+            />
           </FormControl>
           {errors?.[name] && (
             <p className="text-red-500 text-sm">

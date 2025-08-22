@@ -35,7 +35,13 @@ export default function FormLogin() {
     <Form {...form}>
       <form className="flex flex-col gap-y-5 xl:gap-y-6" onSubmit={onSubmit}>
         <EmailField control={form.control} errors={form.formState.errors} />
-        <PasswordField control={form.control} errors={form.formState.errors} />
+        <PasswordField
+          control={form.control}
+          errors={form.formState.errors}
+          name="password"
+          label="Contraseña"
+          placeholder="Ingresá tu contraseña"
+        />
         <Link
           href="/olvide-mi-contrasena"
           className="text-sm text-gray-600 hover:text-gray-800 text-right"
