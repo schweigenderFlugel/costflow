@@ -1,35 +1,57 @@
 "use client"
-import FormFeedstockFooter from "@/components/feedstock/form/form-feedstock-footer";
+import FormProductFooter from "@/components/feedstock/form/form-feedstock-footer";
 import ProductForm from "@/components/product/form/product-form";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import ProductFormSkeleton from "@/components/skeletons/product-form-skeleton";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useUpdateProductDialog } from "@/hooks/use-product-dialog";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
 import { FormDataProduct } from "@/schemas/product-schema";
 import { fetcher } from "@/utils/fetcher";
-import { ClipboardCheck } from "lucide-react";
-import { useState, useTransition } from "react";
-import { toast } from "sonner";
+import { useEffect, useState, useTransition } from "react";
+import { itemToasts } from "@/components/item-toasts";
+import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import { dtoProduct } from "@/components/product/dto/dto-product";
+import ProductUpdated from "@/components/product/modal/crud/already/product-updated";
 
-
-const UpdateFeedstock = () => {
-  const { isOpen, setIsOpen, product, setProduct } = useUpdateProductDialog()
+const UpdateProduct = () => {
   const [alreadyUpdated, setAlreadyUpdated] = useState<boolean>(false)
+  const [updatedProductData, setUpdatedProductData] = useState<FormDataProduct | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
+  const { isOpen, setIsOpen, product, setProduct, isLoadingProduct } = useUpdateProductDialog()
   const [isPending, startTransition] = useTransition()
-  const { toggle: tableToggle } = useUpdateDataTable("product")
+  const { toggle: updateTable } = useUpdateDataTable("product")
 
-  if (product === null) return;
+  // Mover el useEffect antes del early return para evitar problemas de hooks
+  useEffect(() => {
+    if (errorMessage && alreadyUpdated) {
+      setErrorMessage(undefined)
+    }
+  }, [alreadyUpdated, errorMessage])
+
+  if (product === null) return null;
 
   const handleUpdate = async (values: FormDataProduct) => {
     startTransition(async () => {
-      const data = await fetcher({ input: `/api/product/${product.id}`, method: "PUT", body: JSON.stringify(values) })
-      if (data.error) setErrorMessage(data.errro)
-      else {
-        setAlreadyUpdated(true)
-        toast(data.description || data.message)
-        tableToggle()
+      const productDTO = {
+        ...values,
+        feedstocks: values.feedstocks.map(fs => ({
+          feedstock_id: fs.feedstock_id,
+          quantity_required: fs.quantity_required
+        }))
+      }
 
+      const data = await fetcher({ input: `/api/product/${product.id}`, method: "PUT", body: JSON.stringify(productDTO) })
+      if (data.error || !data.message?.includes("successfully")) {
+        let posibleMessage = data.error || data.description || data.message || data.detail
+        if (Array.isArray(posibleMessage)) {
+          posibleMessage = (posibleMessage.map((detail) => detail.msg)).join(". \n")
+        }
+        console.error(data)
+        setErrorMessage(posibleMessage)
+      } else {
+        setUpdatedProductData(values);
+        setAlreadyUpdated(true)
+        itemToasts.updateSuccess({ description: values.name, type: "producto" })
+        updateTable()
       }
     })
   };
@@ -37,6 +59,8 @@ const UpdateFeedstock = () => {
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setAlreadyUpdated(false)
+      setUpdatedProductData(null)
+      setErrorMessage(undefined)
     }
     setIsOpen(open)
   }
@@ -45,44 +69,43 @@ const UpdateFeedstock = () => {
     setIsOpen(false)
     setProduct(null)
     setAlreadyUpdated(false)
+    setUpdatedProductData(null)
+    setErrorMessage(undefined)
   }
 
-
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-[calc(100svw-3rem)] sm md:max-w-[calc(100%-6rem)] sm:min-w-[330px] sm:w-3/4 md:w-2xl overflow-y-auto max-h-[80svh] p-6 gap-8">
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+      <SheetContent className="py-6 px-4 gap-10 justify-start sm:max-w-xl">
 
-        <DialogHeader className={alreadyUpdated ? "sr-only" : ""}>
-          <DialogTitle>Editar insumo</DialogTitle>
-          <DialogDescription className="text-left">
-            Actualizá la información de un insumo ya cargado, modificando su nombre, cantidad, valor o cualquier otro dato relevante para mantener tus registros siempre correctos y actualizados.
-          </DialogDescription>
-        </DialogHeader>
+        <SheetHeader className={alreadyUpdated ? "sr-only" : "p-0"}>
+          <SheetTitle className="text-xl">Editar producto</SheetTitle>
+          <SheetDescription className="text-left">
+            Actualizá la información de un producto ya cargado, modificando su nombre, cantidad, insumos o cualquier otro dato relevante para mantener tus registros siempre correctos y actualizados.
+          </SheetDescription>
+        </SheetHeader>
 
         {
           alreadyUpdated
             ?
-            <div className="flex flex-col items-center justify-between gap-5 my-5">
-              <ClipboardCheck className="size-24 text-muted-foreground" />
-              <p className="text-lg font-semibold text-center">
-                Cambios guardados
-              </p>
-              <p className="text-md text-muted-foreground">
-                La información del insumo se actualizó correctamente.
-              </p>
-              <Button onClick={handleClose} variant="outline" className="w-3/4"       >
-                Cerrar
-              </Button>
-            </div>
+            <ProductUpdated
+              product={updatedProductData || product}
+              handleReturn={() => { setAlreadyUpdated(false) }}
+              handleClose={handleClose}
+            />
+
             :
             <>
-              <ProductForm
-                formId="update-product-form"
-                defaultValues={product}
-                onSubmit={handleUpdate}
-              />
+              {isLoadingProduct ? (
+                <ProductFormSkeleton />
+              ) : (
+                <ProductForm
+                  defaultValues={updatedProductData || dtoProduct(product)}
+                  onSubmit={handleUpdate}
+                  formId="update-product-form"
+                />
+              )}
 
-              <FormFeedstockFooter
+              <FormProductFooter
                 errorMessage={errorMessage}
                 isPending={isPending}
                 submitLabel="Guardar cambios"
@@ -92,10 +115,10 @@ const UpdateFeedstock = () => {
               />
             </>
         }
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
 
   );
 }
 
-export default UpdateFeedstock
+export default UpdateProduct

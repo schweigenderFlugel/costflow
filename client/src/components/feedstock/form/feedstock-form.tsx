@@ -1,0 +1,83 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form } from "@/components/ui/form";
+import { feedstockSchema, FormDataFeedstock } from "@/schemas/feedstock-schema";
+import { useMeasureUnitLogic } from "@/hooks/form/use-measure-unit-logic";
+import {
+  SkuField,
+  NameField,
+  ProviderField,
+  StateMatterField,
+  MeasureUnitField,
+  UnitCostField,
+  CurrencyField
+} from "@/components/shared/form-fields";
+
+interface FeedstockFormProps {
+  defaultValues: Partial<FormDataFeedstock>;
+  onSubmit: (values: FormDataFeedstock) => Promise<void> | void;
+  formId: string;
+}
+
+const FeedstockForm = ({
+  defaultValues,
+  onSubmit,
+  formId
+}: FeedstockFormProps) => {
+  const form = useForm<FormDataFeedstock>({
+    resolver: zodResolver(feedstockSchema),
+    defaultValues,
+  });
+
+  const { selectedState, getAvailableMeasureUnits, handleStateChange } = useMeasureUnitLogic({
+    watch: form.watch,
+    setValue: form.setValue
+  });
+
+  return (
+    <Form {...form}>
+      <form
+        autoComplete="off"
+        onSubmit={form.handleSubmit(onSubmit)}
+        id={formId}
+        className="flex flex-col gap-5 px-1.5"
+      >
+        <SkuField
+          control={form.control}
+          placeholder="Código referencial del insumo"
+        />
+
+        <NameField
+          control={form.control}
+          placeholder="Nombre del insumo"
+        />
+
+        <ProviderField control={form.control} />
+
+        <StateMatterField
+          control={form.control}
+          onStateChange={handleStateChange}
+        />
+
+        <MeasureUnitField
+          control={form.control}
+          availableUnits={getAvailableMeasureUnits()}
+          disabled={!selectedState}
+          className="overflow-hidden"
+        />
+
+        <UnitCostField
+          control={form.control}
+          placeholder="Costo unitario del insumo"
+        />
+
+        <CurrencyField control={form.control} />
+
+      </form>
+    </Form>
+  );
+}
+
+export default FeedstockForm

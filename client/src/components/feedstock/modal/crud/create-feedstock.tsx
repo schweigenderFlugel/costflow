@@ -1,32 +1,41 @@
 "use client"
-import FeedstockForm from "@/components/feedstock/form/form-feedstock";
+import FeedstockForm from "@/components/feedstock/form/feedstock-form";
 import FormFeedstockFooter from "@/components/feedstock/form/form-feedstock-footer";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useCreateFeedstockDialog } from "@/hooks/use-feedstock-dialog";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
 import { FormDataFeedstock } from "@/schemas/feedstock-schema";
+import { itemToasts } from "@/components/item-toasts";
 import { fetcher } from "@/utils/fetcher";
-import { ClipboardCheck } from "lucide-react";
-import { useState, useTransition } from "react";
-import { toast } from "sonner";
+import { useEffect, useState, useTransition } from "react";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Feedstock } from "@/types/items/feedstock";
+import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import FeedstockCreated from "@/components/feedstock/modal/crud/already/feedstock-created";
 
 
 const CreateFeedstock = () => {
-  const { isOpen, setIsOpen, close } = useCreateFeedstockDialog()
   const [alreadyCreated, setAlreadyCreated] = useState<boolean>(false)
-  const [isPending, startTransition] = useTransition()
+  const [currentFeedstock, setCurrentFeedstock] = useState<null | Feedstock>(null)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
+  const { isOpen, setIsOpen, close } = useCreateFeedstockDialog()
+  const [isPending, startTransition] = useTransition()
   const { toggle: tableToggle } = useUpdateDataTable("feedstock")
-
 
   const handleCreate = async (values: FormDataFeedstock) => {
     startTransition(async () => {
       const data = await fetcher({ input: `/api/feedstock`, method: "POST", body: JSON.stringify(values) })
-      if (data.error) setErrorMessage(data.errro)
+
+      if (data.error || !data.message?.includes("successfully")) {
+        let posibleMessage = data.error || data.description || data.message || data.detail
+        if (Array.isArray(posibleMessage)) {
+          posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
+        }
+        console.error(data)
+        setErrorMessage(posibleMessage)
+      }
       else {
+        setCurrentFeedstock(values)
         setAlreadyCreated(true)
-        toast(data.description || data.message)
+        itemToasts.createSuccess({ description: values.name })
         tableToggle()
       }
     })
@@ -35,6 +44,7 @@ const CreateFeedstock = () => {
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setAlreadyCreated(false)
+      setErrorMessage(undefined)
     }
     setIsOpen(open)
   }
@@ -42,48 +52,51 @@ const CreateFeedstock = () => {
   const handleClose = () => {
     setIsOpen(false)
     setAlreadyCreated(false)
+    setErrorMessage(undefined)
   }
 
-  return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-[calc(100svw-3rem)] sm md:max-w-[calc(100%-6rem)] sm:min-w-[330px] sm:w-3/4 md:w-2xl overflow-y-auto max-h-[80svh] p-6 gap-8">
+  useEffect(() => {
+    if (currentFeedstock) setCurrentFeedstock(null)
+  }, [currentFeedstock])
 
-        <DialogHeader className={alreadyCreated ? "sr-only" : ""}>
-          <DialogTitle>Agregar insumo</DialogTitle>
-          <DialogDescription className="text-left">
+  useEffect(() => {
+    if (errorMessage) setErrorMessage(undefined)
+  }, [errorMessage, alreadyCreated])
+
+  return (
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+      <SheetContent className="py-6 px-4 gap-10 justify-start">
+
+        <SheetHeader className={alreadyCreated ? "sr-only" : " p-0"}>
+          <SheetTitle className="text-xl">Crear insumo</SheetTitle>
+          <SheetDescription className="text-left">
             Acá vas a cargar y mantener la lista de {(" ")}
             <strong>
               todos los insumos y materia prima
             </strong>
             {(" ")}que necesitás para crear tus productos.
-          </DialogDescription>
-        </DialogHeader>
+          </SheetDescription>
+        </SheetHeader>
 
         {
           alreadyCreated
             ?
-            <div className="flex flex-col items-center justify-between gap-5 my-5">
-              <ClipboardCheck className="size-24 text-muted-foreground" />
-              <p className="text-lg font-semibold">Insumo agregado exitosamente</p>
-              <div className="grid grid-cols-2 gap-4">
-                <Button onClick={handleClose} variant="outline">Cerrar</Button>
-                <Button onClick={() => setAlreadyCreated(false)} variant="default">
-                  Volver al formulario
-                </Button>
-              </div>
-            </div>
+            <FeedstockCreated
+              feedstock={currentFeedstock}
+              handleClose={handleClose}
+              handleReturn={() => setAlreadyCreated(false)}
+            />
             :
             <>
               <FeedstockForm
                 defaultValues={{
                   sku: "",
                   name: "",
-                  // quantity: 0,
                   currency: undefined,
                   measure_unit: undefined,
                   unit_cost: 0,
                   provider: "",
-                  // entry_date: new Date(),
+                  state: undefined,
                 }}
                 onSubmit={handleCreate}
                 formId="create-feedstock-form"
@@ -100,8 +113,8 @@ const CreateFeedstock = () => {
             </>
         }
 
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
 
 
   );

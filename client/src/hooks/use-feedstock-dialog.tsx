@@ -2,8 +2,11 @@ import useDialogStore from '@/store/feedstock-dialog-store'
 import { useShallow } from 'zustand/react/shallow'
 
 export const useCreateFeedstockDialog = () => {
-  const isOpen = useDialogStore((state) => state.createFeedstockDialog)
-  const setIsOpen = useDialogStore((state) => state.setCreateFeedstockDialog)
+  const { isOpen, setIsOpen } = useDialogStore(
+    useShallow(state => ({
+      isOpen: state.createFeedstockDialog,
+      setIsOpen: state.setCreateFeedstockDialog,
+    })))
 
   return {
     isOpen,
