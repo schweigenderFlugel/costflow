@@ -4,6 +4,9 @@ from datetime import datetime, timezone, timedelta
 import os
 import binascii
 import asyncio
+import json
+
+from events import client_queues
 
 from deps.db_session_dep import SessionDep
 from deps.jwt_dep import JwtPayload
@@ -30,12 +33,11 @@ async def register(db: SessionDep, body: RegisterUser):
         db.add(user)
         db.commit()
 
-        await asyncio.create_task(
-            event_queue.put({
+        for each_queue in client_queues.values():
+            await each_queue.put({
                 "event": "user_registered", 
-                "message": "New user registered"
+                "data": json.dumps({"message": "New user registered"}),
             })
-        )
 
         send_email(
             email=body.model_dump()['email'], 

@@ -7,12 +7,12 @@ from deps.admin_role_dep import AdminRoleDep
 
 from schemas.http_response import Response
 
+from events import client_queues
+
 router = APIRouter(
   tags=['Notifications'],
   prefix='/notifications'
 )
-
-client_queue = {}
 
 @router.get("",
   status_code=200,
@@ -35,10 +35,10 @@ client_queue = {}
       message="Internal server error"
     ).custom_response(),
   }, )
-async def get_notifications(request: Request, jwt: JwtDep, role: AdminRoleDep):
+async def get_notifications(request: Request):
     queue = asyncio.Queue()
     client_id = id(queue)
-    client_queue[client_id] = queue
+    client_queues[client_id] = queue
 
     async def event_generator():
         try:
@@ -50,6 +50,6 @@ async def get_notifications(request: Request, jwt: JwtDep, role: AdminRoleDep):
                     yield event
                 except asyncio.CancelledError:
                     break
-        finally: client_queue.pop(client_id)
+        finally: client_queues.pop(client_id)
 
     return EventSourceResponse(event_generator())
