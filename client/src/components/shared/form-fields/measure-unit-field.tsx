@@ -53,10 +53,14 @@ export function MeasureUnitField<T extends FieldValues>({
               <SelectTrigger className={className?.includes("truncate") ? "truncate" : ""}>
                 <SelectValue
                   placeholder={disabled ? placeholderDisabled : placeholder}
+                  defaultValue={"DEFAULT"}
                 />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
+              <SelectItem disabled value={"DEFAULT"}>
+                Seleccionar unidad
+              </SelectItem>
               {availableUnits.map((unit) => (
                 <SelectItem key={unit} value={unit}>
                   {translateMeasureUnit(unit as MeasureUnit)}

@@ -11,7 +11,6 @@ export enum SolidMeasure {
   KILOGRAMS = "KILOGRAMS",
   TONNES = "TONNES",
   UNITS = "UNITS",
-  BOXES = "BOXES",
   METERS = "METERS",
   SQUARE_METERS = "SQUARE_METERS",
 }
