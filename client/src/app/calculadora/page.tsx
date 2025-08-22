@@ -1,24 +1,23 @@
 import { buttonVariants } from "@/components/ui/button"
 import Link from "next/link"
 import { Link as LinkIcon } from "lucide-react"
+import Image from "next/image"
 
 export const metadata = {
   title: "Calculadora"
 }
 
-
 const Page = () => {
-
-
   return (
     <main className="space-y-8 py-10 min-h-[70svh] items-center content-center">
       {/* Página en progreso */}
-      <img
+      <Image
         src={"https://media.tenor.com/y-XNYFHZLgQAAAAM/homer-simpson.gif"}
         alt="homer-simpson"
         width={220}
         height={165}
         className="mx-auto"
+        unoptimized
       />
 
       <div className="flex flex-col items-center justify-center gap-4">
