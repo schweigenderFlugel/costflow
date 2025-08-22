@@ -5,38 +5,34 @@ import { UUID } from "crypto"
 
 // Interfaz para la relación entre productos y materias primas
 interface ProductFeedstockInput {
-  feedstock_id: UUID,
-  quantity_required: number
+  name: string; // unicamente para el detalle
+  feedstock_id: UUID | string;
+  quantity_required: number;
 }
 
 export interface ObjProductFeedstock {
   id: UUID,
-  quantity_required: number
-  feedstock: UUID,
-  product: UUID,
-  currency: Currency,
-  measure: MeasureUnit,
-  name: string,
-  unit_cost: number
+  quantity_required: number;
+  feedstock: UUID;
+  product: UUID;
+  currency: Currency;
+  measure_unit: MeasureUnit,
+  name: string;
+  unit_cost: number;
+  sku: string;
 }
 
 
 // Producto en sí
 export interface Product extends ItemMeasure {
-  name: string,
-  description?: string,
-  feedstocks: ProductFeedstockInput[],
+  name: string;
+  description?: string;
+  feedstocks: ProductFeedstockInput[];
+  sku: string;
 }
 
-// This interface intentionally left empty to satisfy type requirements.
-export interface ObjProduct extends BackendProperties, ItemMeasure {
-  name: string
-  description: string,
-  feedstocks: ObjProductFeedstock[],
-  provider: string,
-
-
-  subtotal: number,
+export interface ObjProduct extends Omit<Product, 'feedstocks'>, BackendProperties, ItemMeasure {
+  feedstocks: ObjProductFeedstock[];
 }
 
 /* SUPUESTAMENTE DEVUELVE ESTO TMB PERO LO TENDRÁ Q CORREGIR EL BACK

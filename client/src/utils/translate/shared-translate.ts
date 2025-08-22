@@ -6,7 +6,7 @@ import { MeasureUnit, StateMatter } from "@/types/measure/measure-unit";
 const translationsStateMatter: Record<StateMatter, string> = {
   [StateMatter.SOLID]: "Sólido",
   [StateMatter.LIQUID]: "Líquido",
-  [StateMatter.GAS]: "Gas",
+  [StateMatter.GASEOUS]: "Gaseoso",
 };
 
 // Traducciones para unidades de medida
@@ -16,7 +16,6 @@ const translationsMeasureUnit: Record<MeasureUnit, string> = {
   [MeasureUnit.KILOGRAMS]: "Kilogramos",
   [MeasureUnit.TONNES]: "Toneladas",
   [MeasureUnit.UNITS]: "Unidades",
-  [MeasureUnit.BOXES]: "Cajas",
   [MeasureUnit.METERS]: "Metros",
   [MeasureUnit.SQUARE_METERS]: "Metros cuadrados",
 

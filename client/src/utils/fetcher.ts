@@ -18,7 +18,21 @@ export const fetcher = async ({ input, method = "GET", body, headers, cache }: F
       ...hasDuplex,
       cache: cache ?? "no-store",
     })
-
+    if (!res.ok) {
+      if (res.status === 401) {
+        // Manejar el error 401 (no autorizado) de manera específica si es necesario
+        return { error: "No autorizado. Por favor, inicia sesión." }
+      }
+      const errorMessage = res.status ? `Error - ${res.status ?? "interno"}: ${res.statusText ?? "Inténtalo más tarde."}` : await res.text()
+      const errorDetail = () => {
+        try {
+          return res.json().then(data => data.detail).catch(() => null);
+        } catch {
+          return null;
+        }
+      }
+      return { error: errorMessage, detail: errorDetail() }
+    }
     const data = await res.json()
     return data;
   } catch (error) {

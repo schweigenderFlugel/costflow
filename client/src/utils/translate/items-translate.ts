@@ -5,8 +5,9 @@ import { ObjProduct } from "@/types/items/product";
 const translationsFeedstockHeaders: Record<keyof ObjFeedstock, string> = {
   // Información general
   id: "ID",
+  sku: "SKU",
   is_deleted: "Eliminado",
-  created_at: "Creado",
+  created_at: "Creación",
   updated_at: "Actualizado",
   // Información del insumo
   name: "Nombre",
@@ -23,19 +24,18 @@ const translationsFeedstockHeaders: Record<keyof ObjFeedstock, string> = {
 const translationsProductsHeaders: Record<keyof ObjProduct, string> = {
   // Información general
   id: "ID",
+  sku: "SKU",
   is_deleted: "Eliminado",
-  created_at: "Creado",
+  created_at: "Creación",
   updated_at: "Actualizado",
   // Información del producto
   name: "Nombre",
   description: "Descripción",
   //
-  state: "Estado",
+  state: "Material",
   measure_unit: "Unidad",
   quantity: "Cantidad",
   //
-  provider: "Proveedor",
-  subtotal: "Subtotal",
   feedstocks: "Materias Primas",
 };
 

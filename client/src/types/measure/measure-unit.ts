@@ -3,7 +3,7 @@
 export enum StateMatter {
   SOLID = "SOLID",
   LIQUID = "LIQUID",
-  GAS = "GAS",
+  GASEOUS = "GASEOUS",
 }
 
 export enum SolidMeasure {
@@ -35,7 +35,6 @@ export enum MeasureUnit {
   KILOGRAMS = "KILOGRAMS",
   TONNES = "TONNES",
   UNITS = "UNITS",
-  BOXES = "BOXES",
   METERS = "METERS",
   SQUARE_METERS = "SQUARE_METERS",
 

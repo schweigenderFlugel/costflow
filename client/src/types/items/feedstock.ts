@@ -4,10 +4,11 @@ import { ItemMeasure } from "@/types/measure/measure-unit"
 
 
 export interface Feedstock extends Omit<ItemMeasure, "quantity"> {
-  name: string,
-  currency: Currency,
-  unit_cost: number,
-  provider?: string,
+  name: string;
+  currency: Currency;
+  unit_cost: number;
+  provider?: string;
+  sku: string;
 }
 
 // This interface intentionally left empty to satisfy type requirements.
