@@ -25,7 +25,9 @@ const useFetch = <T,>(
     // solo fetch si hay cambio real respecto al anterior
     if (state !== null && state !== prev) {
       startTransition(fetchToData)
-      markPrev(state) // actualizamos el valor previo en el store global
+      if (markPrev) {
+        markPrev(state) // actualizamos el valor previo en el store global
+      }
     }
   }, [state, prev, markPrev, inputRequest])
 
