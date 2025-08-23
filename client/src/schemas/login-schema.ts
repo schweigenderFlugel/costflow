@@ -14,12 +14,7 @@ export const userSchema = z.object({
   email: z.string().email({ message: "El correo no es válido" }).trim(),
   password: z
     .string()
-  // .min(6, { message: errorPasswordMessages[0] })
-  // .regex(/[A-Z]/, { message: errorPasswordMessages[1] })
-  // .regex(/[a-z]/, { message: errorPasswordMessages[2] })
-  // .regex(/[0-9]/, { message: errorPasswordMessages[3] })
-  // .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: errorPasswordMessages[4] })
-  // .regex(/^[^\s]+$/, { message: errorPasswordMessages[5] }),
+    .min(1, "Ingrese su contraseña")
 });
 
 export type LoginFormSchema = z.infer<typeof userSchema>;
