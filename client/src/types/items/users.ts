@@ -1,3 +1,10 @@
+
+export enum UserState {
+  PENDING = "PENDING",
+  REJECTED = "REJECTED",
+  ACCEPTED = "ACCEPTED",
+}
+
 export interface UsersData {
   id: string;
   role: string;
@@ -8,5 +15,5 @@ export interface UsersData {
   created_at: string;
   updated_at: string;
   recovery_code: string | null;
-  state: "PENDING" | "ACCEPTED" | "REJECTED";
+  state: UserState;
 }

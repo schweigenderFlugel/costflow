@@ -3,14 +3,15 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { UsersData } from "../../types/items/users";
 import { Button } from "../ui/button";
-import { createDateColumn } from "@/components/data-table/column-helpers";
+import { createActionsColumn, createDateColumn, createTextColumn } from "@/components/data-table/column-helpers";
+import { translateUserState } from "@/utils/translate/user";
 
 export const columns: ColumnDef<UsersData>[] = [
-  { accessorKey: "name", header: "Nombre" },
-  { accessorKey: "lastname", header: "Apellido" },
-  { accessorKey: "email", header: "Email" },
-  { accessorKey: "role", header: "Rol" },
-  { accessorKey: "workstation", header: "Puesto" },
+  createTextColumn<UsersData>("name", "Nombre", { alignment: "center" }),
+  createTextColumn<UsersData>("lastname", "Apellido", { alignment: "center" }),
+  createTextColumn<UsersData>("email", "Email", { alignment: "center" }),
+  createTextColumn<UsersData>("role", "Rol", { alignment: "center" }),
+  createTextColumn<UsersData>("workstation", "Puesto", { alignment: "center" }),
   {
     accessorKey: "state",
     header: "Estado",
@@ -22,36 +23,43 @@ export const columns: ColumnDef<UsersData>[] = [
           : state === "ACCEPTED"
             ? "text-green-600"
             : "text-red-600";
-      return <span className={color}>{state}</span>;
-    },
-  },
-  {
-    id: "actions",
-    header: "Acciones",
-    cell: ({ row }) => {
-      const userId = row.original.id;
-      const state = row.original.state;
-      if (state !== "PENDING") return null;
-      return (
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            variant="default"
-            onClick={() => console.log("Accept", userId)}
-          >
-            Aceptar
-          </Button>
-          <Button
-            size="sm"
-            variant="destructive"
-            onClick={() => console.log("Reject", userId)}
-          >
-            Rechazar
-          </Button>
-        </div>
-      );
+      return <span className={color}>{translateUserState(state)}</span>;
     },
   },
   createDateColumn<UsersData>("created_at", "Creado"),
   createDateColumn<UsersData>("updated_at", "Actualizado"),
+  createActionsColumn<UsersData>(({ state: user }: { state: UsersData }) => {
+
+    if (user.state !== "PENDING") return (
+      <div className="text-center">
+        <Button
+          size="sm"
+          variant="outline"
+          className="hover:bg-"
+          onClick={() => console.log("Change to pending", user.id)}
+        >
+          Modificar
+        </Button>
+      </div>);
+
+    return (
+      <div className="flex gap-2 justify-center">
+        <Button
+          size="sm"
+          variant="default"
+          className="bg-emerald-700 hover:bg-emerald-600"
+          onClick={() => console.log("Accept", user.id)}
+        >
+          Aceptar
+        </Button>
+        <Button
+          size="sm"
+          variant="destructive"
+          onClick={() => console.log("Reject", user.id)}
+        >
+          Denegar
+        </Button>
+      </div>
+    );
+  }, "state", "Acceso"),
 ];

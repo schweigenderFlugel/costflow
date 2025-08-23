@@ -69,7 +69,7 @@ const GenericDataTable = <TData,>({ columns, columnsTo = "feedstock", initialDat
     <div className="w-full">
       <HeaderTable<TData> columnsTo={columnsTo} table={table} />
 
-      <div className="overflow-x-auto rounded-md border">
+      <div className="overflow-x-auto overflow-hidden">
         <OnlyTable<TData>
           table={table}
           colSpan={columns.length}

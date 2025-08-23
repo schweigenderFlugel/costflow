@@ -1,4 +1,10 @@
-import { UsersData } from "@/types/items/users";
+import { UsersData, UserState } from "@/types/items/users";
+
+const translationState: Record<UserState, string> = {
+  [UserState.PENDING]: "Pendiente",
+  [UserState.REJECTED]: "Rechazado",
+  [UserState.ACCEPTED]: "Aceptado",
+};
 
 const translationsHeaders: Record<keyof UsersData, string> = {
   id: "ID",
@@ -16,4 +22,8 @@ const translationsHeaders: Record<keyof UsersData, string> = {
 export const translateUserHeaders = (header: keyof UsersData | "actions") => {
   if (header === "actions") return "Acciones";
   return translationsHeaders[header as keyof UsersData];
+};
+
+export const translateUserState = (state: UserState) => {
+  return translationState[state];
 };
