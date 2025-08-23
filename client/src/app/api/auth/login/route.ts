@@ -11,10 +11,13 @@ export async function POST(req: NextRequest) {
     body: req.body,
   });
 
-  if (data.access_token) {
+  if (data?.access_token) {
     await saveToken(data.access_token)
     revalidatePath("/login")
     return NextResponse.json({ message: "Sesión iniciada correctamente", success: true });
+  }
+  if (data?.detail === "Not allowed to login") {
+    return NextResponse.json({ message: "No tienes permiso para iniciar sesión", success: false });
   }
 
   return NextResponse.json(data);

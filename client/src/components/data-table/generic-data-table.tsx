@@ -18,22 +18,26 @@ import HeaderTable from "@/components/data-table/header-table";
 import useFetch from "@/hooks/use-fetch";
 
 interface GenericDataTableProps<TData> {
-  initialData: TData[];
-  columns: ColumnDef<TData>[];
-  columnsTo?: "product" | "feedstock" | "users";
+  initialData: TData[]
+  columns: ColumnDef<TData>[]
+  columnsTo?: "product" | "feedstock" | "users"
 }
 
-const GenericDataTable = <TData,>({
-  columns,
-  columnsTo = "feedstock",
-  initialData,
-}: GenericDataTableProps<TData>) => {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = useState({});
+const GenericDataTable = <TData,>({ columns, columnsTo = "feedstock", initialData }: GenericDataTableProps<TData>) => {
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    // Ocultar las columnas de fecha por defecto
+    created_at: false,
+    updated_at: false,
+  })
+  const [rowSelection, setRowSelection] = useState({})
 
-  const { data, error, isPending } = useFetch<TData[]>(columnsTo, initialData);
+  const {
+    data,
+    error,
+    isPending
+  } = useFetch<TData[]>(columnsTo, initialData)
 
   const table = useReactTable<TData>({
     data,
@@ -65,7 +69,7 @@ const GenericDataTable = <TData,>({
     <div className="w-full">
       <HeaderTable<TData> columnsTo={columnsTo} table={table} />
 
-      <div className="overflow-hidden rounded-md border">
+      <div className="overflow-x-auto rounded-md border">
         <OnlyTable<TData>
           table={table}
           colSpan={columns.length}

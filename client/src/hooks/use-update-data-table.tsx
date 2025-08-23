@@ -10,14 +10,12 @@ export const useUpdateDataTable = (
     setUpdateFeedstock,
     setUpdateProduct,
     setUpdateUsers,
-  } = useUpdateDataTableStore(useShallow((state) => state));
+    prevFeedstock,
+    prevProduct,
+    markPrevFeedstock,
+    markPrevProduct,
+  } = useUpdateDataTableStore(useShallow((state) => state))
 
-  if (dataForTable === "product") {
-    return {
-      state: updateProduct,
-      toggle: () => setUpdateProduct(!updateProduct),
-    };
-  }
 
   if (dataForTable === "users") {
     return {
@@ -26,8 +24,19 @@ export const useUpdateDataTable = (
     };
   }
 
+  if (dataForTable === "product") {
+    return {
+      state: updateProduct,
+      prev: prevProduct,
+      toggle: () => setUpdateProduct(!updateProduct),
+      markPrev: markPrevProduct,
+    };
+  }
+
   return {
     state: updateFeedstock,
+    prev: prevFeedstock,
     toggle: () => setUpdateFeedstock(!updateFeedstock),
-  };
-};
+    markPrev: markPrevFeedstock,
+  }
+}

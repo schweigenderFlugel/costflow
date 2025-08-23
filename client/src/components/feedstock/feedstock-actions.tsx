@@ -11,22 +11,21 @@ const FeedstockActions = ({ feedstock }: { feedstock: ObjFeedstock }) => {
   const handleDelete = () => {
     setDeleteState(true)
     setDeleteFeedstock(feedstock)
-    console.log("Delete feedstock", feedstock.id)
   }
   const handleUpdate = () => {
     setUpdateState(true)
     setUpdateFeedstock(feedstock)
-    console.log("Update feedstock", feedstock.id)
   }
 
 
-  return (<div className="flex gap-1 px-1">
+  return (<div className="flex gap-1">
     <Button
       data-slot="feedstock-update-dialog-trigger"
       onClick={handleUpdate}
       type="button"
       className="text-primary hover:text-primary cursor-pointer"
       variant={"ghost"}
+      size={"sm"}
     >
       <Pencil className="size-4" />
     </Button>
@@ -37,6 +36,7 @@ const FeedstockActions = ({ feedstock }: { feedstock: ObjFeedstock }) => {
       type="button"
       className="text-red-800 hover:text-red-800 cursor-pointer"
       variant={"ghost"}
+      size={"sm"}
     >
       <Trash2 className="size-4" />
     </Button>

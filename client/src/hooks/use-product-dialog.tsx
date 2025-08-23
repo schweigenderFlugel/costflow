@@ -32,11 +32,13 @@ export const useCreateProductDialog = () => {
 
 
 export const useUpdateProductDialog = () => {
-  const { isOpen, setIsOpen, product, setProduct } = useProductDialogStore(useShallow((state) => ({
+  const { isOpen, setIsOpen, product, setProduct, isLoadingProduct, setIsLoadingProduct } = useProductDialogStore(useShallow((state) => ({
     isOpen: state.updateProductDialog,
     setIsOpen: state.setUpdateProductDialog,
     product: state.product,
-    setProduct: state.setProduct
+    setProduct: state.setProduct,
+    isLoadingProduct: state.isLoadingProduct,
+    setIsLoadingProduct: state.setIsLoadingProduct
   })))
 
   return {
@@ -44,6 +46,8 @@ export const useUpdateProductDialog = () => {
     setIsOpen,
     product,
     setProduct,
+    isLoadingProduct,
+    setIsLoadingProduct,
   }
 }
 

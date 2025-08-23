@@ -1,5 +1,11 @@
+import { UUID } from "crypto"
 
-export interface Timestamp {
+interface Timestamp {
   created_at: Date,
   updated_at: Date
+}
+
+export interface BackendProperties extends Timestamp {
+  id: UUID,
+  is_deleted: boolean
 }

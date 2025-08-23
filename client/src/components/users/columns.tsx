@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { UsersData } from "../../types/items/users";
 import { Button } from "../ui/button";
+import { createDateColumn } from "@/components/data-table/column-helpers";
 
 export const columns: ColumnDef<UsersData>[] = [
   { accessorKey: "name", header: "Nombre" },
@@ -19,8 +20,8 @@ export const columns: ColumnDef<UsersData>[] = [
         state === "PENDING"
           ? "text-yellow-600"
           : state === "ACCEPTED"
-          ? "text-green-600"
-          : "text-red-600";
+            ? "text-green-600"
+            : "text-red-600";
       return <span className={color}>{state}</span>;
     },
   },
@@ -51,4 +52,6 @@ export const columns: ColumnDef<UsersData>[] = [
       );
     },
   },
+  createDateColumn<UsersData>("created_at", "Creado"),
+  createDateColumn<UsersData>("updated_at", "Actualizado"),
 ];
