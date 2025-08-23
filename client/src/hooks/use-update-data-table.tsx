@@ -1,7 +1,7 @@
 import useUpdateDataTableStore from "@/store/update-table-store";
 import { useShallow } from "zustand/react/shallow";
 export const useUpdateDataTable = (
-  dataForTable: "feedstock" | "product" | "users" = "feedstock"
+  dataForTable: "feedstock" | "product" | "users" | "indirect_cost" = "feedstock"
 ) => {
   const {
     updateFeedstock,

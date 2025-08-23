@@ -20,7 +20,7 @@ import useFetch from "@/hooks/use-fetch";
 interface GenericDataTableProps<TData> {
   initialData: TData[]
   columns: ColumnDef<TData>[]
-  columnsTo?: "product" | "feedstock" | "users"
+  columnsTo?: "product" | "feedstock" | "users" | "indirect_cost"
 }
 
 const GenericDataTable = <TData,>({ columns, columnsTo = "feedstock", initialData }: GenericDataTableProps<TData>) => {

@@ -4,7 +4,7 @@ import { fetcher } from "@/utils/fetcher";
 import { useEffect, useState, useTransition } from "react";
 
 const useFetch = <T,>(
-  inputRequest: "product" | "feedstock" | "users" = "feedstock",
+  inputRequest: "product" | "feedstock" | "users" | "indirect_cost" = "feedstock",
   initialData: T | [] = []
 ) => {
   const [data, setData] = useState<T | []>(initialData)
