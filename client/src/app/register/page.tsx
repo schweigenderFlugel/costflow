@@ -3,22 +3,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function RegisterPage() {
   return (
-    <div className="flex flex-col md:flex-row h-screen">
+    <div className="flex flex-col lg:flex-row ">
       <div
-        className="hidden md:block w-full md:w-5/8 md:h-auto bg-cover bg-center"
+        className="hidden md:block w-full md:w-5/8 lg:h-auto bg-cover bg-center"
         style={{ backgroundImage: "url('assets/images/gradientelogin.jpg')" }}
       ></div>
 
-      <div className="w-full md:w-3/8 flex items-center justify-center md:p-6">
-        <Card className="w-full md:w-10/12 h-auto md:h-auto border-none shadow-none bg-login-mobile rounded-none text-white md:text-black">
+      <div
+        className="w-full lg:w-4/8 flex items-center justify-center lg:p-6 min-h-screen
+             bg-[url('/assets/images/gradientelogin.jpg')] bg-cover bg-center
+             lg:bg-none lg:bg-white"
+      >
+        <Card className="w-full lg:w-10/12 h-auto border-none shadow-none rounded-none text-white lg:text-black bg-transparent">
           <CardHeader>
             <div>
-              <p className="text-center text-4xl md:hidden m-20 font-bold">
+              <p className="text-center text-3xl lg:hidden my-8 font-bold">
                 Cotzia
               </p>
             </div>
 
-            <CardTitle className="text-left text-2xl md:text-3xl font-bold md:mb-10 mb-7">
+            <CardTitle className="text-center text-2xl lg:text-xl font-bold lg:text-left">
               Crear cuenta
             </CardTitle>
           </CardHeader>
