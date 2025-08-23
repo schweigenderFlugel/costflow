@@ -1,34 +1,59 @@
 "use client"
-import FeedstockForm from "@/components/feedstock/form/form-feedstock";
+import FeedstockForm from "@/components/feedstock/form/feedstock-form";
 import FormFeedstockFooter from "@/components/feedstock/form/form-feedstock-footer";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useUpdateFeedstockDialog } from "@/hooks/use-feedstock-dialog";
 import { FormDataFeedstock } from "@/schemas/feedstock-schema";
-import { ClipboardCheck } from "lucide-react";
-import { useState, useTransition } from "react";
+import { itemToasts } from "@/components/item-toasts";
+import { fetcher } from "@/utils/fetcher";
+import { useEffect, useState, useTransition } from "react";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import FeedstockUpdated from "@/components/feedstock/modal/crud/already/feedstock-updated";
 
 
 const UpdateFeedstock = () => {
   const { isOpen, setIsOpen, feedstock, setFeedstock } = useUpdateFeedstockDialog()
   const [alreadyUpdated, setAlreadyUpdated] = useState<boolean>(false)
+  const [updatedFeedstockData, setUpdatedFeedstockData] = useState<FormDataFeedstock | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
   const [isPending, startTransition] = useTransition()
+  const { toggle: tableToggle } = useUpdateDataTable("feedstock")
+
+  // Limpiar mensaje de error cuando se actualiza exitosamente
+  useEffect(() => {
+    if (errorMessage && alreadyUpdated) {
+      setErrorMessage(undefined)
+    }
+  }, [alreadyUpdated, errorMessage])
 
   if (feedstock === null) return;
 
   const handleUpdate = async (values: FormDataFeedstock) => {
     startTransition(async () => {
-      return new Promise((resolve) => setTimeout(resolve, 2000)).then(() => {
-        console.log("Updating feedstock:", values)
+      const data = await fetcher({ input: `/api/feedstock/${feedstock.id}`, method: "PUT", body: JSON.stringify(values) })
+
+      if (data.error || !data.message?.includes("successfully")) {
+        let posibleMessage = data.error || data.description || data.message || data.detail
+        if (Array.isArray(posibleMessage)) {
+          posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
+        }
+        console.error(data)
+        setErrorMessage(posibleMessage)
+      }
+      else {
+        setUpdatedFeedstockData(values)
         setAlreadyUpdated(true)
-      })
+        itemToasts.updateSuccess({ description: data.name })
+        tableToggle()
+      }
     })
   };
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setAlreadyUpdated(false)
+      setUpdatedFeedstockData(null)
+      setErrorMessage(undefined)
     }
     setIsOpen(open)
   }
@@ -37,40 +62,34 @@ const UpdateFeedstock = () => {
     setIsOpen(false)
     setFeedstock(null)
     setAlreadyUpdated(false)
+    setUpdatedFeedstockData(null)
+    setErrorMessage(undefined)
   }
 
-
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-[calc(100svw-3rem)] sm md:max-w-[calc(100%-6rem)] sm:min-w-[330px] sm:w-3/4 md:w-2xl overflow-y-auto max-h-[80svh] p-6 gap-8">
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+      <SheetContent className="py-6 px-4 gap-10 justify-start">
 
-        <DialogHeader className={alreadyUpdated ? "sr-only" : ""}>
-          <DialogTitle>Editar insumo</DialogTitle>
-          <DialogDescription className="text-left">
+        <SheetHeader className={alreadyUpdated ? "sr-only" : " p-0"}>
+          <SheetTitle className="text-xl">Editar insumo</SheetTitle>
+          <SheetDescription className="text-left">
             Actualizá la información de un insumo ya cargado, modificando su nombre, cantidad, valor o cualquier otro dato relevante para mantener tus registros siempre correctos y actualizados.
-          </DialogDescription>
-        </DialogHeader>
+          </SheetDescription>
+        </SheetHeader>
 
         {
           alreadyUpdated
             ?
-            <div className="flex flex-col items-center justify-between gap-5 my-5">
-              <ClipboardCheck className="size-24 text-muted-foreground" />
-              <p className="text-lg font-semibold text-center">
-                Cambios guardados
-              </p>
-              <p className="text-md text-muted-foreground">
-                La información del insumo se actualizó correctamente.
-              </p>
-              <Button onClick={handleClose} variant="outline" className="w-3/4"       >
-                Cerrar
-              </Button>
-            </div>
+            <FeedstockUpdated
+              feedstock={updatedFeedstockData || feedstock}
+              handleClose={handleClose}
+              handleReturn={() => setAlreadyUpdated(false)}
+            />
             :
             <>
               <FeedstockForm
                 formId="update-feedstock-form"
-                defaultValues={feedstock}
+                defaultValues={updatedFeedstockData || feedstock}
                 onSubmit={handleUpdate}
               />
 
@@ -84,8 +103,8 @@ const UpdateFeedstock = () => {
               />
             </>
         }
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
 
   );
 }

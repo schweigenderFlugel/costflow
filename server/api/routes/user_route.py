@@ -90,3 +90,33 @@ def get_all_users(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep):
 )
 def get_user_by_id(id: str, session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep):
   return user_service.get_user_by_id(db=session, user_id=id)
+
+@router.get('/enable/{id}',
+            status_code=200,
+  tags=['Users'], 
+  summary='Enable user',
+  responses={
+    200: Response(
+      description="User successfully enabled",
+      content_type="application/json",
+      message="User successfully enabled"
+    ).custom_response(), 
+    401: Response(
+      description='Invalid or expired creadentials', 
+      content_type='application/json',
+      message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+      description='Not allowed because invalid role', 
+      content_type='application/json',
+      message='Not allowed to access',
+    ).custom_response(),
+    500: Response(
+      description='Unexpected internal error has ocurred', 
+      content_type='application/json',
+      message="Internal server error"
+    ).custom_response(),
+  },            
+)
+def enable_user(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str):
+  return user_service.enable_user(db=session, id=id)

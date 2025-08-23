@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import Header from "@/layouts/header";
+import Footer from "@/layouts/footer";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -26,11 +28,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${nunito.variable} ${nunito.className} ${geistMono.variable} antialiased`}
+        className={`${nunito.variable} ${nunito.className} ${geistMono.variable} antialiased flex flex-col justify-between h-svh max-w-svw`}
       >
+        <Header />
         <main>{children}</main>
-
         <Toaster />
+        <Footer />
       </body>
     </html>
   );

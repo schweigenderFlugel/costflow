@@ -10,6 +10,7 @@ import { EmailField } from "@/components/field-forms/email-field";
 import { PasswordField } from "@/components/field-forms/password-field";
 import type { LoginFormSchema } from "@/schemas/login-schema";
 import { toast } from "sonner";
+import { fetcher } from "@/utils/fetcher";
 
 export default function FormLogin() {
   const form = useForm<LoginFormSchema>({
@@ -20,10 +21,13 @@ export default function FormLogin() {
     },
   });
 
-  const onSubmit = form.handleSubmit((values) => {
-    console.log("Valores del formulario:", values);
-    const id = toast("Inicio de sesión exitoso", {
-      description: `Bienvenido, ${values.email}`,
+  const onSubmit = form.handleSubmit(async (values) => {
+    // console.log("Valores del formulario:", values);
+
+    const data = await fetcher({ input: "/api/auth/login", method: "POST", body: JSON.stringify(values) })
+    if (data.success) { window.location.reload() }
+    const id = toast("Inicio de sesión", {
+      description: data.message || data.description || data.detail,
       action: {
         label: "Cerrar",
         onClick: () => toast.dismiss(id),

@@ -1,6 +1,6 @@
 "use client";
 
-import { Form } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,14 +8,16 @@ import Link from "next/link";
 import { registerSchema, RegisterFormSchema } from "@/schemas/register-schema";
 import { TextField } from "@/components/field-forms/text-field";
 import { PasswordField } from "@/components/field-forms/password-field";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-} from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox";
+// import {
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormControl,
+// } from "@/components/ui/form";
+// import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
+import { fetcher } from "@/utils/fetcher";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function FormRegister() {
   const form = useForm<RegisterFormSchema>({
@@ -31,11 +33,20 @@ export default function FormRegister() {
     },
   });
 
-  const onSubmit = form.handleSubmit((values) => {
-    console.log("Valores del registro:", values);
-    const id = toast("Registro exitoso", {
-      description:
-        "Tu cuenta ha sido creada y está pendiente de aprobación por el administrador.",
+  const onSubmit = form.handleSubmit(async (values) => {
+    // console.log("Valores del registro:", values);
+    const data = await fetcher({
+      input: process.env.NEXT_PUBLIC_SERVER_API + "/auth/register",
+      method: "POST",
+      body: JSON.stringify(values)
+    })
+
+    console.log(data);
+
+
+    const id = toast("Registro", {
+      description: data.message || data.description || data.detail,
+      // "Tu cuenta ha sido creada y está pendiente de aprobación por el administrador.",
       action: {
         label: "Cerrar",
         onClick: () => toast.dismiss(id),
@@ -105,7 +116,7 @@ export default function FormRegister() {
           name="terms"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center space-x-3 space-y-0 col-span-full">
+            <FormItem className="flex flex-row justify-center items-center space-y-0 col-span-full">
               <FormControl>
                 <Checkbox
                   checked={field.value}
@@ -114,15 +125,15 @@ export default function FormRegister() {
               </FormControl>
               <FormLabel className="text-sm font-normal">
                 Acepto los
-                <Link href="#" className="underline underline-offset-2">
+                <span className="underline underline-offset-2">
                   términos y condiciones
-                </Link>
+                </span>
               </FormLabel>
             </FormItem>
           )}
         />
         {form.formState.errors.terms && (
-          <p className="text-red-500 text-sm col-span-full">
+          <p className="text-red-500 text-sm col-span-full text-center">
             {form.formState.errors.terms.message}
           </p>
         )}
@@ -147,6 +158,6 @@ export default function FormRegister() {
           </Button>
         </div>
       </form>
-    </Form>
+    </Form >
   );
 }

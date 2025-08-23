@@ -7,7 +7,9 @@ import os
 from config.envs import FRONTEND_URL
 
 from deps.db_session_dep import create_db_and_tables
-from routes import auth_route, user_route, feedstock_route, product_route 
+from routes import auth_route, user_route, feedstock_route, product_route
+
+from utils.dolar_api_utils import get_dolar_current_price
 
 load_dotenv()
 

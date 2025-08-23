@@ -1,4 +1,4 @@
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 from sqlmodel import SQLModel, Field
 from sqlalchemy import Column, VARCHAR, FLOAT, BOOLEAN, TIMESTAMP
 from sqlalchemy.dialects.postgresql import ENUM
@@ -8,20 +8,33 @@ from datetime import datetime, timezone
 from pydantic import create_model
 
 class MeasureUnit(str, Enum):
-    GRAMS = 'GRAMS'
-    CUBIC_CENTIMETERS = 'CM3'
-    UNIT = 'UNIT'
-    OTHERS = 'OTHERS'
+    GRAMS = "GRAMS"
+    KILOGRAMS = "KILOGRAMS"
+    TONNES = "TONNES"
+    UNITS = "UNITS"
+    BOXES = "BOXES"
+    METERS = "METERS"
+    SQUARE_METERS = "SQUARE_METERS"
+    LITERS = "LITERS"
+    MILLILITERS = "MILLILITERS"
+    GALLONS = "GALLONS"
+    CUBIC_METERS = "CUBIC_METERS"
+    LITERS_GAS = "LITERS_GAS"
 
 class Currency(str, Enum):
     USD = 'USD'
     ARS = 'ARS'
-    OTHER = 'OTHER'
+
+class MatterState(str, Enum):
+    SOLID = "SOLID"
+    LIQUID = "LIQUID" 
+    GASEOUS = "GASEOUS"
 
 class FeedstockBase(SQLModel):
     name: str = Field(sa_column=Column(VARCHAR), description='Name of the feedstock')
     sku: str = Field(sa_column=Column(VARCHAR), description='Sku of the feedstock')
     currency: str = Field(sa_column=Column(ENUM(Currency)), description='The currency of the product: pesos, dolar')
+    state: MatterState = Field(sa_column=Column(ENUM(MatterState)), description='The matter state of the feedstock')
     measure_unit: MeasureUnit = Field(sa_column=Column(ENUM(MeasureUnit)), description='Unit measure for feedstock')
     unit_cost: float = Field(sa_column=Column(FLOAT), description='The cost per unit')
     provider: Optional[str] = Field(sa_column=Column(VARCHAR), description='The provider of the feedstock')

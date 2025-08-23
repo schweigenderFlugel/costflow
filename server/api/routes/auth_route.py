@@ -69,7 +69,7 @@ def login(res: Res, session: SessionDep, body: Login = Body()):
     key=COOKIE_NAME,
     value=tokens['refresh_token'],
     httponly=True, 
-    secure=False, 
+    secure=True, 
     samesite='none',
     expires=(datetime.now(timezone.utc) + timedelta(hours=2))
   )
@@ -97,7 +97,7 @@ def refresh(res: Res, session: SessionDep, payload: RefreshSessionDep):
   res.delete_cookie(
     key=COOKIE_NAME, 
     httponly=True, 
-    secure=False, 
+    secure=True, 
     samesite='none',
   )
   tokens = auth_service.refresh(db=session, payload=payload)
@@ -105,7 +105,7 @@ def refresh(res: Res, session: SessionDep, payload: RefreshSessionDep):
     key=COOKIE_NAME,
     value=tokens['refresh_token'],
     httponly=True, 
-    secure=False, 
+    secure=True, 
     samesite='none',
     expires=(datetime.now(timezone.utc) + timedelta(hours=2))
   )
