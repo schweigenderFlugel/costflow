@@ -209,10 +209,11 @@ export const createTranslatedColumn = <T, V = unknown>(
 export const createActionsColumn = <T,>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ActionsComponent: React.ComponentType<any>,
-  propName: string = "item"
+  propName: string = "item",
+  header: string = ""
 ): ColumnDef<T> => ({
   accessorKey: "actions",
-  header: "",
+  header,
   cell: ({ row }) => {
     const props = { [propName]: row.original }
     return <ActionsComponent {...props} />
