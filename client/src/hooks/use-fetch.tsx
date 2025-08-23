@@ -1,10 +1,10 @@
-"use client"
-import { useUpdateDataTable } from "@/hooks/use-update-data-table"
-import { fetcher } from "@/utils/fetcher"
-import { useEffect, useState, useTransition } from "react"
+"use client";
+import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import { fetcher } from "@/utils/fetcher";
+import { useEffect, useState, useTransition } from "react";
 
 const useFetch = <T,>(
-  inputRequest: "product" | "feedstock" = "feedstock",
+  inputRequest: "product" | "feedstock" | "users" = "feedstock",
   initialData: T | [] = []
 ) => {
   const [data, setData] = useState<T | []>(initialData)
@@ -12,16 +12,16 @@ const useFetch = <T,>(
   const { state, prev, markPrev } = useUpdateDataTable(inputRequest)
   const [isPending, startTransition] = useTransition()
 
-  useEffect(() => {
-    const fetchToData = async () => {
-      try {
-        const res = await fetcher({ input: `/api/${inputRequest}` })
-        setData(res)
-      } catch (err) {
-        setError((err as Error).message)
-      }
+  const fetchToData = async () => {
+    try {
+      const res = await fetcher({ input: `/api/${inputRequest}` })
+      setData(res)
+    } catch (err) {
+      setError((err as Error).message)
     }
 
+  }
+  useEffect(() => {
     // solo fetch si hay cambio real respecto al anterior
     if (state !== null && state !== prev) {
       startTransition(fetchToData)
@@ -29,7 +29,7 @@ const useFetch = <T,>(
     }
   }, [state, prev, markPrev, inputRequest])
 
-  return { data, error, isPending }
-}
+  return { data, error, isPending };
+};
 
-export default useFetch
+export default useFetch;

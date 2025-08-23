@@ -5,7 +5,7 @@ import {
   LiquidMeasure,
   GasMeasure
 } from "@/types/measure/measure-unit";
-import { UseFormSetValue, UseFormWatch, FieldValues, Path } from "react-hook-form";
+import { UseFormSetValue, UseFormWatch, FieldValues, Path, PathValue } from "react-hook-form";
 
 interface UseMeasureUnitLogicProps<T extends FieldValues> {
   watch: UseFormWatch<T>;
@@ -36,10 +36,8 @@ export function useMeasureUnitLogic<T extends FieldValues>({
   }, [selectedState]);
 
   const handleStateChange = useCallback((value: StateMatter) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setValue(stateFieldName, value as any);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setValue(measureUnitFieldName, "" as any);
+    setValue(stateFieldName, value as PathValue<T, typeof stateFieldName>);
+    setValue(measureUnitFieldName, "DEFAULT" as PathValue<T, typeof measureUnitFieldName>);
   }, [setValue, stateFieldName, measureUnitFieldName]);
 
   return {
