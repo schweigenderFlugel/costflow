@@ -8,55 +8,64 @@ import Link from "next/link";
 import { registerSchema, RegisterFormSchema } from "@/schemas/register-schema";
 import { TextField } from "@/components/field-forms/text-field";
 import { PasswordField } from "@/components/field-forms/password-field";
-// import {
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormControl,
-// } from "@/components/ui/form";
-// import { Checkbox } from "@/components/ui/checkbox";
-import { toast } from "sonner";
 import { fetcher } from "@/utils/fetcher";
 import { Checkbox } from "@/components/ui/checkbox";
+import { itemToasts } from "@/components/item-toasts";
+import { useTransition } from "react";
+import SpinLoader from "@/components/shared/spin-loader";
+
+const dtoValues = (values: {
+  name: string,
+  lastname: string,
+  workstation: string,
+  email: string,
+  password: string
+}) => ({
+  "name": values.name,
+  "lastname": values.lastname,
+  "workstation": values.workstation,
+  "email": values.email,
+  "password": values.password
+})
+
+const defaultValues = {
+  name: "",
+  lastname: "",
+  email: "",
+  password: "",
+  passwordConfirmation: "",
+  workstation: "",
+  terms: false,
+}
 
 export default function FormRegister() {
+  const [isPending, startTransition] = useTransition()
   const form = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerSchema),
-    defaultValues: {
-      name: "",
-      lastname: "",
-      email: "",
-      password: "",
-      passwordConfirmation: "",
-      workstation: "",
-      terms: false,
-    },
+    defaultValues: defaultValues,
   });
 
-  const onSubmit = form.handleSubmit(async (values) => {
-    // console.log("Valores del registro:", values);
-    const data = await fetcher({
-      input: process.env.NEXT_PUBLIC_SERVER_API + "/auth/register",
-      method: "POST",
-      body: JSON.stringify(values)
+  const onSubmit = form.handleSubmit((values) => {
+    startTransition(async () => {
+      const data = await fetcher({
+        input: "/api/auth/register",
+        method: "POST",
+        body: JSON.stringify(dtoValues(values))
+      })
+
+      form.reset()
+
+      itemToasts.info({
+        description: data?.success ? data.message : data,
+        type: "registro"
+      })
     })
-
-    console.log(data);
-
-
-    const id = toast("Registro", {
-      description: data.message || data.description || data.detail,
-      // "Tu cuenta ha sido creada y está pendiente de aprobación por el administrador.",
-      action: {
-        label: "Cerrar",
-        onClick: () => toast.dismiss(id),
-      },
-    });
   });
 
   return (
     <Form {...form}>
       <form
+        autoComplete="off"
         className="grid xl:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-5 bg-login-transparent max-w-md md:max-w-full w-full mx-auto"
         onSubmit={onSubmit}
       >
@@ -139,8 +148,11 @@ export default function FormRegister() {
         )}
 
         <div className="flex flex-col md:flex-row gap-2 col-span-full mt-4 *:font-bold ">
-          <Button variant="default" className="p-6 w-full md:flex-1">
-            Crear cuenta
+          <Button variant="default" className="p-6 w-full md:flex-1" disabled={isPending}>
+            {isPending && <SpinLoader isPending={isPending} />}
+            {
+              isPending ? "Creando..." : "  Crear cuenta"
+            }
           </Button>
 
           <div className="flex items-center md:hidden my-2">
