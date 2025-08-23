@@ -5,9 +5,9 @@ from schemas.http_response import Response
 from services import product_service
 
 from deps.db_session_dep import SessionDep
+from deps.cache_dep import CacheDep
 from deps.jwt_dep import JwtDep
 from deps.admin_role_dep import AdminRoleDep
-
 
 from schemas.pagination import Pagination
 from models.product_model import Product, CreateProduct, UpdateProduct
@@ -31,8 +31,8 @@ router = APIRouter(
         ).custom_response(),
     }
 )
-def get_products(db: SessionDep, pagination: Pagination = Query()):
-    return product_service.get_products(db=db, pagination=pagination)
+def get_products(db: SessionDep, cache: CacheDep, pagination: Pagination = Query()):
+    return product_service.get_products(db=db, cache=cache, pagination=pagination)
 
 @router.get("/{id}", 
     summary="Get Products", 
@@ -51,8 +51,8 @@ def get_products(db: SessionDep, pagination: Pagination = Query()):
         ).custom_response(),
     }
 )
-def get_product_by_id(db: SessionDep, id: str):
-    return product_service.get_product_by_id(db=db, id=id)
+def get_product_by_id(db: SessionDep, cache: CacheDep, id: str):
+    return product_service.get_product_by_id(db=db, cache=cache, id=id)
 
 @router.post("", 
     summary="Create Product",
@@ -80,8 +80,8 @@ def get_product_by_id(db: SessionDep, id: str):
         ).custom_response(),
     }
 ) 
-def create_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, body: CreateProduct = Body()):
-    return product_service.create_product(db=db, body=body)
+def create_product(db: SessionDep, cache: CacheDep, jwt: JwtDep, admin: AdminRoleDep, body: CreateProduct = Body()):
+    return product_service.create_product(db=db, cache=cache, body=body)
 
 @router.put("/{id}", 
     summary="Update Product",
@@ -114,8 +114,8 @@ def create_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, body: Creat
         ).custom_response(),
     }
 ) 
-def update_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: str, body: UpdateProduct = Body()): # type: ignore
-    return product_service.update_product(db=db, id=id,  body=body)
+def update_product(db: SessionDep, cache: CacheDep, jwt: JwtDep, admin: AdminRoleDep, id: str, body: UpdateProduct = Body()): # type: ignore
+    return product_service.update_product(db=db, cache=cache, id=id, body=body)
 
 @router.delete("/{id}", 
     summary="Delete Products",
@@ -143,5 +143,5 @@ def update_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: str, bo
         ).custom_response()
     }
 ) 
-def delete_product(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: str):
-    return product_service.delete_product(db=db, id=id)
+def delete_product(db: SessionDep, cache: CacheDep, jwt: JwtDep, admin: AdminRoleDep, id: str):
+    return product_service.delete_product(db=db, cache=cache, id=id)

@@ -54,11 +54,10 @@ class ProductFeedstockInput(SQLModel):
 class CreateProduct(ProductBase):
     feedstocks: List[ProductFeedstockInput]
 
-optional_fields_product = {field: (Optional[typ], None) for field, typ in CreateProduct.__annotations__.items()}
+optional_fields = {field: (Optional[typ], None) for field, typ in CreateProduct.__annotations__.items()}
 
 UpdateProduct = create_model(
     "UpdateProduct",
-    __base__=CreateProduct,
-    **optional_fields_product,
+    **optional_fields,
     delete_feedstocks = (Optional[List[uuid]], None)
 )
