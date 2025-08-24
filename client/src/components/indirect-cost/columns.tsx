@@ -8,6 +8,7 @@ import {
   createActionsColumn
 } from "@/components/data-table/column-helpers"
 import { IndirectCostObj } from "@/types/items/indirect-cost"
+import IndirectCostActions from "@/components/indirect-cost/indirect-cost-actions"
 
 const columns: ColumnDef<IndirectCostObj>[] = [
   createSelectColumn<IndirectCostObj>(),
@@ -24,14 +25,9 @@ const columns: ColumnDef<IndirectCostObj>[] = [
   }),
 
   createDateColumn<IndirectCostObj>("date", "Fecha"),
-  // createActionsColumn<IndirectCostObj>(({ indirect_cost }) => {
-  //   return (
-  //     <div>
-  //       {indirect_cost}
-  //     </div>
-  //   )
-  // }, "indirect_cost"),
-]
 
+  createActionsColumn<IndirectCostObj>(IndirectCostActions, "indirect_cost"),
+
+]
 
 export default columns

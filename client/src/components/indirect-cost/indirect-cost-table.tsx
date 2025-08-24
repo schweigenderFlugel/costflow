@@ -24,11 +24,11 @@ const getIndirectCostData = async () => {
   return data;
 }
 
-const IndirectCost = async () => {
+const IndirectCost = async ({ className }: { className: string }) => {
   const data = await getIndirectCostData()
 
   return (
-    <section>
+    <section className={className}>
       {
         (data.error || data.detail) &&
         <div className="flex sm:flex-row flex-col justify-between place-items-start sm:items-center px-5 py-3 border rounded-md bg-muted/80">

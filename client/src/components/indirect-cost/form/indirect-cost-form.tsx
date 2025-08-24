@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import SpinLoader from "@/components/shared/spin-loader";
 
 // Predefined cost types (you can modify these as needed)
-const COST_TYPES = [
+export const COST_TYPES = [
   "Electricidad",
   "Gas",
   "Agua",
@@ -32,11 +32,12 @@ interface IndirectCostFormFormProps {
   isPending: boolean;
   submitingText: string;
   submitText: string;
+  initialIsCustomType?: boolean
 }
 
 
-const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose, submitingText, submitText }: IndirectCostFormFormProps) => {
-  const [isCustomType, setIsCustomType] = useState(false);
+const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose, submitingText, submitText, initialIsCustomType = false }: IndirectCostFormFormProps) => {
+  const [isCustomType, setIsCustomType] = useState(initialIsCustomType);
 
   const form = useForm<FormDataIndirectCost>({
     resolver: zodResolver(indirectCostSchema),
