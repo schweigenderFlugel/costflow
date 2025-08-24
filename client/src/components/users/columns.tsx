@@ -36,7 +36,7 @@ export const columns: ColumnDef<UsersData>[] = [
         <Button
           size="sm"
           variant="outline"
-          className="hover:bg-"
+          className="hover:bg-yellow-200 text-xs"
           onClick={() => console.log("Change to pending", user.id)}
         >
           Modificar
@@ -44,21 +44,22 @@ export const columns: ColumnDef<UsersData>[] = [
       </div>);
 
     return (
-      <div className="flex gap-2 justify-center">
+      <div className="flex gap-1 justify-center">
         <Button
-          size="sm"
-          variant="default"
-          className="bg-emerald-700 hover:bg-emerald-600"
+          size="icon"
+          variant="outline-ghost"
+          className="text-emerald-800 hover:text-emerald-600"
           onClick={() => console.log("Accept", user.id)}
         >
-          <CircleCheck className="size-full" />
+          <CircleCheck className="size-6" />
         </Button>
         <Button
-          size="sm"
-          variant="destructive"
+          size="icon"
+          variant="outline-ghost"
+          className="text-red-800 hover:text-red-600"
           onClick={() => console.log("Reject", user.id)}
         >
-          <CircleX className="size-full" />
+          <CircleX className="size-6" />
         </Button>
       </div>
     );
