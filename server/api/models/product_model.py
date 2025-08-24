@@ -35,7 +35,8 @@ class ProductBase(SQLModel):
     sku: str = Field(sa_column=Column(String), description='Sku of the product')
     state: MatterState = Field(sa_column=Column(ENUM(MatterState)), description='The matter state of the feedstock')
     measure_unit: MeasureUnit = Field(sa_column=Column(ENUM(MeasureUnit)), description='Unit measure for the product')
-    quantity: int = Field(sa_column=Column(INTEGER), description='antity of units')
+    quantity: int = Field(sa_column=Column(INTEGER), description='Quantity of units')
+    labour_time: int = Field(sa_column=Column(FLOAT), description='Minutes required for labour')
     
 class Timestamp(SQLModel):
     created_at: datetime = Field(sa_column=Column(TIMESTAMP), default_factory=lambda: datetime.now(timezone.utc))

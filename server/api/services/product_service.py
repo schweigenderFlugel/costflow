@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
-from sqlmodel import select
+from sqlmodel import select, extract
 from datetime import datetime, timezone
 from uuid import uuid4
 import json
@@ -11,6 +11,7 @@ from deps.cache_dep import CacheDep
 from models.product_model import Product, CreateProduct, UpdateProduct
 from models.feedstock_model import Currency
 from models.product_feedstock_model import ProductFeedstock
+from models.labour_model import Labour
 from schemas.pagination import Pagination
 
 from utils.dolar_api_utils import get_dolar_current_price
@@ -25,7 +26,7 @@ def get_products(db: SessionDep, cache: CacheDep, pagination: Pagination):
         statement = select(Product).filter(Product.is_deleted == False).offset(pagination.page).limit(pagination.limit)
         product: list[Product] = db.exec(statement=statement).all()
         data = [p.model_dump(exclude=["is_deleted"], mode="json") for p in product]
-        cache.set("products_list", json.dumps(data), ex=120)
+        cache.set("products_list", json.dumps(data), ex=300)
         return JSONResponse(content=data)
     except HTTPException as http_err:
         raise http_err
@@ -41,8 +42,27 @@ def get_product_by_id(db: SessionDep, cache: CacheDep, id: str):
         
         feedstocks_found = []
         feedstock_costs = []
-        statement = select(Product).where(Product.id == id, Product.is_deleted == False)
-        product_found: Product = db.exec(statement=statement).first()
+
+        this_month = datetime.now().month
+        this_year = datetime.now().year
+
+        product_statement = select(Product).where(Product.id == id, Product.is_deleted == False)
+        product_found: Product = db.exec(statement=product_statement).first()
+
+        labour_statement = select(Labour).where(
+            extract('month', Labour.date) == this_month,
+            extract('year', Labour.date) == this_year
+        )
+        
+        labour_found = db.exec(statement=labour_statement).first()
+        labour_found_json = labour_found.model_dump(
+            mode="json",
+            exclude=["id", "date", "historial_id", "historial", "is_deleted"]
+        ) if labour_found else None
+
+        amount_per_hour = int(labour_found_json["salary"]) / int(labour_found_json["hours"]) if labour_found_json is not None else 0
+        amount_per_minutes = amount_per_hour / 60
+
         if not product_found:
             raise HTTPException(status_code=404, detail="Product not found")
         
@@ -50,8 +70,8 @@ def get_product_by_id(db: SessionDep, cache: CacheDep, id: str):
             product_feedstock_statement = select(ProductFeedstock).where(ProductFeedstock.feedstock_id == fs.id)
             product_feedstock_found = db.exec(product_feedstock_statement).first()
             feedstock_json = fs.model_dump(
-                exclude=["created_at", "updated_at", "is_deleted", "provider"], 
-                mode="json"
+                mode="json",
+                exclude=["created_at", "updated_at", "is_deleted", "provider"]
             )
             product_feedstock_json = product_feedstock_found.model_dump(mode="json")
             feedstocks_found.append({
@@ -70,7 +90,8 @@ def get_product_by_id(db: SessionDep, cache: CacheDep, id: str):
         data = {
             **product_found.model_dump(exclude=["is_deleted"], mode="json"), 
             "subtotal": sum(feedstock_costs), 
-            "feedstocks": feedstocks_found
+            "feedstocks": feedstocks_found,
+            "labour_costs": round((amount_per_minutes * int(product_found.model_dump()["labour_time"])), 2)
         }
 
         cache.set(f"product_{id}", json.dumps(data), ex=120)
@@ -93,7 +114,7 @@ def create_product(db: SessionDep, cache: CacheDep, body: CreateProduct):
         
         product_id = uuid4()
         product_data = body.model_dump(exclude={"feedstocks"})
-        product = Product.model_validate({"id": product_id, "sku": str(product_data["sku"]).upper(), **product_data})
+        product = Product.model_validate({**product_data, "id": product_id, "sku": str(product_data["sku"]).upper()})
         db.add(product)
         db.commit()
 

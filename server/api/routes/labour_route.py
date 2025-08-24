@@ -3,16 +3,16 @@ from schemas.http_response import Response
 from deps.db_session_dep import SessionDep
 from deps.jwt_dep import JwtDep
 from schemas.pagination import Pagination
-from services import indirect_cost_service
+from services import labour_service
 
-from models.indirect_cost_model import CreateIndirectCost, UpdateIndirectCost
+from models.labour_model import CreateLabour, UpdateLabour
 
 router = APIRouter(
- tags=['Indirect Costs'],
- prefix='/indirect-costs'
+ tags=['Labour'],
+ prefix='/labour'
 )
 
-@router.get("", summary="Get Indirect Costs", responses={
+@router.get("", summary="Get labour info list", responses={
     200: Response(
         description="Successfully Response",
         content_type="application/json",
@@ -29,19 +29,19 @@ router = APIRouter(
         message="Internal Server Error"
     ).custom_response(),
 })
-def get_indirect_costs(db: SessionDep, pagination: Pagination = Query()):
-    return indirect_cost_service.get_indirect_cost(db=db, pagination=pagination)
+def get_labour(db: SessionDep, pagination: Pagination = Query()):
+    return labour_service.get_labour(db=db)
 
-@router.get("/{id}", summary="Get Indirect Costs by id", responses={
+@router.get("/{id}", summary="Get labour info by id", responses={
     200: Response(
         description="Successfully Response",
         content_type="application/json",
         message="Successfully Response"
     ).custom_response(),
     404: Response(
-        description="Indirect Cost Not Found",
+        description="Labour info not found",
         content_type="application/json",
-        message="IndirectCost Not Found"
+        message="Labour info not found"
     ).custom_response(),
     500: Response(
         description="Internal Server Error",
@@ -49,12 +49,12 @@ def get_indirect_costs(db: SessionDep, pagination: Pagination = Query()):
         message="Internal Server Error"
     ).custom_response(),
 })
-def get_indirect_cost_by_id(db: SessionDep, jwt: JwtDep, id: str):
-    return indirect_cost_service.get_indirect_cost_by_id(db=db, id=id)
+def get_labour_by_id(db: SessionDep, jwt: JwtDep, id: str):
+    return labour_service.get_labour_by_id(db=db, id=id)
 
-@router.post("", summary="Create Indirect Cost", responses={
+@router.post("", summary="Create labour info", responses={
     201: Response(
-        description="IndirectCost Created",
+        description="Labour info created",
         content_type="application/json",
         message="IndirectCost Created"
     ).custom_response(),
@@ -69,14 +69,14 @@ def get_indirect_cost_by_id(db: SessionDep, jwt: JwtDep, id: str):
         message="Internal Server Error"
     ).custom_response(),
 })
-def create_indirect_cost(db: SessionDep, jwt: JwtDep, body: CreateIndirectCost = Body()):
-    return indirect_cost_service.create_indirect_cost(db=db, body=body)
+def create_labour(db: SessionDep, jwt: JwtDep, body: CreateLabour = Body()):
+    return labour_service.create_labour(db=db, body=body)
 
-@router.put("/{id}", summary="Update Indirect Cost", responses={
+@router.put("/{id}", summary="Update labour info", responses={
     200: Response(
-        description="IndirectCost Updated",
+        description="Labour info updated",
         content_type="application/json",
-        message="IndirectCost Updated"
+        message="Labour info updated"
     ).custom_response(),
     400: Response(
         description="Bad Request",
@@ -84,9 +84,9 @@ def create_indirect_cost(db: SessionDep, jwt: JwtDep, body: CreateIndirectCost =
         message="Bad Request"
     ).custom_response(),
     404: Response(
-        description="IndirectCost Not Found",
+        description="Labour info not found",
         content_type="application/json",
-        message="IndirectCost Not Found"
+        message="Labour info not found"
     ).custom_response(),
     500: Response(
         description="Internal Server Error",
@@ -94,20 +94,19 @@ def create_indirect_cost(db: SessionDep, jwt: JwtDep, body: CreateIndirectCost =
         message="Internal Server Error"
     ).custom_response(),
 })
-def update_indirect_cost(db: SessionDep, jwt: JwtDep, id: str, body: UpdateIndirectCost = Body()): # type: ignore
-    return indirect_cost_service.update_indirect_cost(db=db, id=id, body=body)
+def update_indirect_cost(db: SessionDep, jwt: JwtDep, id: str, body: UpdateLabour = Body()): # type: ignore
+    return labour_service.update_labour(db=db, id=id, body=body)
 
-
-@router.delete("/{id}", summary="Delete Indirect Cost", responses={
+@router.delete("/{id}", summary="Delete labour info", responses={
     200: Response(
-        description="IndirectCost Deleted",
+        description="Labour info deleted",
         content_type="application/json",
-        message="IndirectCost Deleted"
+        message="Labour info deleted"
     ).custom_response(),
     404: Response(
-        description="IndirectCost Not Found",
+        description="Labour info not found",
         content_type="application/json",
-        message="IndirectCost Not Found"
+        message="Labour info not Found"
     ).custom_response(),
     500: Response(
         description="Internal Server Error",
@@ -115,5 +114,5 @@ def update_indirect_cost(db: SessionDep, jwt: JwtDep, id: str, body: UpdateIndir
         message="Internal Server Error"
     ).custom_response(),
 })
-def delete_indirect_cost(db: SessionDep, jwt: JwtDep, id: str):
-    return indirect_cost_service.delete_indirect_cost(db=db, id=id)
+def delete_labour(db: SessionDep, jwt: JwtDep, id: str):
+    return labour_service.delete_labour(db=db, id=id)

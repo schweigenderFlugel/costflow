@@ -22,7 +22,8 @@ class ProductResponse(BaseModel):
   state: str
   measure_unit: MeasureUnit
   quantity: int = 20
-  subtotal: float
+  subtotal: float = 7045485.0
+  labour_costs: float = 10000.0
   created_at: datetime
   updated_at: datetime
   feedstocks: List[FeedstockEntries]
