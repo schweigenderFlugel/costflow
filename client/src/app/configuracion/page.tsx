@@ -6,6 +6,7 @@ import PageHeaderSection from "@/components/shared/page-header-section"
 import { Suspense } from "react"
 import PageInfoDialog from "@/components/shared/page-info-dialog"
 import IndirectCostTable from "@/components/indirect-cost/indirect-cost-table"
+import AddIndirectCost from "@/components/indirect-cost/crud/add-indirect-cost"
 
 export const metadata = {
   title: "Configuración"
@@ -19,8 +20,12 @@ const Page = () => {
         description="Ajustá los parámetros generales de tu producto. Estos valores se aplican automáticamente en los cálculos de costos de todos tus productos."
         triggerInfo
       />
-
-      <IndirectCostTable />
+      <section className="max-w-[calc(100svw-2rem)] w-6xl mx-auto my-8 px-1 sm:px-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+          <IndirectCostTable />
+          <AddIndirectCost />
+        </div>
+      </section>
 
       <Suspense>
         <PageInfoDialog
@@ -42,30 +47,6 @@ const Page = () => {
           </div>
         </PageInfoDialog>
       </Suspense>
-
-      <Image
-        src={"https://media.tenor.com/y-XNYFHZLgQAAAAM/homer-simpson.gif"}
-        alt="homer-simpson"
-        width={220}
-        height={165}
-        className="mx-auto"
-        unoptimized
-      />
-
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-bold">
-          Página en desarollo
-        </h1>
-        <p className="text-center text-muted-foreground">
-          Esta página está en construcción. Por favor, vuelve más tarde.
-        </p>
-        <Link href="/"
-          className={buttonVariants({ variant: "outline" })}
-        >
-          <LinkIcon />
-          Volver a la página principal
-        </Link>
-      </div>
     </main>
   )
 }

@@ -17,7 +17,7 @@ const HeaderTable = <T,>({
     <div className="flex gap-2 justify-between items-center sm:w-auto w-full">
       <ColumnsDropdown<T> columnsTo={columnsTo} table={table} />
       <Input
-        placeholder="Buscar por nombre..."
+        placeholder={`Buscar por ${columnsTo === "indirect_cost" ? "tipo" : "nombre"}...`}
         value={
           (table.getColumn(
             columnsTo === "indirect_cost" ? "type" : "name"
@@ -37,7 +37,7 @@ const HeaderTable = <T,>({
     </div>
 
     <div className="flex items-center justify-end gap-4 w-full">
-      {columnsTo === "users" ? null : (
+      {(columnsTo === "users" || columnsTo === "indirect_cost") ? null : (
         <Button variant={"outline"} disabled>
           <Download />
           Importar
