@@ -5,6 +5,7 @@ import { UsersData } from "../../types/items/users";
 import { Button } from "../ui/button";
 import { createActionsColumn, createDateColumn, createTextColumn } from "@/components/data-table/column-helpers";
 import { translateUserState } from "@/utils/translate/user";
+import { CircleCheck, CircleX } from "lucide-react";
 
 export const columns: ColumnDef<UsersData>[] = [
   createTextColumn<UsersData>("name", "Nombre", { alignment: "center" }),
@@ -50,14 +51,14 @@ export const columns: ColumnDef<UsersData>[] = [
           className="bg-emerald-700 hover:bg-emerald-600"
           onClick={() => console.log("Accept", user.id)}
         >
-          Aceptar
+          <CircleCheck className="size-full" />
         </Button>
         <Button
           size="sm"
           variant="destructive"
           onClick={() => console.log("Reject", user.id)}
         >
-          Denegar
+          <CircleX className="size-full" />
         </Button>
       </div>
     );
