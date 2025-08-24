@@ -2,7 +2,7 @@ import { UUID } from "crypto";
 
 
 export interface IndirectCostInput {
-  "type": String,
+  "type": string,
   "amount": number,
   // "date": Date,
 }

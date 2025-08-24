@@ -84,7 +84,7 @@ export const createDateColumn = <T,>(
     <Button
       variant="ghost"
       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      className="w-full h-full justify-start hover:bg-transparent hover:text-inherit"
+      className="w-full h-full justify-center hover:bg-transparent hover:text-inherit"
     >
       {header}
       <ArrowUpDown />
@@ -93,7 +93,7 @@ export const createDateColumn = <T,>(
   cell: ({ row }) => {
     const date = row.getValue(accessorKey) as Date
     return (
-      <div className="pr-3 truncate">
+      <div className="pr-3 truncate text-center">
         {new Intl.DateTimeFormat("es-AR", {
           year: "numeric",
           month: "2-digit",
