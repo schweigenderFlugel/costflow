@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import APIRouter, Query, Body
 
 from schemas.http_response import Response
@@ -10,7 +9,7 @@ from deps.jwt_dep import JwtDep
 from deps.admin_role_dep import AdminRoleDep
 
 from schemas.pagination import Pagination
-from models.product_model import Product, CreateProduct, UpdateProduct
+from models.product_model import CreateProduct, UpdateProduct
 
 from schemas.product_response import ProductResponse
 
@@ -22,7 +21,6 @@ router = APIRouter(
 @router.get("", 
     summary="Get Products", 
     status_code=200,
-    response_model=List[Product],
     responses={
         500: Response(
             description="Internal Server Error", 

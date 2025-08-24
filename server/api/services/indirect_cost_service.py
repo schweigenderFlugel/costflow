@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from sqlmodel import select, extract
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from uuid import uuid4
 
 from deps.db_session_dep import SessionDep
@@ -21,7 +21,7 @@ def get_indirect_cost(db: SessionDep, pagination: Pagination):
 def get_indirect_cost_by_id(db: SessionDep, id: str):
     try:
         statement = select(IndirectCost).where(IndirectCost.id == id)
-        indirect_cost_found: IndirectCost = db.exec().first(statement=statement)
+        indirect_cost_found: IndirectCost = db.exec(statement=statement).first()
         if not indirect_cost_found:
             raise HTTPException(status_code=404, detail="Indirect cost not found")
         return indirect_cost_found.model_dump()
