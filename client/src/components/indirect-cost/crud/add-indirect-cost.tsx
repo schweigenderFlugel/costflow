@@ -7,6 +7,8 @@ import { itemToasts } from "@/components/item-toasts";
 import { FormDataIndirectCost } from "@/schemas/indirect-cost-schema";
 import { useUpdateDataTable } from "@/hooks/use-update-data-table";
 import IndirectCostForm from "@/components/indirect-cost/form/indirect-cost-form";
+import { useCreateIndirectCostDialog } from "@/hooks/use-indirect-cost-dialog";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -18,8 +20,9 @@ const defaultValues = {
 
 const AddIndirectCost = () => {
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
-  const { toggle: tableToggle } = useUpdateDataTable("indirect_cost")
   const [isPending, startTransition] = useTransition();
+  const { toggle: tableToggle } = useUpdateDataTable("indirect_cost")
+  const { setIsOpen, isOpen } = useCreateIndirectCostDialog()
 
   const handleSubmit = async (values: FormDataIndirectCost) => {
     setErrorMessage(undefined);
@@ -79,39 +82,45 @@ const AddIndirectCost = () => {
 
   const handleCancel = () => {
     setErrorMessage(undefined);
-
+    setIsOpen(false)
   };
 
   return (
     <div className="flex flex-col gap-10 w-full">
-      <div className="space-y-3">
-        <h3 className="font-medium text-lg rounded-lg bg-primary text-background px-2.5 py-1.5 w-fit">
+      <div className="space-y-1 text-center">
+        <Button
+          className="font-medium text-lg"
+          type="button"
+          onClick={() => { setIsOpen(true) }}
+        >
           Agregar costo indirecto
-        </h3>
-        <div>
-          <p className="text-muted-foreground text-base px-2">
+        </Button>
+        <div className="text-muted-foreground text-left px-2">
+          <p>
             Costos no relacionados directamente al producto terminado.
           </p>
-          <p className="text-muted-foreground text-sm px-2">
+          <p className="leading-4 text-sm">
             Ej: Alquiler, sueldos de empleados, consumo de luz, gas, fletes de la empresa.
           </p>
         </div>
       </div>
-
-      <IndirectCostForm
-        onSubmit={handleSubmit}
-        isPending={isPending}
-        formId="create-indirect-cost"
-        submitText="Crear"
-        submitingText="Creando..."
-        onClose={handleCancel}
-        defaultValues={defaultValues}
-      />
-
-      {errorMessage && (
-        <p className="text-md font-medium text-red-500 break-words">{errorMessage}</p>
-      )}
-
+      {
+        isOpen &&
+        <div>
+          <IndirectCostForm
+            onSubmit={handleSubmit}
+            isPending={isPending}
+            formId="create-indirect-cost"
+            submitText="Crear"
+            submitingText="Creando..."
+            onClose={handleCancel}
+            defaultValues={defaultValues}
+          />
+          {errorMessage && (
+            <p className="text-md font-medium text-red-500 break-words">{errorMessage}</p>
+          )}
+        </div>
+      }
 
     </div>
   );
