@@ -1,8 +1,6 @@
 from typing import Optional, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Column, FLOAT, BOOLEAN, TIMESTAMP
-from sqlalchemy.dialects.postgresql import ENUM
-from enum import Enum
 from uuid import UUID as uuid, uuid4
 from datetime import datetime, timezone
 from pydantic import create_model
@@ -20,14 +18,14 @@ class Timestamp(SQLModel):
 class Labour(Timestamp, LabourBase, table=True):
     __tablename__ = 'labour'
     id: Optional[uuid] = Field(default_factory=uuid4, primary_key=True)
-    historial_id: uuid = Field(foreign_key="historial.id")
+    historial_id: uuid = Field(foreign_key="historial.id", ondelete="CASCADE")
     historial: Optional["Historial"] = Relationship(back_populates="labour")
     is_deleted: Optional[bool] = Field(sa_column=Column(BOOLEAN), default=False)
 
 class CreateLabour(LabourBase):
     pass
 
-optional_fields = {Field: (Optional[typ], None) for Field, typ in CreateLabour.__annotations__.items()}
+optional_fields = {Field: (Optional[typ], None) for Field, typ in LabourBase.__annotations__.items()}
 
 UpdateLabour = create_model(
   "UpdateLabour",

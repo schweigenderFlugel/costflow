@@ -77,8 +77,8 @@ def get_feedstock_by_id(session: SessionDep, cache: CacheDep, jwt: JwtDep, admin
     ).custom_response(),
   },            
 )
-def create_feedstock(session: SessionDep, jwt: JwtDep, admin: AdminRoleDep, body: CreateFeedstock = Body()):
-  return feedstock_service.create_feedstock(db=session, body=body,)
+def create_feedstock(session: SessionDep, jwt: JwtDep, admin: AdminRoleDep, cache: CacheDep, body: CreateFeedstock = Body()):
+  return feedstock_service.create_feedstock(db=session, body=body, cache=cache)
 
 @router.put("/{id}",
   status_code=201, 
@@ -106,7 +106,7 @@ def create_feedstock(session: SessionDep, jwt: JwtDep, admin: AdminRoleDep, body
     ).custom_response(),
   },            
 )
-def update_feedstock(session: SessionDep,  cache: CacheDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str, body: UpdateFeedstock = Body()): # type: ignore
+def update_feedstock(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRole: AdminRoleDep, id: str, body: UpdateFeedstock = Body()): # type: ignore
   return feedstock_service.update_feedstock(db=session, cache=cache, id=id, body=body)
 
 @router.delete("/{id}",

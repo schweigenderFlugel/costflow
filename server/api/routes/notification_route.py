@@ -35,7 +35,7 @@ router = APIRouter(
       message="Internal server error"
     ).custom_response(),
   }, )
-async def get_notifications(request: Request):
+async def get_notifications(request: Request, jwt: JwtDep, admin: AdminRoleDep):
     queue = asyncio.Queue()
     client_id = id(queue)
     client_queues[client_id] = queue

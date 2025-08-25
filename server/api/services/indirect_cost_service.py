@@ -29,6 +29,25 @@ def get_indirect_cost_by_id(db: SessionDep, id: str):
         raise http_err
     except Exception as e:
         raise HTTPException(status_code=500, detail=e)
+    
+def get_current_indirect_cost(db: SessionDep):
+    try:
+        this_month = datetime.now().month
+        this_year = datetime.now().year
+
+        statement = select(IndirectCost).where(
+            extract('month', IndirectCost.date) == this_month,
+            extract('year', IndirectCost.date) == this_year
+        )
+        
+        indirect_cost_found = db.exec(statement=statement).first()
+        if not indirect_cost_found:
+            raise HTTPException(status_code=404, detail="Indirect cost not found")
+        return indirect_cost_found.model_dump()
+    except HTTPException as http_err:
+        raise http_err
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 def create_indirect_cost(db: SessionDep, body: CreateIndirectCost):
     try:
@@ -55,8 +74,8 @@ def create_indirect_cost(db: SessionDep, body: CreateIndirectCost):
             IndirectCost.type == body.type
         )
 
-        existing_indirect_costs = db.exec(statement=indirect_cost_statement).first()
-        if existing_indirect_costs:
+        existing_indirect_cost = db.exec(statement=indirect_cost_statement).first()
+        if existing_indirect_cost:
             raise HTTPException(
                 status_code=409,
                 detail="Indirect cost already exists"
@@ -103,14 +122,12 @@ def update_indirect_cost(db: SessionDep, id: str, body: UpdateIndirectCost): # t
         if indirect_cost_found is None:
             raise HTTPException(status_code=404, detail="Indirect cost not found")
 
-        if int(indirect_cost_found.model_dump()["date"].year) == this_year and int(indirect_cost_found.model_dump()["date"]) == this_month:
+        if int(indirect_cost_found.model_dump()["date"].year) == this_year and int(indirect_cost_found.model_dump()["date"].month) == this_month:
             indirect_cost_found.sqlmodel_update({**data, "date": datetime.now(timezone.utc) })
             db.add(indirect_cost_found)
             db.commit()
         else:
-            type = str(data["type"]) if data.get("type") else indirect_cost_found.model_dump()['type']
-            amount = str(data["amount"]) if data.get("amount") else indirect_cost_found.model_dump()['amount']
-            indirect_cost = IndirectCost.model_validate({"historial_id": historial_id, "type": type, "amount": amount})
+            indirect_cost = IndirectCost.model_validate({**indirect_cost_found.model_dump(), **data, "historial_id": historial_id,})
             db.add(indirect_cost)
             db.commit()
 

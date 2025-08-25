@@ -21,7 +21,7 @@ def get_labour(db: SessionDep):
 def get_labour_by_id(db: SessionDep, id: str):
     try:
         statement = select(Labour).where(Labour.id == id)
-        labour_found: Labour = db.exec().first(statement=statement)
+        labour_found: Labour = db.exec(statement=statement).first()
         if not labour_found:
             raise HTTPException(status_code=404, detail="Labour info not found")
         return labour_found.model_dump()
@@ -30,7 +30,6 @@ def get_labour_by_id(db: SessionDep, id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
-
 def get_current_labour(db: SessionDep):
     try:
         this_month = datetime.now().month
@@ -41,7 +40,7 @@ def get_current_labour(db: SessionDep):
             extract('year', Labour.date) == this_year
         )
         
-        labour_found: Labour = db.exec(statement=statement).first()
+        labour_found = db.exec(statement=statement).first()
         if not labour_found:
             raise HTTPException(status_code=404, detail="Labour info not found")
         return labour_found.model_dump()
@@ -74,8 +73,8 @@ def create_labour(db: SessionDep, body: CreateLabour):
             extract('year', Labour.date) == this_year,
         )
 
-        existing_indirect_costs = db.exec(statement=labour_statement).first()
-        if existing_indirect_costs:
+        existing_labour = db.exec(statement=labour_statement).first()
+        if existing_labour:
             raise HTTPException(
                 status_code=409,
                 detail="Labour info already exists"
@@ -118,7 +117,7 @@ def update_labour(db: SessionDep, id: str, body: UpdateLabour): # type: ignore
         if labour_found is None:
             raise HTTPException(status_code=404, detail="Labour info not found")
 
-        if int(labour_found.model_dump()["date"].year) == this_year and int(labour_found.model_dump()["date"]) == this_month:
+        if int(labour_found.model_dump()["date"].year) == this_year and int(labour_found.model_dump()["date"].month) == this_month:
             labour_found.sqlmodel_update({**data, "date": datetime.now(timezone.utc) })
             db.add(labour_found)
             db.commit()
