@@ -23,70 +23,59 @@ const icons = {
 } as const;
 
 type IconName = keyof typeof icons;
-type ColorName =
-  | "green"
-  | "red"
-  | "blue"
-  | "yellow"
-  | "gray"
-  | "fuchsia"
-  | "orange";
 
 interface CardsHomeProps {
   title: string;
   icon: IconName;
-  color?: ColorName;
   percentage: string;
-  trend?: "up" | "down" | "right";
   description: string;
+  value: string; // 👈 nuevo
   href?: string;
+  iconBg?: string;
+  iconColor?: string;
 }
 
 const CardsHome: React.FC<CardsHomeProps> = ({
   title,
   icon,
-  color = "green",
   percentage,
-  trend = "up",
   description,
+  value,
   href,
+  iconBg = "bg-gray-100",
+  iconColor = "text-gray-700",
 }) => {
   const Icon: LucideIcon = icons[icon];
+  const numericPercentage = parseFloat(percentage);
 
-  const colors: Record<ColorName, { bg: string; text: string }> = {
-    green: { bg: "bg-green-100", text: "text-green-700" },
-    red: { bg: "bg-red-100", text: "text-red-700" },
-    blue: { bg: "bg-blue-100", text: "text-blue-700" },
-    yellow: { bg: "bg-yellow-100", text: "text-yellow-700" },
-    gray: { bg: "bg-gray-100", text: "text-gray-700" },
-    fuchsia: { bg: "bg-fuchsia-100", text: "text-fuchsia-700" },
-    orange: { bg: "bg-orange-100", text: "text-orange-700" },
-  };
+  let trend: "up" | "down" | "right";
+  let trendColor: string;
 
-  const c = colors[color];
+  if (numericPercentage > 0) {
+    trend = "up";
+    trendColor = "text-green-700";
+  } else if (numericPercentage < 0) {
+    trend = "down";
+    trendColor = "text-red-700";
+  } else {
+    trend = "right";
+    trendColor = "text-blue-700";
+  }
 
   const cardContent = (
-    <Card className={`shadow-sm cursor-pointer hover:shadow-md transition`}>
+    <Card className="shadow-sm cursor-pointer hover:shadow-md transition">
       <CardHeader>
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div
-              className={`${c.bg} inline-block ${c.text} rounded-2xl p-2 w-fit`}
+              className={`${iconBg} ${iconColor} inline-block rounded-2xl p-2 w-fit`}
             >
               <Icon />
             </div>
             <CardTitle className="text-gray-500">{title}</CardTitle>
           </div>
 
-          <div
-            className={`flex items-center gap-1 ${
-              trend === "up"
-                ? "text-green-700"
-                : trend === "down"
-                ? "text-red-700"
-                : "text-blue-700"
-            }`}
-          >
+          <div className={`flex items-center gap-1 ${trendColor}`}>
             {trend === "up" && <ArrowUp size={14} />}
             {trend === "down" && <ArrowDown size={14} />}
             {trend === "right" && <ArrowRight size={14} />}
@@ -94,7 +83,11 @@ const CardsHome: React.FC<CardsHomeProps> = ({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="text-gray-500 text-sm">{description}</CardContent>
+
+      <CardContent>
+        <p className="text-black font-bold text-lg">{value}</p> {/* 👈 nuevo */}
+        <p className="text-gray-500 text-sm">{description}</p>
+      </CardContent>
     </Card>
   );
 

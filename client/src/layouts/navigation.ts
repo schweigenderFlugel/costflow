@@ -1,7 +1,6 @@
 import {
   Box,
   Calculator,
-  ChartNoAxesCombined,
   FlaskConical,
   House,
   Settings,
@@ -21,8 +20,7 @@ export const websiteName: NavItem = {
 };
 
 export const mainNavigation: NavItem[] = [
-  { title: "inicio", href: "/", icon: House },
-  { title: "dashboard", href: "/dashboard", icon: ChartNoAxesCombined },
+  { title: "inicio", href: "/dashboard", icon: House },
   { title: "insumos", href: "/insumos", icon: Box },
   { title: "productos", href: "/productos", icon: FlaskConical },
   { title: "calculadora", href: "/calculadora", icon: Calculator },
