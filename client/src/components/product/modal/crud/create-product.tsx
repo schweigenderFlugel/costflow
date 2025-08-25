@@ -24,6 +24,7 @@ const CreateProduct = () => {
     startTransition(async () => {
       const productDTO = {
         ...values,
+        labour_time: 1, // EXTRA AGREGADO AHORA EN BACKEND (HARTO)
         feedstocks: values.feedstocks.map(fs => ({
           feedstock_id: fs.feedstock_id,
           quantity_required: fs.quantity_required
