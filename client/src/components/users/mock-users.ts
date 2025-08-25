@@ -1,0 +1,40 @@
+import { UsersData, UserState } from "@/types/items/users";
+
+export const mockUsers: UsersData[] = [
+  {
+    id: "1",
+    name: "Luis",
+    lastname: "Ángel",
+    email: "luis@example.com",
+    role: "Admin",
+    workstation: "IT",
+    state: UserState.PENDING,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    recovery_code: null,
+  },
+  {
+    id: "2",
+    name: "Ana",
+    lastname: "García",
+    email: "ana@example.com",
+    role: "User",
+    workstation: null,
+    state: UserState.ACCEPTED,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    recovery_code: null,
+  },
+  {
+    id: "2",
+    name: "Cesar",
+    lastname: "Noguera",
+    email: "cesar@example.com",
+    role: "User",
+    workstation: null,
+    state: UserState.REJECTED,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    recovery_code: null,
+  },
+];

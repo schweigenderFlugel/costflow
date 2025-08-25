@@ -6,12 +6,12 @@ import { fetcher } from "@/utils/fetcher"
 import { Trash2, Pencil } from "lucide-react"
 
 const ProductActions = ({ product }: { product: ObjProduct }) => {
-  const { setIsOpen: setUpdateState, setProduct: setUpdateFeedstock, setIsLoadingProduct } = useUpdateProductDialog()
-  const { setIsOpen: setDeleteState, setProduct: setDeleteFeedstock } = useDeleteProductDialog()
+  const { setIsOpen: setUpdateState, setProduct: setUpdateProduct, setIsLoadingProduct } = useUpdateProductDialog()
+  const { setIsOpen: setDeleteState, setProduct: setDeleteProduct } = useDeleteProductDialog()
 
   const handleDelete = () => {
     setDeleteState(true)
-    setDeleteFeedstock(product)
+    setDeleteProduct(product)
   }
 
   const handleUpdate = async () => {
@@ -22,7 +22,7 @@ const ProductActions = ({ product }: { product: ObjProduct }) => {
       const allInfoToProduct = await fetcher({ input: `/api/product/${product.id}` })
 
       if (!('error' in allInfoToProduct) && !(allInfoToProduct.detail)) {
-        setUpdateFeedstock(allInfoToProduct)
+        setUpdateProduct(allInfoToProduct)
       }
     } catch (error) {
       console.error('Error fetching product details:', error)

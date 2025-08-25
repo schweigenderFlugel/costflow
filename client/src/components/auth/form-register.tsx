@@ -1,6 +1,6 @@
 "use client";
 
-import { Form } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,57 +8,74 @@ import Link from "next/link";
 import { registerSchema, RegisterFormSchema } from "@/schemas/register-schema";
 import { TextField } from "@/components/field-forms/text-field";
 import { PasswordField } from "@/components/field-forms/password-field";
-// import {
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormControl,
-// } from "@/components/ui/form";
-// import { Checkbox } from "@/components/ui/checkbox";
-import { toast } from "sonner";
 import { fetcher } from "@/utils/fetcher";
+import { Checkbox } from "@/components/ui/checkbox";
+import { itemToasts } from "@/components/item-toasts";
+import { useTransition } from "react";
+import SpinLoader from "@/components/shared/spin-loader";
+
+const dtoValues = (values: {
+  name: string,
+  lastname: string,
+  workstation: string,
+  email: string,
+  password: string
+}) => ({
+  "name": values.name,
+  "lastname": values.lastname,
+  "workstation": values.workstation,
+  "email": values.email,
+  "password": values.password
+})
+
+const defaultValues = {
+  name: "",
+  lastname: "",
+  email: "",
+  password: "",
+  passwordConfirmation: "",
+  workstation: "",
+  terms: false,
+}
 
 export default function FormRegister() {
+  const [isPending, startTransition] = useTransition()
   const form = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerSchema),
-    defaultValues: {
-      // name: "",
-      // lastname: "",
-      email: "",
-      password: "",
-      // terms: false,
-    },
+    defaultValues: defaultValues,
   });
 
-  const onSubmit = form.handleSubmit(async (values) => {
-    // console.log("Valores del registro:", values);
-    const data = await fetcher({
-      input: process.env.NEXT_PUBLIC_SERVER_API + "/auth/register",
-      method: "POST",
-      body: JSON.stringify(values)
+  const onSubmit = form.handleSubmit((values) => {
+    startTransition(async () => {
+      const data = await fetcher({
+        input: "/api/auth/register",
+        method: "POST",
+        body: JSON.stringify(dtoValues(values))
+      })
+
+      form.reset()
+
+      itemToasts.info({
+        description: data?.success ? data.message : data,
+        type: "registro"
+      })
     })
-
-    console.log(data);
-
-
-    const id = toast("Registro", {
-      description: data.message || data.description || data.detail,
-      // "Tu cuenta ha sido creada y está pendiente de aprobación por el administrador.",
-      action: {
-        label: "Cerrar",
-        onClick: () => toast.dismiss(id),
-      },
-    });
   });
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-y-6" onSubmit={onSubmit}>
-        {/* <TextField<RegisterFormSchema>
+      <form
+        autoComplete="off"
+        className="grid xl:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-5 bg-login-transparent max-w-md md:max-w-full w-full mx-auto"
+        onSubmit={onSubmit}
+      >
+        <TextField<RegisterFormSchema>
           name="name"
           label="Nombre"
           control={form.control}
           errors={form.formState.errors}
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          placeholder="Ingresá tu nombre"
         />
 
         <TextField<RegisterFormSchema>
@@ -66,23 +83,49 @@ export default function FormRegister() {
           label="Apellido"
           control={form.control}
           errors={form.formState.errors}
-        /> */}
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          placeholder="Ingresá tu apellido"
+        />
+        <TextField<RegisterFormSchema>
+          name="workstation"
+          label="Puesto"
+          control={form.control}
+          errors={form.formState.errors}
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          placeholder="Ingresá tu puesto"
+        />
 
         <TextField<RegisterFormSchema>
           name="email"
-          label="Correo"
+          label="Correo electrónico"
           type="email"
           control={form.control}
           errors={form.formState.errors}
+          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          placeholder="Ingresá tu correo electrónico"
         />
 
-        <PasswordField control={form.control} errors={form.formState.errors} />
+        <PasswordField
+          control={form.control}
+          errors={form.formState.errors}
+          name="password"
+          label="Contraseña"
+          placeholder="Ingresá tu contraseña"
+        />
 
-        {/* <FormField
+        <PasswordField
+          control={form.control}
+          errors={form.formState.errors}
+          name="passwordConfirmation"
+          label="Confirmar contraseña"
+          placeholder="Ingresá de nuevo tu contraseña"
+        />
+
+        <FormField
           name="terms"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+            <FormItem className="flex flex-row justify-center items-center space-y-0 col-span-full">
               <FormControl>
                 <Checkbox
                   checked={field.value}
@@ -91,28 +134,28 @@ export default function FormRegister() {
               </FormControl>
               <FormLabel className="text-sm font-normal">
                 Acepto los
-                <Link
-                  href="#"
-                  className="underline underline-offset-2"
-                // target="_blank"
-                // rel="noopener noreferrer"
-                >
+                <span className="underline underline-offset-2">
                   términos y condiciones
-                </Link>
+                </span>
               </FormLabel>
             </FormItem>
           )}
-        /> */}
-        {/* {form.formState.errors.terms && (
-          <p className="text-red-500 text-sm">
+        />
+        {form.formState.errors.terms && (
+          <p className="text-red-500 text-sm col-span-full text-center">
             {form.formState.errors.terms.message}
           </p>
-        )} */}
+        )}
 
-        <div className="md:flex md:gap-2 md:*:flex-1 *:text-lg *:font-bold *:w-full *:p-6">
-          <Button variant="default">Crear cuenta</Button>
+        <div className="flex flex-col md:flex-row gap-2 col-span-full mt-4 *:font-bold ">
+          <Button variant="default" className="p-6 w-full md:flex-1" disabled={isPending}>
+            {isPending && <SpinLoader isPending={isPending} />}
+            {
+              isPending ? "Creando..." : "  Crear cuenta"
+            }
+          </Button>
 
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center md:hidden my-2">
             <div className="flex-1 h-px bg-gray-300"></div>
             <span className="px-2 text-gray-500">o</span>
             <div className="flex-1 h-px bg-gray-300"></div>
@@ -121,22 +164,12 @@ export default function FormRegister() {
           <Button
             asChild
             variant="ghost"
-            className="bg-gray-900 text-white md:text-black hover:bg-gray-800 md:bg-transparent md:hover:bg-gray-100"
+            className="p-6 w-full md:flex-1 bg-gray-900 text-white lg:text-black hover:bg-gray-800 hover:text-white lg:bg-transparent lg:hover:bg-gray-100 lg:hover:text-black"
           >
             <Link href="/login">Iniciar sesión</Link>
           </Button>
         </div>
-
-        <div className="flex gap-2 justify-center mt-14 text-gray-500">
-          <p className="text-sm">¿Necesitas ayuda con COTZIA?</p>
-          <Link
-            href="/register"
-            className="text-sm underline text-blue-600 hover:text-blue-800"
-          >
-            Clickea aquí
-          </Link>
-        </div>
       </form>
-    </Form>
+    </Form >
   );
 }

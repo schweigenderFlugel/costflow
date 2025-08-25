@@ -19,9 +19,12 @@ class ProductResponse(BaseModel):
   name: str = "Product name"
   sku: str
   description: str = "It schows the entire description of the product"
+  state: str
   measure_unit: MeasureUnit
   quantity: int = 20
-  subtotal: float
+  subtotal: float = 7045485.0
+  labour_costs: float = 10000.0
+  indirect_costs: float = 16.18
   created_at: datetime
   updated_at: datetime
   feedstocks: List[FeedstockEntries]

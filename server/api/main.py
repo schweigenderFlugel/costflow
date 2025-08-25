@@ -7,9 +7,7 @@ import os
 from config.envs import FRONTEND_URL
 
 from deps.db_session_dep import create_db_and_tables
-from routes import auth_route, user_route, feedstock_route, product_route
-
-from utils.dolar_api_utils import get_dolar_current_price
+from routes import auth_route, user_route, feedstock_route, product_route, indirect_cost_route, labour_route, historial_route, notification_route
 
 load_dotenv()
 
@@ -32,6 +30,10 @@ app.include_router(auth_route.router)
 app.include_router(user_route.router)
 app.include_router(feedstock_route.router)
 app.include_router(product_route.router)
+app.include_router(indirect_cost_route.router)
+app.include_router(labour_route.router)
+app.include_router(historial_route.router)
+app.include_router(notification_route.router)
 
 @app.get("/")
 def root():

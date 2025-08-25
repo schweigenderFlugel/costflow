@@ -3,6 +3,10 @@ from sqlmodel import select
 from datetime import datetime, timezone, timedelta
 import os
 import binascii
+import asyncio
+import json
+
+from events import client_queues
 
 from deps.db_session_dep import SessionDep
 from deps.jwt_dep import JwtPayload
@@ -14,8 +18,9 @@ from utils.sendgrid_utils import send_email
 
 from config.envs import FRONTEND_URL
 
-def register(db: SessionDep, body: RegisterUser):
+async def register(db: SessionDep, body: RegisterUser):
     try:
+        event_queue: asyncio.Queue = asyncio.Queue()
         existing_user = db.exec(select(User).where(User.email == body.email)).first()
 
         if existing_user:
@@ -23,10 +28,24 @@ def register(db: SessionDep, body: RegisterUser):
 
         hashed = get_password_hash(body.password)
         user = User(email=body.email, password=hashed, name=body.name, lastname=body.lastname, workstation=body.workstation)
+        variables = {"name": body.model_dump()['name']}
 
         db.add(user)
         db.commit()
-        db.refresh(user)
+
+        for each_queue in client_queues.values():
+            await each_queue.put({
+                "event": "user_registered", 
+                "data": json.dumps({"message": "New user registered"}),
+            })
+
+        send_email(
+            email=body.model_dump()['email'], 
+            template_file="register.html", 
+            subject="Notificación de Registro", 
+            variables=variables
+        )
+
         return {"message": "User successfully created!"}
 
     except HTTPException as http_err:
@@ -52,7 +71,7 @@ def login(db: SessionDep, body: Login):
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=str(e))
 
 def refresh(db: SessionDep, payload: JwtPayload):
     try:
@@ -69,7 +88,7 @@ def refresh(db: SessionDep, payload: JwtPayload):
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=str(e))
 
 def change_password(db: SessionDep, user_id: str, body: ChangePassword):
     try:
@@ -84,14 +103,13 @@ def change_password(db: SessionDep, user_id: str, body: ChangePassword):
 
         db.add(user_found)
         db.commit()
-        db.refresh(user_found)
     
         return { "message": "Passoword successfully changed!" }
     
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=str(e))
 
 def recover_password(db: SessionDep, body: UserEmail):
     try:
@@ -109,19 +127,24 @@ def recover_password(db: SessionDep, body: UserEmail):
         recovery_code_dict = encrypt(text)
         recovery_code =  ".".join(str(v) for v in recovery_code_dict.values())
         link = f"{FRONTEND_URL}/cambiar-contrasena?code={recovery_code}"
-        print(link)
-        # mail = send_email(email=body.email, subject="Recuperaciòn de contraseña", content=link)
+        variables = {"name": user_found.model_dump()['name'], "link": link}
+        
+        send_email(
+            email=user_found.model_dump()['email'], 
+            template_file="recover-password.html", 
+            subject="Recuperaciòn de contraseña", 
+            variables=variables
+        )
 
         db.add(user_found)
         db.commit()
-        db.refresh(user_found)
 
         return {"message": "Email successfully sent"}
     
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=str(e))
 
 def reset_password(db: SessionDep, encrypted_code: str, body: UserPassword):
     try:
@@ -143,11 +166,10 @@ def reset_password(db: SessionDep, encrypted_code: str, body: UserPassword):
 
         db.add(user_found)
         db.commit()
-        db.refresh(user_found)
 
         return { "message": "Passoword successfully reset!" }
     
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=str(e))

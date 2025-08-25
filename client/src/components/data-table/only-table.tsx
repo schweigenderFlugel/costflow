@@ -7,7 +7,7 @@ import { flexRender, Table as ITTable } from "@tanstack/react-table"
 
 const OnlyTable = <TData,>({ table, colSpan, isLoading }: { table: ITTable<TData>, colSpan: number, isLoading?: boolean }) => (
   <div className="relative overflow-auto">
-    <Table>
+    <Table className="border">
       <TableHeader>
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
@@ -53,12 +53,17 @@ const OnlyTable = <TData,>({ table, colSpan, isLoading }: { table: ITTable<TData
                       return (
                         <TableCell
                           key={cell.id}
-                          className={isFixed ? "pr-0 sticky right-0 bg-background group-hover:bg-muted shadow-lg w-fit transition-colors" : "w-fit max-w-44"}
+                          className={
+                            isFixed
+                              ? "pr-0 sticky right-0 bg-background group-hover:bg-muted shadow-lg w-fit transition-colors"
+                              : `${cell.column.id === "select" ? "" : "min-w-28"} max-w-44`
+                          }
                         >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
+                          {
+                            flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
                         </TableCell>
                       )
                     })}

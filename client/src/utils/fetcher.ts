@@ -18,20 +18,29 @@ export const fetcher = async ({ input, method = "GET", body, headers, cache }: F
       ...hasDuplex,
       cache: cache ?? "no-store",
     })
+
     if (!res.ok) {
-      if (res.status === 401) {
-        // Manejar el error 401 (no autorizado) de manera específica si es necesario
-        return { error: "No autorizado. Por favor, inicia sesión." }
+      let errorDetail;
+      try {
+        const detailData = await res.json();
+        errorDetail = detailData.detail;
+      } catch {
+        errorDetail = await res.text();
       }
-      const errorMessage = res.status ? `Error - ${res.status ?? "interno"}: ${res.statusText ?? "Inténtalo más tarde."}` : await res.text()
-      const errorDetail = () => {
-        try {
-          return res.json().then(data => data.detail).catch(() => null);
-        } catch {
-          return null;
+
+      if (res.status === 401 && errorDetail) {
+        // Manejar el error 401 (no autorizado) de manera específica si es necesario
+        if (errorDetail === "Authorization token is missing") {
+          return { detail: "Debe estar autenticado" }
+        }
+        if (errorDetail === "Invalid credentials") {
+          return { detail: "Credenciales inválidas" }
         }
       }
-      return { error: errorMessage, detail: errorDetail() }
+      const errorMessage = res.status ? `Error - ${res.status ?? "interno"}: ${res.statusText ?? "Inténtalo más tarde."}` : errorDetail;
+
+
+      return { error: errorMessage, detail: errorDetail }
     }
     const data = await res.json()
     return data;

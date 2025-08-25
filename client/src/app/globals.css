@@ -51,7 +51,7 @@
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: #0A0559;
+  --primary: #0a0559;
   /* --primary: oklch(0.208 0.042 265.755); */
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.968 0.007 247.896);
@@ -131,17 +131,4 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
-}
-
-.bg-login-mobile {
-  background-image: url('/assets/images/gradientelogin.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-@media (min-width: 768px) {
-  .bg-login-mobile {
-    background-image: none;
-    background-color: white;
-  }
 }

@@ -4,9 +4,13 @@ import { Hero } from "@/components/landing/hero/hero";
 import { Features } from "@/components/landing/features/features";
 import { HowItWorks } from "@/components/landing/how-it-works/how-it-works";
 import { Pricing } from "@/components/landing/pricing";
-import { Contact } from "@/components/landing/contact";
+import { Contact } from "@/components/landing/contact
 
-export default function Home() {
+export const metadata = {
+  title: "Inicio",
+};
+
+const Page = () => {
   return (
     <div>
       <Navbar5 />
@@ -17,4 +21,6 @@ export default function Home() {
       <Contact/>
     </div>
   );
-}
+};
+
+export default Page;

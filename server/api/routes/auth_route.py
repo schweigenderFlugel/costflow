@@ -42,8 +42,8 @@ router = APIRouter(
     ).custom_response(),
   },
 )
-def register(session: SessionDep, body: RegisterUser):
-  return auth_service.register(db=session, body=body)
+async def register(session: SessionDep, body: RegisterUser):
+  return await auth_service.register(db=session, body=body)
 
 @router.post("/login",
   status_code=200,

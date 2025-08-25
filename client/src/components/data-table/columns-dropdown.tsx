@@ -5,13 +5,18 @@ import { Table } from "@tanstack/react-table"
 import { ObjFeedstock } from "@/types/items/feedstock"
 import { translateFeedstockHeaders, translateProductsHeaders } from "@/utils/translate/items-translate"
 import { ObjProduct } from "@/types/items/product"
+import { translateUserHeaders } from "@/utils/translate/user"
+import { UsersData } from "@/types/items/users"
 
 type DropdownProps<T> = {
-  table: Table<T>,
-  columnsTo: "feedstock" | "product"
-}
+  table: Table<T>;
+  columnsTo: "feedstock" | "product" | "users" | "indirect_cost";
+};
 
-const ColumnsDropdown = <TData,>({ table, columnsTo }: DropdownProps<TData>) => {
+const ColumnsDropdown = <TData,>({
+  table,
+  columnsTo,
+}: DropdownProps<TData>) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -28,21 +33,23 @@ const ColumnsDropdown = <TData,>({ table, columnsTo }: DropdownProps<TData>) => 
               <DropdownMenuCheckboxItem
                 key={column.id}
                 checked={column.getIsVisible()}
-                onCheckedChange={(value) =>
-                  column.toggleVisibility(!!value)
-                }
+                onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
                 {
-                  columnsTo == "feedstock"
-                    ? translateFeedstockHeaders(column.id as keyof ObjFeedstock)
-                    : translateProductsHeaders(column.id as keyof ObjProduct)
+                  columnsTo === "users"
+                    ? translateUserHeaders(column.id as keyof UsersData)
+                    : columnsTo == "feedstock"
+                      ? translateFeedstockHeaders(column.id as keyof ObjFeedstock)
+                      : columnsTo == "product"
+                        ? translateProductsHeaders(column.id as keyof ObjProduct)
+                        : column.id
                 }
               </DropdownMenuCheckboxItem>
-            )
+            );
           })}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
-}
+  );
+};
 
-export default ColumnsDropdown
+export default ColumnsDropdown;

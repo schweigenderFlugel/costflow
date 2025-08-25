@@ -13,6 +13,8 @@ interface TextFieldProps<T extends FieldValues> {
   type?: string;
   control: Control<T>;
   errors: FieldErrors<T>;
+  className?: string;
+  placeholder?: string;
 }
 
 export function TextField<T extends FieldValues>({
@@ -21,6 +23,8 @@ export function TextField<T extends FieldValues>({
   type = "text",
   control,
   errors,
+  className,
+  placeholder,
 }: TextFieldProps<T>) {
   return (
     <FormField
@@ -30,7 +34,13 @@ export function TextField<T extends FieldValues>({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input type={type} {...field} />
+            <Input
+              type={type}
+              {...field}
+              value={field.value ?? ""}
+              className={className}
+              placeholder={placeholder}
+            />
           </FormControl>
           {errors?.[name] && (
             <p className="text-red-500 text-sm">
