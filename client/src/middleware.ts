@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
 
 
   if (AUTH_ROUTES.includes(pathname) && token) {
-    return NextResponse.redirect(new URL('/', request.url))
+    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   if (PROTECTED_ROUTES.includes(pathname) && !token) {

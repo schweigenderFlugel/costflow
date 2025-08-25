@@ -28,7 +28,7 @@ export const dtoProduct = (prod: ObjProduct) => {
       return {
         name: fs.name,
         measure_unit: fs.measure_unit,
-        feedstock_id: fs.feedstock || fs.id,
+        id: fs.feedstock || fs.id,
         quantity_required: fs.quantity_required
       };
     })

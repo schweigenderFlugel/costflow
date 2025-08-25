@@ -3,7 +3,7 @@ import { HeroTables } from "./hero-tables";
 
 export function Hero() {
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center p-8 overflow-hidden bg-[#0D1117]">
+    <section className="relative w-full min-h-screen flex items-center justify-center p-8 overflow-hidden bg-[#0D1117]" id="inicio">
       {/* Gradientes del fondo */}
       <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-900/50 rounded-full filter blur-[150px] opacity-30"></div>
       <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-900/50 rounded-full filter blur-[150px] opacity-30"></div>

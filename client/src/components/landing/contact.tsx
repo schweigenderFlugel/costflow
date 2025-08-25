@@ -8,7 +8,7 @@ export function Contact() {
   const RequiredIndicator = () => <span className="text-red-500 ml-1">*</span>;
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-slate-50">
+    <section className="w-full py-20 lg:py-28 bg-slate-50" id="contacto">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
