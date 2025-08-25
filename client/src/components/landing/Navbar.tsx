@@ -18,8 +18,8 @@ import {
 
 const Navbar5 = () => {
   return (
-    <section className="xl:py-7">
-      <div className="container mx-auto flex justify-between items-center bg-gray-900/85 xl:rounded-xl text-white p-4">
+    <section className="xl:py-7 fixed top-0 bottom-0 z-50 w-full">
+      <div className="container mx-auto flex justify-between items-center bg-gray-800/85 xl:rounded-xl text-white p-4">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2">
           <img
