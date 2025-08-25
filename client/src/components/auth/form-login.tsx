@@ -36,6 +36,7 @@ export default function FormLogin() {
           description: data.message || data.description || data.detail,
           message: "¡Bienvenido nuevamente!"
         })
+        return;
       }
 
       itemToasts.error({

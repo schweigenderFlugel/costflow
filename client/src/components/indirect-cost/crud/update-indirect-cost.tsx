@@ -19,16 +19,18 @@ const UpdateIndirectCost = () => {
 
   if (indirectCost === null) return null;
 
-  const handleSubmit = async (values: FormDataIndirectCost) => {
+  const handleSubmit = async (
+    // values: FormDataIndirectCost
+  ) => {
     // setErrorMessage(undefined);
 
     // Prepare the final type value
-    const finalType = values.type === "Otros" ? values.customType : values.type;
+    // const finalType = values.type === "Otros" ? values.customType : values.type;
     // const submitData = {
     //   type: finalType,
     //   amount: values.amount
     // };
-    let isSuccess: boolean = false;
+    const isSuccess: boolean = false;
     // startTransition(async () => {
     //   try {
     //     const data = await fetcher({
@@ -41,7 +43,7 @@ const UpdateIndirectCost = () => {
     //       let errorMessage = data.error || data.description || data.message || data.detail;
 
     //       if (Array.isArray(errorMessage)) {
-    //         errorMessage = errorMessage.map((detail: any) => detail.msg || detail).join(". ");
+    //         errorMessage = errorMessage.map((detail) => detail.msg || detail).join(". ");
     //       }
 
     //       console.error("Error creating indirect cost:", data);
@@ -49,13 +51,13 @@ const UpdateIndirectCost = () => {
 
     //       itemToasts.error({
     //         description: finalType || values.type,
-    //         type: "costo indirecto" as any,
+    //         type: "costo indirecto",
     //         message: errorMessage || "Error al crear el costo indirecto"
     //       });
     //     } else {
     //       itemToasts.createSuccess({
     //         description: `${finalType} - $${values.amount}`,
-    //         type: "costo indirecto" as any
+    //         type: "costo indirecto"
     //       });
     //       tableToggle()
     //       isSuccess = true;
@@ -67,7 +69,7 @@ const UpdateIndirectCost = () => {
 
     //     itemToasts.error({
     //       description: finalType || values.type,
-    //       type: "costo indirecto" as any,
+    //       type: "costo indirecto",
     //       message
     //     });
     //   }

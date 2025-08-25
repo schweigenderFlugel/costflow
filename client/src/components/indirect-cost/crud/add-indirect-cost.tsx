@@ -46,7 +46,7 @@ const AddIndirectCost = () => {
           let errorMessage = data.error || data.description || data.message || data.detail;
 
           if (Array.isArray(errorMessage)) {
-            errorMessage = errorMessage.map((detail: any) => detail.msg || detail).join(". ");
+            errorMessage = errorMessage.map((detail) => detail.msg || detail).join(". ");
           }
 
           console.error("Error creating indirect cost:", data);
@@ -54,13 +54,13 @@ const AddIndirectCost = () => {
 
           itemToasts.error({
             description: finalType || values.type,
-            type: "costo indirecto" as any,
+            type: "costo indirecto",
             message: errorMessage || "Error al crear el costo indirecto"
           });
         } else {
           itemToasts.createSuccess({
             description: `${finalType} - $${values.amount}`,
-            type: "costo indirecto" as any
+            type: "costo indirecto"
           });
           tableToggle()
           isSuccess = true;
@@ -72,7 +72,7 @@ const AddIndirectCost = () => {
 
         itemToasts.error({
           description: finalType || values.type,
-          type: "costo indirecto" as any,
+          type: "costo indirecto",
           message
         });
       }

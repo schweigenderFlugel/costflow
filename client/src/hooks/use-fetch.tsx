@@ -12,16 +12,16 @@ const useFetch = <T,>(
   const { state, prev, markPrev } = useUpdateDataTable(inputRequest)
   const [isPending, startTransition] = useTransition()
 
-  const fetchToData = async () => {
-    try {
-      const res = await fetcher({ input: `/api/${inputRequest}` })
-      setData(res)
-    } catch (err) {
-      setError((err as Error).message)
-    }
-
-  }
   useEffect(() => {
+    const fetchToData = async () => {
+      try {
+        const res = await fetcher({ input: `/api/${inputRequest}` })
+        setData(res)
+      } catch (err) {
+        setError((err as Error).message)
+      }
+
+    }
     // solo fetch si hay cambio real respecto al anterior
     if (state !== null && state !== prev) {
       startTransition(fetchToData)
