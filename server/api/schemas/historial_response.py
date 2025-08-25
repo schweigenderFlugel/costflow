@@ -31,3 +31,4 @@ class HistorialResponse(BaseModel):
     period: str = "07-2025"
     labour: Labour
     indirect_costs: IndirectCosts
+    feedstocks: Feedstocks
