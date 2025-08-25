@@ -1,7 +1,7 @@
 import useUpdateDataTableStore from "@/store/update-table-store";
 import { useShallow } from "zustand/react/shallow";
 export const useUpdateDataTable = (
-  dataForTable: "feedstock" | "product" | "users" = "feedstock"
+  dataForTable: "feedstock" | "product" | "users" | "indirect_cost" = "feedstock"
 ) => {
   const {
     updateFeedstock,
@@ -14,6 +14,11 @@ export const useUpdateDataTable = (
     prevProduct,
     markPrevFeedstock,
     markPrevProduct,
+    // indirect_cost
+    updateIndirectCost,
+    prevIndirectCost,
+    markPrevIndirectCost,
+    setUpdateIndirectCost,
   } = useUpdateDataTableStore(useShallow((state) => state))
 
 
@@ -32,11 +37,28 @@ export const useUpdateDataTable = (
       markPrev: markPrevProduct,
     };
   }
+  if (dataForTable === "feedstock") {
+    return {
+      state: updateFeedstock,
+      prev: prevFeedstock,
+      toggle: () => setUpdateFeedstock(!updateFeedstock),
+      markPrev: markPrevFeedstock,
+    }
+  }
+
+  if (dataForTable === "indirect_cost") {
+    return {
+      state: updateIndirectCost,
+      prev: prevIndirectCost,
+      toggle: () => setUpdateIndirectCost(!updateIndirectCost),
+      markPrev: markPrevIndirectCost,
+    }
+  }
 
   return {
-    state: updateFeedstock,
-    prev: prevFeedstock,
-    toggle: () => setUpdateFeedstock(!updateFeedstock),
-    markPrev: markPrevFeedstock,
+    state: null,
+    prev: null,
+    toggle: () => null,
+    markPrev: null,
   }
 }

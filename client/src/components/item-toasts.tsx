@@ -3,7 +3,7 @@ import { Info } from "lucide-react"
 
 interface ItemToastData {
   description: string
-  type?: "insumo" | "producto" | "registro" | "inicio de sesión" | "usuario"
+  type?: "insumo" | "producto" | "registro" | "inicio de sesión" | "usuario" | "costo indirecto"
   duration?: number
 }
 

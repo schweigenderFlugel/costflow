@@ -10,7 +10,7 @@ import { UsersData } from "@/types/items/users"
 
 type DropdownProps<T> = {
   table: Table<T>;
-  columnsTo: "feedstock" | "product" | "users";
+  columnsTo: "feedstock" | "product" | "users" | "indirect_cost";
 };
 
 const ColumnsDropdown = <TData,>({
@@ -40,7 +40,9 @@ const ColumnsDropdown = <TData,>({
                     ? translateUserHeaders(column.id as keyof UsersData)
                     : columnsTo == "feedstock"
                       ? translateFeedstockHeaders(column.id as keyof ObjFeedstock)
-                      : translateProductsHeaders(column.id as keyof ObjProduct)
+                      : columnsTo == "product"
+                        ? translateProductsHeaders(column.id as keyof ObjProduct)
+                        : column.id
                 }
               </DropdownMenuCheckboxItem>
             );

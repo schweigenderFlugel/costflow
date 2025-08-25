@@ -8,6 +8,9 @@ type UpdateTableState = {
   prevProduct: boolean | null
   //  users
   updateUsers: null | boolean;
+  // indirect_cost
+  updateIndirectCost: null | boolean;
+  prevIndirectCost: null | boolean;
 }
 
 type UpdateTableActions = {
@@ -18,6 +21,9 @@ type UpdateTableActions = {
   markPrevProduct: (value: boolean | null) => void
   //  users
   setUpdateUsers: (open: boolean) => void;
+  // indirect_cost
+  setUpdateIndirectCost: (open: boolean) => void;
+  markPrevIndirectCost: (open: boolean | null) => void;
 }
 
 interface UpdateTableStore extends UpdateTableState, UpdateTableActions { }
@@ -32,6 +38,9 @@ const useUpdateDataTableStore = create<UpdateTableStore>()((set) => ({
   // users
   updateUsers: null,
 
+  // indirect_cost
+  updateIndirectCost: null,
+  prevIndirectCost: null,
 
   // actions
   setUpdateFeedstock: (value) => set({ updateFeedstock: value }),
@@ -41,6 +50,10 @@ const useUpdateDataTableStore = create<UpdateTableStore>()((set) => ({
 
   // users
   setUpdateUsers: (updateUsers: boolean) => set({ updateUsers }),
+
+  // indirect_cost
+  setUpdateIndirectCost: (value) => set({ updateIndirectCost: value }),
+  markPrevIndirectCost: (value) => set({ prevIndirectCost: value }),
 
 }))
 
