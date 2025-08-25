@@ -40,3 +40,4 @@ router = APIRouter(
 )
 def get_historial(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRole: AdminRoleDep):
   return historial_service.get_historial(db=session, cache=cache)
+

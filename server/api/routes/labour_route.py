@@ -1,7 +1,10 @@
 from fastapi import APIRouter, Query, Body
 from schemas.http_response import Response
+
 from deps.db_session_dep import SessionDep
 from deps.jwt_dep import JwtDep
+from deps.admin_role_dep import AdminRoleDep
+
 from schemas.pagination import Pagination
 from services import labour_service
 
@@ -29,8 +32,28 @@ router = APIRouter(
         message="Internal Server Error"
     ).custom_response(),
 })
-def get_labour(db: SessionDep, pagination: Pagination = Query()):
+def get_labour(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep):
     return labour_service.get_labour(db=db)
+
+@router.get("/current", summary="Get current labour info", responses={
+    200: Response(
+        description="Successfully Response",
+        content_type="application/json",
+        message="Successfully Response"
+    ).custom_response(),
+    404: Response(
+        description="Labour info not found",
+        content_type="application/json",
+        message="Labour info not found"
+    ).custom_response(),
+    500: Response(
+        description="Internal Server Error",
+        content_type="application/json",
+        message="Internal Server Error"
+    ).custom_response(),
+})
+def get_current_labour(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep):
+    return labour_service.get_current_labour(db=db)
 
 @router.get("/{id}", summary="Get labour info by id", responses={
     200: Response(
@@ -49,7 +72,7 @@ def get_labour(db: SessionDep, pagination: Pagination = Query()):
         message="Internal Server Error"
     ).custom_response(),
 })
-def get_labour_by_id(db: SessionDep, jwt: JwtDep, id: str):
+def get_labour_by_id(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: str):
     return labour_service.get_labour_by_id(db=db, id=id)
 
 @router.post("", summary="Create labour info", responses={
@@ -69,7 +92,7 @@ def get_labour_by_id(db: SessionDep, jwt: JwtDep, id: str):
         message="Internal Server Error"
     ).custom_response(),
 })
-def create_labour(db: SessionDep, jwt: JwtDep, body: CreateLabour = Body()):
+def create_labour(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, body: CreateLabour = Body()):
     return labour_service.create_labour(db=db, body=body)
 
 @router.put("/{id}", summary="Update labour info", responses={
@@ -94,7 +117,7 @@ def create_labour(db: SessionDep, jwt: JwtDep, body: CreateLabour = Body()):
         message="Internal Server Error"
     ).custom_response(),
 })
-def update_indirect_cost(db: SessionDep, jwt: JwtDep, id: str, body: UpdateLabour = Body()): # type: ignore
+def update_indirect_cost(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: str, body: UpdateLabour = Body()): # type: ignore
     return labour_service.update_labour(db=db, id=id, body=body)
 
 @router.delete("/{id}", summary="Delete labour info", responses={
@@ -114,5 +137,5 @@ def update_indirect_cost(db: SessionDep, jwt: JwtDep, id: str, body: UpdateLabou
         message="Internal Server Error"
     ).custom_response(),
 })
-def delete_labour(db: SessionDep, jwt: JwtDep, id: str):
+def delete_labour(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: str):
     return labour_service.delete_labour(db=db, id=id)

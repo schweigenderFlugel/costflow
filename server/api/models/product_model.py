@@ -9,6 +9,8 @@ from pydantic import create_model
 
 from .product_feedstock_model import ProductFeedstock
 from .feedstock_model import Feedstock
+from .product_indirect_costs_model import ProductIndirectCost
+from .indirect_cost_model import IndirectCost
 
 class MeasureUnit(str, Enum):
     GRAMS = "GRAMS"
@@ -39,26 +41,33 @@ class ProductBase(SQLModel):
     labour_time: int = Field(sa_column=Column(FLOAT), description='Minutes required for labour')
     
 class Timestamp(SQLModel):
-    created_at: datetime = Field(sa_column=Column(TIMESTAMP), default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(sa_column=Column(TIMESTAMP), default_factory=lambda: datetime.now(timezone.utc))
+    date: datetime = Field(sa_column=Column(TIMESTAMP), description='Last date of update', default_factory=lambda: datetime.now(timezone.utc))
   
 class Product(Timestamp, ProductBase, table=True):
     __tablename__ = 'products'
     id: Optional[uuid] = Field(default_factory=uuid4, primary_key=True)
     feedstocks: List[Feedstock] = Relationship(link_model=ProductFeedstock)
+    indirect_costs: List[IndirectCost] = Relationship(link_model=ProductIndirectCost)
     is_deleted: Optional[bool] = Field(sa_column=Column(BOOLEAN), default=False)
 
 class ProductFeedstockInput(SQLModel):
-    feedstock_id: uuid = Field(description='Related feedstock id')
+    id: uuid = Field(description='Related feedstock id')
     quantity_required: float = Field(sa_column=Column(FLOAT), description='The quantity required for the product')
+
+class ProductIndirectCostInput(SQLModel):
+    id: uuid = Field(description='Related indirect cost id')
+    usage: float = Field(sa_column=Column(FLOAT), description='The usage the product')
 
 class CreateProduct(ProductBase):
     feedstocks: List[ProductFeedstockInput]
+    indirect_costs: Optional[List[ProductIndirectCostInput]] = None
 
-optional_fields = {field: (Optional[typ], None) for field, typ in CreateProduct.__annotations__.items()}
+optional_fields = {field: (Optional[typ], None) for field, typ in ProductBase.__annotations__.items()}
 
 UpdateProduct = create_model(
     "UpdateProduct",
     **optional_fields,
+    feedstocks = (Optional[List[ProductFeedstockInput]], None),
+    indirect_costs = (Optional[List[ProductIndirectCostInput]], None),
     delete_feedstocks = (Optional[List[uuid]], None)
 )

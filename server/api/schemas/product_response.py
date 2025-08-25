@@ -24,6 +24,7 @@ class ProductResponse(BaseModel):
   quantity: int = 20
   subtotal: float = 7045485.0
   labour_costs: float = 10000.0
+  indirect_costs: float = 16.18
   created_at: datetime
   updated_at: datetime
   feedstocks: List[FeedstockEntries]

@@ -1,11 +1,14 @@
-from typing import Optional
-from sqlmodel import SQLModel, Field
+from typing import Optional, TYPE_CHECKING
+from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Column, VARCHAR, FLOAT, BOOLEAN, TIMESTAMP
 from sqlalchemy.dialects.postgresql import ENUM
 from enum import Enum
 from uuid import UUID as uuid, uuid4
 from datetime import datetime, timezone
 from pydantic import create_model
+
+if TYPE_CHECKING:
+  from .historial_model import Historial
 
 class MeasureUnit(str, Enum):
     GRAMS = "GRAMS"
@@ -40,18 +43,19 @@ class FeedstockBase(SQLModel):
     provider: Optional[str] = Field(sa_column=Column(VARCHAR), default=None, description='The provider of the feedstock')
 
 class Timestamp(SQLModel):
-    created_at: datetime = Field(sa_column=Column(TIMESTAMP), default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(sa_column=Column(TIMESTAMP), default_factory=lambda: datetime.now(timezone.utc))
+    date: datetime = Field(sa_column=Column(TIMESTAMP), description='Last date of update', default_factory=lambda: datetime.now(timezone.utc))
 
 class Feedstock(Timestamp, FeedstockBase, table=True):
     __tablename__ = 'feedstocks'
     id: Optional[uuid] = Field(default_factory=uuid4, primary_key=True)
+    historial_id: uuid = Field(foreign_key="historial.id", ondelete="CASCADE")
+    historial: Optional["Historial"] = Relationship(back_populates="feedstocks")
     is_deleted: Optional[bool] = Field(sa_column=Column(BOOLEAN), default=False)
 
 class CreateFeedstock(FeedstockBase):
     pass
 
-optional_fields = {field: (Optional[typ], None) for field, typ in CreateFeedstock.__annotations__.items()}
+optional_fields = {field: (Optional[typ], None) for field, typ in FeedstockBase.__annotations__.items()}
 
 UpdateFeedstock = create_model(
     "UpdateFeedstock",
