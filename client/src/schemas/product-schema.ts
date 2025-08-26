@@ -9,7 +9,7 @@ import { z } from "zod";
 
 // Esquema para ProductFeedstockInput
 export const productFeedstockInputSchema = z.object({
-  feedstock_id: z.string().uuid("ID de insumo debe ser un UUID válido"),
+  id: z.string().uuid("ID de insumo debe ser un UUID válido"),
   name: z.string(), // unicamente para manejar el detalle
   measure_unit: z.nativeEnum(MeasureUnit), // unicamente para manejar el detalle
   quantity_required: z.number({

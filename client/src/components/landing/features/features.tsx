@@ -11,7 +11,7 @@ export function Features() {
   ];
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-stone-100 text-[#0A0559]">
+    <section className="w-full py-20 lg:py-28 bg-stone-100 text-[#0A0559]" id="software">
       <div className="container mx-auto grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
 
         {/* Columna Derecha */}

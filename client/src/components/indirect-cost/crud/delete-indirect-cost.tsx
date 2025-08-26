@@ -1,4 +1,5 @@
 "use client"
+import DetailIndirectCost from "@/components/indirect-cost/crud/detail-indirect-cost"
 import { itemToasts } from "@/components/item-toasts"
 import {
   AlertDialog,
@@ -53,11 +54,7 @@ const DeleteIndirectCost = () => {
           <AlertDialogDescription className="sr-only"></AlertDialogDescription>
         </AlertDialogHeader>
 
-        <div className="p-4 sm:p-6 bg-muted/70 rounded-xs text-muted-foreground">
-          <h3 className="text-base font-medium">Detalles del costo:</h3>
-          <p className="mt-2 text-sm"><span className="font-semibold">Tipo:</span> {indirectCost.type}</p>
-          <p className="mt-1 text-sm"><span className="font-semibold">Monto:</span> ${indirectCost.amount.toFixed(2)}</p>
-        </div>
+        <DetailIndirectCost indirectCost={indirectCost} />
 
         <AlertDialogFooter className="grid grid-cols-2 gap-4 sm:gap-8 w-full justify-between items-center">
           <AlertDialogCancel className="cursor-pointer"

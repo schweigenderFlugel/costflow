@@ -48,7 +48,7 @@ const DashboardCards: React.FC<DashboardCardsProps> = ({ data }) => {
       />
 
       <CardsHome
-        title="Clientes totales"
+        title="Usuarios totales"
         icon="Users"
         percentage={data.customers.percentage}
         value={data.customers.value} // 👈

@@ -53,7 +53,7 @@ export function HowItWorks() {
 
         {/* Columna Derecha */}
         <div className="mx-auto md:mx-0 max-w-full">
-          <HowTables/>
+          <HowTables />
         </div>
 
       </div>

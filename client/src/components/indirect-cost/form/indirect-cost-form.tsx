@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import SpinLoader from "@/components/shared/spin-loader";
+import DateField from "@/components/date-field";
 
 // Predefined cost types (you can modify these as needed)
 export const COST_TYPES = [
@@ -67,70 +68,66 @@ const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose,
           autoComplete="off"
           id={formId}
           onSubmit={handleSubmit}
-          className="flex flex-col gap-5 px-1.5"
+          className="px-1.5 grid grid-cols-2 gap-x-2 gap-y-5"
         >
 
-          <div className="grid grid-cols-12 gap-2">
+          <FormField
+            name="type"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className={isCustomType ? "col-span-1" : "col-span-2"}>
+                <FormLabel>Tipo de costo indirecto</FormLabel>
+                <FormControl>
+                  <Select
+                    value={field.value}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setIsCustomType(value === "Otros");
+                      // Clear custom type when switching away from "Otros"
+                      if (value !== "Otros") {
+                        form.setValue("customType", "");
+                      }
+                    }}
+                    disabled={isPending}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder={isCustomType ? "Selecciona el tipo de costo indirecto" : "Selecciona tipo de costo"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {COST_TYPES.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
+          {isCustomType && (
             <FormField
-              name="type"
+              name="customType"
               control={form.control}
               render={({ field }) => (
-                <FormItem className={!isCustomType ? "col-span-12" : "col-span-5"}>
-                  <FormLabel>Tipo de costo indirecto</FormLabel>
+                <FormItem>
+                  <FormLabel>Especificar tipo de costo</FormLabel>
                   <FormControl>
-                    <Select
-                      value={field.value}
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                        setIsCustomType(value === "Otros");
-                        // Clear custom type when switching away from "Otros"
-                        if (value !== "Otros") {
-                          form.setValue("customType", "");
-                        }
-                      }}
+                    <Input
+                      type="text"
+                      placeholder="Ingresa otro costo"
+                      {...field}
+                      value={field.value || ""}
                       disabled={isPending}
-                    >
-                      <SelectTrigger className="w-full max-w-56">
-                        <SelectValue placeholder="Selecciona el tipo de costo" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {COST_TYPES.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            {isCustomType && (
-              <FormField
-                name="customType"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem className="col-span-7">
-                    <FormLabel>Especificar tipo de costo</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="Ingresa otro costo"
-                        {...field}
-                        value={field.value || ""}
-                        disabled={isPending}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-          </div>
+          )}
 
           <FormField
             name="amount"
@@ -157,6 +154,9 @@ const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose,
               </FormItem>
             )}
           />
+
+          <DateField formControl={form.control} />
+
         </form>
       </Form>
 

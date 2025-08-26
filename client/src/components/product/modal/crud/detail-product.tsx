@@ -96,7 +96,7 @@ const DetailProduct = ({ product }: { product: ObjProduct | Product | null }) =>
                 <ol className="space-y-2 list-decimal text-xs text-foreground">
                   {
                     product.feedstocks?.map((feedstock) => (
-                      <li key={'feedstock_id' in feedstock ? feedstock.feedstock_id : feedstock.id}>
+                      <li key={'feedstock_id' in feedstock ? feedstock.id : feedstock.id}>
                         <div className="flex justify-between items-center text-sm">
                           <h5> {'name' in feedstock && feedstock.name}</h5>
                           <h5> {feedstock.quantity_required}</h5>
