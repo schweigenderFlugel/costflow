@@ -53,7 +53,7 @@ export function FeedstockSelector({
     }
 
     // Filtrar insumos ya agregados
-    const addedFeedstockIds = fields.map(field => field.feedstock_id);
+    const addedFeedstockIds = fields.map(field => field.id);
     filtered = filtered.filter(fs => !addedFeedstockIds.includes(fs.id));
 
     setFilteredFeedstocks(filtered);
@@ -61,7 +61,7 @@ export function FeedstockSelector({
 
   const handleFeedstockSelect = (feedstock: ObjFeedstock) => {
     // Verificar si el insumo ya está seleccionado
-    const alreadySelected = fields.some(field => field.feedstock_id === feedstock.id);
+    const alreadySelected = fields.some(field => field.id === feedstock.id);
 
     if (alreadySelected) {
       return;
@@ -71,7 +71,7 @@ export function FeedstockSelector({
     append({
       name: feedstock.name,
       measure_unit: feedstock.measure_unit,
-      feedstock_id: feedstock.id,
+      id: feedstock.id,
       quantity_required: 1
     });
 

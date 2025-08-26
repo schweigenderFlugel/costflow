@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from "react";
 import { fetcher } from "@/utils/fetcher";
-// import { getToken } from "@/utils/get-token";
 import { itemToasts } from "@/components/item-toasts";
 import { FormDataIndirectCost } from "@/schemas/indirect-cost-schema";
 import { useUpdateDataTable } from "@/hooks/use-update-data-table";
@@ -16,6 +15,7 @@ const defaultValues = {
   type: "",
   customType: "",
   amount: 0,
+  date: new Date()
 }
 
 const AddIndirectCost = () => {

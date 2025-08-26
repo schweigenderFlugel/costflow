@@ -6,7 +6,7 @@ import { UUID } from "crypto"
 // Interfaz para la relación entre productos y materias primas
 interface ProductFeedstockInput {
   name: string; // unicamente para el detalle
-  feedstock_id: UUID | string;
+  id: UUID | string;
   quantity_required: number;
 }
 
