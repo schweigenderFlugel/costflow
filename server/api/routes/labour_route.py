@@ -21,6 +21,16 @@ router = APIRouter(
         content_type="application/json",
         message="Successfully Response"
     ).custom_response(),
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
+    ).custom_response(),
     404: Response(
         description="Indirect Cost Not Found",
         content_type="application/json",
@@ -41,6 +51,16 @@ def get_labour(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep):
         content_type="application/json",
         message="Successfully Response"
     ).custom_response(),
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
+    ).custom_response(),
     404: Response(
         description="Labour info not found",
         content_type="application/json",
@@ -60,6 +80,16 @@ def get_current_labour(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep):
         description="Successfully Response",
         content_type="application/json",
         message="Successfully Response"
+    ).custom_response(),
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
     ).custom_response(),
     404: Response(
         description="Labour info not found",
@@ -86,6 +116,16 @@ def get_labour_by_id(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: str):
         content_type="application/json",
         message="Bad Request"
     ).custom_response(),
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
+    ).custom_response(),
     500: Response(
         description="Internal Server Error",
         content_type="application/json",
@@ -106,6 +146,16 @@ def create_labour(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, body: Create
         content_type="application/json",
         message="Bad Request"
     ).custom_response(),
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
+    ).custom_response(),
     404: Response(
         description="Labour info not found",
         content_type="application/json",
@@ -125,6 +175,16 @@ def update_indirect_cost(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: s
         description="Labour info deleted",
         content_type="application/json",
         message="Labour info deleted"
+    ).custom_response(),
+    401: Response(
+      description='Invalid or expired creadentials', 
+      content_type='application/json',
+      message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+      description='Not allowed because invalid role', 
+      content_type='application/json',
+      message='Not allowed to access',
     ).custom_response(),
     404: Response(
         description="Labour info not found",

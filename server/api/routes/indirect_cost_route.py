@@ -11,8 +11,8 @@ from services import indirect_cost_service
 from models.indirect_cost_model import CreateIndirectCost, UpdateIndirectCost
 
 router = APIRouter(
- tags=['Indirect Costs'],
- prefix='/indirect-costs'
+    tags=['Indirect Costs'],
+    prefix='/indirect-costs'
 )
 
 @router.get("", summary="Get Indirect Costs", responses={
@@ -20,6 +20,16 @@ router = APIRouter(
         description="Successfully Response",
         content_type="application/json",
         message="Successfully Response"
+    ).custom_response(),
+    401: Response(
+      description='Invalid or expired creadentials', 
+      content_type='application/json',
+      message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+      description='Not allowed because invalid role', 
+      content_type='application/json',
+      message='Not allowed to access',
     ).custom_response(),
     404: Response(
         description="Indirect Cost Not Found",
@@ -35,11 +45,51 @@ router = APIRouter(
 def get_indirect_costs(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep,  pagination: Pagination = Query()):
     return indirect_cost_service.get_indirect_cost(db=db, pagination=pagination)
 
-@router.get("/{id}", summary="Get Indirect Costs by id", responses={
+@router.get("/current", summary="Get current indirect cost", responses={
     200: Response(
         description="Successfully Response",
         content_type="application/json",
         message="Successfully Response"
+    ).custom_response(),
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
+    ).custom_response(),
+    404: Response(
+        description="Indirect costs not found",
+        content_type="application/json",
+        message="Labour info not found"
+    ).custom_response(),
+    500: Response(
+        description="Internal Server Error",
+        content_type="application/json",
+        message="Internal Server Error"
+    ).custom_response(),
+})
+def get_current_labour(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep):
+    return indirect_cost_service.get_current_indirect_costs(db=db)
+
+@router.get("/{id}", summary="Get indirect costs by id", responses={
+    200: Response(
+        description="Successfully Response",
+        content_type="application/json",
+        message="Successfully Response"
+    ).custom_response(),
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
     ).custom_response(),
     404: Response(
         description="Indirect Cost Not Found",
@@ -60,6 +110,16 @@ def get_indirect_cost_by_id(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id
         description="IndirectCost Created",
         content_type="application/json",
         message="IndirectCost Created"
+    ).custom_response(),
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
     ).custom_response(),
     400: Response(
         description="Bad Request",
@@ -86,6 +146,16 @@ def create_indirect_cost(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, body:
         content_type="application/json",
         message="Bad Request"
     ).custom_response(),
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
+    ).custom_response(),
     404: Response(
         description="IndirectCost Not Found",
         content_type="application/json",
@@ -106,6 +176,16 @@ def update_indirect_cost(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, id: s
         description="IndirectCost Deleted",
         content_type="application/json",
         message="IndirectCost Deleted"
+    ).custom_response(),
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
     ).custom_response(),
     404: Response(
         description="IndirectCost Not Found",

@@ -5,7 +5,7 @@ from uuid import UUID as uuid
 class Service(BaseModel):
     id: uuid
     amount: float = 269.6
-    total_usage: float = 100.0,
+    total_usage: float = 100.0
     type: str = "Agua"
 
 class Labour(BaseModel):
@@ -24,7 +24,7 @@ class FeedstockDetails(BaseModel):
     currency: str = "ARS"
 
 class Feedstocks(BaseModel):
-    total: float = 570920.5,
+    total: float = 570920.5
     feedstocks: List[FeedstockDetails]
 
 class HistorialResponse(BaseModel):

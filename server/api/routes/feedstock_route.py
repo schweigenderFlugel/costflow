@@ -22,9 +22,20 @@ router = APIRouter(
 
 @router.get("",
   status_code=200,
+  tags=['Feedstocks'],
   summary='Get a list of feedstocks',
   response_model=List[FeedstockResponse],
   responses={
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
+    ).custom_response(),
     500: Response(
       description='Unexpected error has ocurred', 
       content_type='application/json',
@@ -37,10 +48,20 @@ def get_feedstocks(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRole:
 
 @router.get("/{id}",
   status_code=200,
-  tags=['Feedstocks'], 
+  tags=['Feedstocks'],
   summary='Get a feedstock',
   response_model=FeedstockResponse,
   responses={
+    401: Response(
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
+    ).custom_response(),
     500: Response(
       description='Unexpected error has ocurred', 
       content_type='application/json',
@@ -54,6 +75,7 @@ def get_feedstock_by_id(session: SessionDep, cache: CacheDep, jwt: JwtDep, admin
 @router.post("",
   status_code=201,
   summary='Create a feedstock',
+  tags=['Feedstocks'], 
   responses={
     201: Response(
       description='Feedstock successfully created',
@@ -83,21 +105,22 @@ def create_feedstock(session: SessionDep, jwt: JwtDep, admin: AdminRoleDep, cach
 @router.put("/{id}",
   status_code=201, 
   summary='Update a feedstock',
+  tags=['Feedstocks'],
   responses={
     201: Response(
       description='Feedstock successfully updated',
       content_type='application/json',
       message='Feedstock successfully updated!',
     ).custom_response(),
-    403: Response(
-      description='Not allowed because invalid role', 
-      content_type='application/json',
-      message='Not allowed',
-    ).custom_response(),
     401: Response(
-      description='Invalid or expired creadentials', 
-      content_type='application/json',
-      message='Credentials are invalid or expired',
+        description='Invalid or expired creadentials', 
+        content_type='application/json',
+        message='Credentials are invalid or expired',
+    ).custom_response(),
+    403: Response(
+        description='Not allowed because invalid role', 
+        content_type='application/json',
+        message='Not allowed to access',
     ).custom_response(),
     500: Response(
       description='Unexpected error has ocurred', 
@@ -112,6 +135,7 @@ def update_feedstock(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRol
 @router.delete("/{id}",
   status_code=201, 
   summary='Delete a feedstock',
+  tags=['Feedstocks'],
   responses={
     201: Response(
       description='Feedstock successfully deleted',
