@@ -14,15 +14,17 @@ import {
 
 type DataItem = {
   month: string;
-  sales: number;
-  production: number;
+  labour: number;
+  indirect: number;
+  feedstocks: number;
 };
 
 interface StatsChartProps {
   data: DataItem[];
+  loading: boolean;
 }
 
-export default function StatsChart({ data }: StatsChartProps) {
+export default function StatsChart({ data, loading }: StatsChartProps) {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -31,16 +33,22 @@ export default function StatsChart({ data }: StatsChartProps) {
             <ChartPie />
           </div>
           <div>
-            Estadísticas de ventas y producción
+            Costos y gastos
             <p className="text-sm text-muted-foreground">
-              Últimos 12 meses de performance
+              Últimos meses de gestión
             </p>
           </div>
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[350px] flex items-center justify-center">
-          {data.length === 0 ? (
+          {loading ? (
+            <div className="flex items-end justify-center gap-4 h-full w-full p-6">
+              <div className="w-10 h-24 bg-slate-200 rounded animate-pulse"></div>
+              <div className="w-10 h-32 bg-slate-200 rounded animate-pulse"></div>
+              <div className="w-10 h-16 bg-slate-200 rounded animate-pulse"></div>
+            </div>
+          ) : data.length === 0 ? (
             <p className="text-muted-foreground text-sm">
               Aún no hay información para mostrar aquí
             </p>
@@ -50,7 +58,7 @@ export default function StatsChart({ data }: StatsChartProps) {
                 <XAxis dataKey="month" />
                 <YAxis
                   label={{
-                    value: "Ingresos por ventas",
+                    value: "Monto",
                     angle: -90,
                     position: "insideLeft",
                     style: { textAnchor: "middle" },
@@ -59,8 +67,13 @@ export default function StatsChart({ data }: StatsChartProps) {
                 />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="sales" name="Ventas" fill="#0f172a" />
-                <Bar dataKey="production" name="Producción" fill="#cbd5e1" />
+                <Bar
+                  dataKey="indirect"
+                  name="Costos indirectos"
+                  fill="#8D99AE"
+                />
+                <Bar dataKey="feedstocks" name="Insumos" fill="#2B2D42" />
+                <Bar dataKey="labour" name="Mano de obra" fill="#D90429" />
               </BarChart>
             </ResponsiveContainer>
           )}
