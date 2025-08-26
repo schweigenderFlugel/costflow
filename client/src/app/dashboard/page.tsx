@@ -33,8 +33,8 @@ const dashboardStats = {
   supplies: { percentage: "-4.3%", value: "50 insumos" },
   customers: {
     percentage: "0%",
-    value: "12 clientes",
-    href: "/clientes-totales",
+    value: "12 usuarios",
+    href: "/dashboard/usuarios",
   },
 };
 
