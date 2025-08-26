@@ -13,10 +13,13 @@ const getIndirectCostData = async () => {
   const data = await fetcher({
     input: `${process.env.SERVER_API}/indirect-costs`,
     cache: "force-cache", // Habilitar cache
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
     next: {
       tags: ["indirect-costs"],
       revalidate: 300 // Revalidar cada 5 minutos automáticamente
-    }
+    },
   })
   if (Array.isArray(data)) {
     return data.reverse()

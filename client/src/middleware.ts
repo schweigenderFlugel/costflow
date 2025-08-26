@@ -21,10 +21,10 @@ export function middleware(request: NextRequest) {
 
   return NextResponse.next()
 }
-// '/calculadora', '/configuracion',
+// '/calculadora'
 export const config = {
   matcher: [
-    '/productos', '/insumos',
+    '/productos', '/insumos', '/configuracion',
     '/login', '/register'
   ],
 }
