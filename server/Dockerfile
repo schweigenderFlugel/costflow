@@ -17,7 +17,7 @@ COPY --from=build /usr/local/lib/python3.13/site-packages /usr/local/lib/python3
 COPY --from=build /usr/local/bin /usr/local/bin
 
 COPY api ./
-COPY assets ./
+COPY assets ./assets
 
 RUN addgroup -g 1234 footeam-group && \
   adduser -D -u 1234 -G footeam-group footeam-user

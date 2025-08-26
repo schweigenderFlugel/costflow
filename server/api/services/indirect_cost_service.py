@@ -30,7 +30,7 @@ def get_indirect_cost_by_id(db: SessionDep, id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=e)
     
-def get_current_indirect_cost(db: SessionDep):
+def get_current_indirect_costs(db: SessionDep):
     try:
         this_month = datetime.now().month
         this_year = datetime.now().year
@@ -40,10 +40,10 @@ def get_current_indirect_cost(db: SessionDep):
             extract('year', IndirectCost.date) == this_year
         )
         
-        indirect_cost_found = db.exec(statement=statement).first()
-        if not indirect_cost_found:
+        indirect_costs_found = db.exec(statement=statement).all()
+        if not indirect_costs_found:
             raise HTTPException(status_code=404, detail="Indirect cost not found")
-        return indirect_cost_found.model_dump()
+        return [ic.model_dump() for ic in indirect_costs_found]
     except HTTPException as http_err:
         raise http_err
     except Exception as e:

@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Query, Body
 
 from schemas.http_response import Response
@@ -13,14 +14,17 @@ from models.product_model import CreateProduct, UpdateProduct
 
 from schemas.product_response import ProductResponse
 
+from models.product_model import Product
+
 router = APIRouter(
   tags=['Products'],
   prefix='/products'
 )
 
 @router.get("", 
-    summary="Get Products", 
+    summary='Get a list of products',
     status_code=200,
+    response_model=List[Product],
     responses={
         500: Response(
             description="Internal Server Error", 
@@ -33,7 +37,7 @@ def get_products(db: SessionDep, cache: CacheDep, pagination: Pagination = Query
     return product_service.get_products(db=db, cache=cache, pagination=pagination)
 
 @router.get("/{id}", 
-    summary="Get Products", 
+    summary='Get detailed info of the product', 
     status_code=200,
     response_model=ProductResponse,
     responses={
@@ -53,7 +57,7 @@ def get_product_by_id(db: SessionDep, cache: CacheDep, id: str):
     return product_service.get_product_by_id(db=db, cache=cache, id=id)
 
 @router.post("", 
-    summary="Create Product",
+    summary="Create a new product",
     status_code=201,
     responses={
         201: Response (
@@ -117,6 +121,7 @@ def update_product(db: SessionDep, cache: CacheDep, jwt: JwtDep, admin: AdminRol
 
 @router.delete("/{id}", 
     summary="Delete Products",
+    summary='Create a new product',
     status_code=200,
     responses={
         200: Response(
