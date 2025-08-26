@@ -28,11 +28,7 @@ def accept_user(db: SessionDep, id: str):
         user_found = db.get(User, id)
         if user_found is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        user_found.sqlmodel_update({"state": State.ACCEPTED, "updated_at": datetime.now(timezone.utc)})
         variables = {"name": user_found.model_dump()['name']}
-
-        db.add(user_found)
-        db.commit()
 
         send_email(
             email=user_found.model_dump()['email'], 
@@ -40,6 +36,11 @@ def accept_user(db: SessionDep, id: str):
             subject="Estado de solicitud de registro", 
             variables=variables
         )
+
+        user_found.sqlmodel_update({"state": State.ACCEPTED, "updated_at": datetime.now(timezone.utc)})
+
+        db.add(user_found)
+        db.commit()
 
         return { "message": 'User successfully accepted!' }
     except HTTPException as http_err:
@@ -52,10 +53,6 @@ def reject_user(db: SessionDep, id: str):
         user_found = db.get(User, id)
         if user_found is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        user_found.sqlmodel_update({"state": State.REJECTED, "updated_at": datetime.now(timezone.utc)})
-
-        db.add(user_found)
-        db.commit()
 
         variables = {"name": user_found.model_dump()['name']}
 
@@ -65,6 +62,11 @@ def reject_user(db: SessionDep, id: str):
             subject="Estado de solicitud de registro", 
             variables=variables
         )
+
+        user_found.sqlmodel_update({"state": State.REJECTED, "updated_at": datetime.now(timezone.utc)})
+
+        db.add(user_found)
+        db.commit()
 
         return { "message": 'User successfully rejected!' }
     except HTTPException as http_err:
