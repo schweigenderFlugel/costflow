@@ -7,15 +7,15 @@ import { Suspense } from "react"
 import PageInfoDialog from "@/components/shared/page-info-dialog"
 
 export const metadata = {
-  title: "Calculadora"
+  title: "Simulador"
 }
 
 const Page = () => {
   return (
     <main className="space-y-8 py-10">
       <PageHeaderSection
-        title="Cálculos y presupuestos"
-        description="Creá tus presupuestos añadiendo productos, insumos y costos adicionales a la calculadora. Descargá el presupuesto en formato .pdf para enviarle a tus clientes."
+        title="Simulador de presupuestos"
+        description="Simula tus presupuestos añadiendo productos, insumos y costos adicionales a la calculadora. Descargá el presupuesto en formato .pdf para enviarle a tus clientes."
         triggerInfo
       />
 

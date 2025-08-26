@@ -88,7 +88,7 @@ export default function FormLogin() {
             variant="ghost"
             className="p-6 w-full lg:flex-1 bg-gray-900 text-white lg:text-black hover:bg-gray-800 hover:text-white lg:bg-transparent lg:hover:bg-gray-100 lg:hover:text-black"
           >
-            <Link href="/register">Crear cuenta</Link>
+            <Link href="/registro">Crear cuenta</Link>
           </Button>
         </div>
       </form>
