@@ -40,15 +40,19 @@ const dashboardStats = {
 
 const Page = () => {
   return (
-    <main className="w-6xl px-4 sm:px-6 lg:px-8 max-w-[calc(100vw-2rem)] mx-auto">
+    <main className="space-y-8 py-10">
       <PageHeaderSection
         title="Mi gestión"
         description="Gestioná, calculá y presupuestá desde el mismo lugar"
       />
-      <DashboardCards data={dashboardStats} />
-      <div className="py-6">
+      <section className="w-6xl max-w-[calc(100svw-2rem)] mx-auto">
+        <DashboardCards data={dashboardStats} />
+      </section>
+
+      <section className="w-6xl max-w-[calc(100svw-2rem)] mx-auto py-6">
         <StatsChart data={data} />
-      </div>
+      </section>
+
     </main>
   );
 };
