@@ -5,6 +5,7 @@ export interface IndirectCostInput {
   "type": string,
   "amount": number,
   "date": Date,
+  "total_usage": number
 }
 
 

@@ -21,7 +21,7 @@ export const feedstockSchema = z.object({
   }),
   unit_cost: z.number({
     error: () => ({ message: "El costo unitario debe ser un número" })
-  }).min(0.01, "El costo unitario debe ser mayor a 0"),
+  }).min(1, "El costo unitario debe ser mayor a 0"),
   provider: z.string()
     .max(100, "El proveedor no puede exceder 100 caracteres")
     .optional(),
