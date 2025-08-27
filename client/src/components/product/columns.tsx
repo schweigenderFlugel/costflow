@@ -42,9 +42,9 @@ const columns: ColumnDef<ObjProduct>[] = [
     tooltip: true
   }),
 
-  createDateColumn<ObjProduct>("created_at", "Creación"),
-
-  createDateColumn<ObjProduct>("updated_at", "Actualizado"),
+  // createDateColumn<ObjProduct>("created_at", "Creación"),
+  createDateColumn<ObjProduct>("date", "Fecha"),
+  // createDateColumn<ObjProduct>("updated_at", "Actualizado"),
 
   createActionsColumn<ObjProduct>(ProductActions, "product"),
 ]

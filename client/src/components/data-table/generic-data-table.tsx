@@ -28,8 +28,7 @@ const GenericDataTable = <TData,>({ columns, columnsTo = "feedstock", initialDat
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     // Ocultar las columnas de fecha por defecto
-    created_at: false,
-    updated_at: false,
+    date: columnsTo === "indirect_cost" ? true : false,
   })
   const [rowSelection, setRowSelection] = useState({})
 

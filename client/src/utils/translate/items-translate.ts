@@ -7,8 +7,9 @@ const translationsFeedstockHeaders: Record<keyof ObjFeedstock, string> = {
   id: "ID",
   sku: "SKU",
   is_deleted: "Eliminado",
-  created_at: "Creación",
-  updated_at: "Actualizado",
+  // created_at: "Creación",
+  date: "Fecha",
+  // updated_at: "Actualizado",
   // Información del insumo
   name: "Nombre",
   //
@@ -26,8 +27,9 @@ const translationsProductsHeaders: Record<keyof ObjProduct, string> = {
   id: "ID",
   sku: "SKU",
   is_deleted: "Eliminado",
-  created_at: "Creación",
-  updated_at: "Actualizado",
+  // created_at: "Creación",
+  date: "Fecha",
+  // updated_at: "Actualizado",
   // Información del producto
   name: "Nombre",
   description: "Descripción",

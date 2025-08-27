@@ -46,9 +46,7 @@ const columns: ColumnDef<ObjFeedstock>[] = [
     tooltip: true
   }),
 
-  createDateColumn<ObjFeedstock>("created_at", "Creación"),
-
-  createDateColumn<ObjFeedstock>("updated_at", "Actualizado"),
+  createDateColumn<ObjFeedstock>("date", "Fecha"),
 
   createActionsColumn<ObjFeedstock>(FeedstockActions, "feedstock"),
 ]
