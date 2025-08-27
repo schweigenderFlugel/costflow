@@ -5,9 +5,14 @@ export enum UserState {
   ACCEPTED = "ACCEPTED",
 }
 
+export enum UserRole {
+  ADMIN = "ADMIN",
+  EMPLOYEE = "EMPLOYEE",
+}
+
 export interface UsersData {
   id: string;
-  role: string;
+  role: UserRole;
   name: string;
   lastname: string;
   workstation: string | null;

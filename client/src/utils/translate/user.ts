@@ -1,4 +1,9 @@
-import { UsersData, UserState } from "@/types/items/users";
+import { UserRole, UsersData, UserState } from "@/types/items/users";
+
+const translationRole: Record<UserRole, string> = {
+  [UserRole.ADMIN]: "Administrador",
+  [UserRole.EMPLOYEE]: "Empleado",
+};
 
 const translationState: Record<UserState, string> = {
   [UserState.PENDING]: "Pendiente",
@@ -26,4 +31,8 @@ export const translateUserHeaders = (header: keyof UsersData | "actions") => {
 
 export const translateUserState = (state: UserState) => {
   return translationState[state];
+};
+
+export const translateUserRole = (role: UserRole) => {
+  return translationRole[role];
 };
