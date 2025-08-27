@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import SpinLoader from "@/components/shared/spin-loader";
 import DateField from "@/components/date-field";
+import { UnitCostField } from "@/components/shared/form-fields";
 
 // Predefined cost types (you can modify these as needed)
 export const COST_TYPES = [
@@ -155,7 +156,18 @@ const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose,
             )}
           />
 
-          <DateField formControl={form.control} />
+          <UnitCostField
+            name="total_usage"
+            control={form.control}
+            placeholder="Ingrese el uso total"
+            label="Uso total"
+          />
+
+          <DateField
+            formControl={form.control}
+            className="col-span-2"
+            formatStr={"'Corresponde a' MMMM 'del año' yyyy"}
+          />
 
         </form>
       </Form>

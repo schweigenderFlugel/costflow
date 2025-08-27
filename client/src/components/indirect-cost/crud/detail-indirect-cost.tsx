@@ -14,9 +14,13 @@ const DetailIndirectCost = ({ indirectCost }: { indirectCost: IndirectCostObj | 
         <span className="font-semibold">Monto:</span>
         <span className="font-bold">${indirectCost.amount.toFixed(2)}</span>
       </p>
+      <p className="mt-1 text-sm flex justify-between px-3">
+        <span className="font-semibold">Uso total:</span>
+        <span className="font-bold">{indirectCost.total_usage ?? 1}</span>
+      </p>
       <p className="mt-2 text-sm flex justify-between px-3">
         <span className="font-semibold">Fecha:</span>
-        <span className="font-bold">{new Date(indirectCost.date).toLocaleDateString()}</span>
+        <span className="font-bold">{new Date(indirectCost.date).toLocaleDateString("es-AR")}</span>
       </p>
     </div>
   )

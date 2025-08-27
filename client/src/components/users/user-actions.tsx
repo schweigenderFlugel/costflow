@@ -1,34 +1,20 @@
 "use client"
 
-import { itemToasts } from "@/components/item-toasts";
 import { Button } from "@/components/ui/button";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import { useUserMutations } from "@/hooks/mutations/use-user-mutations";
 import { UsersData } from "@/types/items/users";
-import { fetcher } from "@/utils/fetcher";
 import { CircleCheck, CircleX } from "lucide-react";
 
+
 const UserActions = ({ user }: { user: UsersData }) => {
-  const { toggle } = useUpdateDataTable("users")
+  const { acceptUser, rejectUser } = useUserMutations()
 
-
-  const handleAccept = async () => {
-    const data = await fetcher({ input: `/api/users/accept?id=${user.id}` })
-    if (data.success) {
-      toggle()
-      itemToasts.info({ description: data.message, type: "usuario" })
-    } else {
-      itemToasts.error({ description: (data.message || data.detail || data.error), type: "usuario" })
-    }
+  const handleAccept = () => {
+    acceptUser.mutate({ userId: user.id })
   }
 
-  const handleReject = async () => {
-    const data = await fetcher({ input: `/api/users/reject?id=${user.id}` })
-    if (data.success) {
-      toggle()
-      itemToasts.info({ description: data.message, type: "usuario" })
-    } else {
-      itemToasts.error({ description: (data.message || data.detail || data.error), type: "usuario" })
-    }
+  const handleReject = () => {
+    rejectUser.mutate({ userId: user.id })
   }
 
 

@@ -15,7 +15,7 @@ import {
 } from "@tanstack/react-table";
 import PaginationTable from "@/components/data-table/pagination-table";
 import HeaderTable from "@/components/data-table/header-table";
-import useFetch from "@/hooks/use-fetch";
+import { useDataQuery } from "@/hooks/use-data-query";
 
 interface GenericDataTableProps<TData> {
   initialData: TData[]
@@ -28,8 +28,7 @@ const GenericDataTable = <TData,>({ columns, columnsTo = "feedstock", initialDat
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     // Ocultar las columnas de fecha por defecto
-    created_at: false,
-    updated_at: false,
+    date: columnsTo === "indirect_cost" ? true : false,
   })
   const [rowSelection, setRowSelection] = useState({})
 
@@ -37,7 +36,7 @@ const GenericDataTable = <TData,>({ columns, columnsTo = "feedstock", initialDat
     data,
     error,
     isPending
-  } = useFetch<TData[]>(columnsTo, initialData)
+  } = useDataQuery<TData[]>(columnsTo, initialData)
 
   const table = useReactTable<TData>({
     data,

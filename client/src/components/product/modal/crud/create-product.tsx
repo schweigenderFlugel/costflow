@@ -4,62 +4,77 @@ import FormProductFooter from "@/components/feedstock/form/form-feedstock-footer
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useCreateProductDialog } from "@/hooks/use-product-dialog";
 import { FormDataProduct } from "@/schemas/product-schema";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { fetcher } from "@/utils/fetcher";
 import { Product } from "@/types/items/product";
 import { itemToasts } from "@/components/item-toasts";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import { useDataMutation } from "@/hooks/use-data-mutation";
 import ProductCreated from "@/components/product/modal/crud/already/product-created";
 
 
 const CreateProduct = () => {
   const [alreadyCreated, setAlreadyCreated] = useState<boolean>(false)
   const [currentProduct, setCurrentProduct] = useState<null | Product>(null)
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
   const { isOpen, setIsOpen, close } = useCreateProductDialog()
-  const [isPending, startTransition] = useTransition()
-  const { toggle: updateTable } = useUpdateDataTable("product")
 
-  const handleCreate = async (values: FormDataProduct) => {
-    startTransition(async () => {
+  // Optimized mutation with useDataMutation
+  const createProductMutation = useDataMutation({
+    queryType: "product",
+    mutationFn: async (values: FormDataProduct) => {
       const productDTO = {
         ...values,
-        labour_time: 1, //
-        indirect_costs: [  // SEGUNDO
-          { // SEGUNDO
-            id: "", // SEGUNDO
-            usage: 0 // SEGUNDO
-          } // SEGUNDO
-        ], // SEGUNDO
+        labour_time: 1,
+        indirect_costs: [
+          {
+            id: "",
+            usage: 0
+          }
+        ],
         feedstocks: values.feedstocks.map(fs => ({
           id: fs.id,
           quantity_required: fs.quantity_required
         }))
       }
 
-      const data = await fetcher({ input: `/api/product`, method: "POST", body: JSON.stringify(productDTO) })
+      const data = await fetcher({
+        input: `/api/product`,
+        method: "POST",
+        body: JSON.stringify(productDTO)
+      });
 
+      // Handle error responses
       if (data.error || !data.message?.includes("successfully")) {
         let posibleMessage = data.detail || data.error || data.description || data.message
         if (Array.isArray(posibleMessage)) {
-          posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
+          posibleMessage = (posibleMessage.map((detail) => detail.msg)).join(". \n")
         }
-        console.error(data)
-        setErrorMessage(posibleMessage)
+        throw new Error(posibleMessage || "Error al crear el producto");
       }
-      else {
-        setCurrentProduct(values)
-        setAlreadyCreated(true)
-        itemToasts.createSuccess({ description: values.name, type: "producto" })
-        updateTable()
-      }
-    })
+
+      return data;
+    },
+    onSuccess: (data, variables) => {
+      setCurrentProduct(variables as Product);
+      setAlreadyCreated(true);
+      itemToasts.createSuccess({ description: variables.name, type: "producto" });
+    },
+    onError: (error) => {
+      console.error(error);
+      itemToasts.error({
+        description: "Error al crear producto",
+        message: error.message,
+        type: "producto"
+      });
+    }
+  });
+
+  const handleCreate = (values: FormDataProduct) => {
+    createProductMutation.mutate(values);
   };
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setAlreadyCreated(false)
-      setErrorMessage(undefined)
     }
     setIsOpen(open)
   }
@@ -67,16 +82,11 @@ const CreateProduct = () => {
   const handleClose = () => {
     setIsOpen(false)
     setAlreadyCreated(false)
-    setErrorMessage(undefined)
   }
 
   useEffect(() => {
     if (currentProduct) setCurrentProduct(null)
   }, [currentProduct])
-
-  useEffect(() => {
-    if (errorMessage && alreadyCreated) setErrorMessage(undefined)
-  }, [alreadyCreated, errorMessage])
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
@@ -117,8 +127,8 @@ const CreateProduct = () => {
               />
 
               <FormProductFooter
-                errorMessage={errorMessage}
-                isPending={isPending}
+                errorMessage={createProductMutation.error?.message}
+                isPending={createProductMutation.isPending}
                 submitLabel="Agregar producto"
                 submitingLabel="Agregando..."
                 formId="create-product-form"

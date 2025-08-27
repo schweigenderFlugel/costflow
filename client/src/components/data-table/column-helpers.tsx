@@ -77,7 +77,8 @@ export const createTextColumn = <T,>(
 // Helper para crear columna de fecha
 export const createDateColumn = <T,>(
   accessorKey: string,
-  header: string
+  header: string,
+  rowDate?: boolean
 ): ColumnDef<T> => ({
   accessorKey,
   header: ({ column }) => (
@@ -96,8 +97,8 @@ export const createDateColumn = <T,>(
       <div className="pr-3 truncate text-center">
         {new Intl.DateTimeFormat("es-AR", {
           year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
+          month: rowDate ? "long" : "2-digit",
+          day: rowDate ? undefined : "2-digit",
         }).format(new Date(date))}
       </div>
     )
@@ -114,6 +115,7 @@ export const createNumberColumn = <T,>(
     maximumFractionDigits?: number
     alignment?: "left" | "center" | "right"
     fontWeight?: "normal" | "medium"
+    raw?: boolean // Si es true, no formatea el número
   }
 ): ColumnDef<T> => ({
   accessorKey,
@@ -130,11 +132,14 @@ export const createNumberColumn = <T,>(
     </Button>
   ),
   cell: ({ row }) => {
-    const value = parseFloat(row.getValue(accessorKey))
-    const formatted = new Intl.NumberFormat("es-AR", {
-      minimumFractionDigits: options?.minimumFractionDigits ?? 2,
-      maximumFractionDigits: options?.maximumFractionDigits ?? 2,
-    }).format(value)
+    const value: number = row.getValue(accessorKey)
+    const numberValue = typeof value === "number" ? value : 1
+    const displayValue = options?.raw
+      ? numberValue
+      : new Intl.NumberFormat("es-AR", {
+        minimumFractionDigits: options?.minimumFractionDigits ?? 2,
+        maximumFractionDigits: options?.maximumFractionDigits ?? 2,
+      }).format(numberValue)
 
     const classes = [
       "pr-3 truncate",
@@ -143,7 +148,7 @@ export const createNumberColumn = <T,>(
         options?.alignment === "right" ? "text-right" : ""
     ].filter(Boolean).join(" ")
 
-    return <div className={classes}>{formatted}</div>
+    return <div className={classes}>{displayValue}</div>
   },
 })
 

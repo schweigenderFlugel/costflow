@@ -28,7 +28,7 @@ import {
 import { es } from "date-fns/locale"
 import { FormDataIndirectCost } from "@/schemas/indirect-cost-schema"
 
-const DateField = ({ className, formControl }: { className?: string, formControl: Control<FormDataIndirectCost> }) => {
+const DateField = ({ className, formControl, formatStr, fieldClassName }: { className?: string, formControl: Control<FormDataIndirectCost>, formatStr?: string, fieldClassName?: string }) => {
   const months = [
     "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
@@ -51,11 +51,12 @@ const DateField = ({ className, formControl }: { className?: string, formControl
                   variant={"outline"}
                   className={cn(
                     "w-full pl-3 text-left font-normal",
-                    !field.value && "text-muted-foreground"
+                    !field.value && "text-muted-foreground",
+                    fieldClassName
                   )}
                 >
                   {field.value ? (
-                    format(field.value, "MM/yyyy", { locale: es })
+                    format(field.value, formatStr ?? "MM/yyyy", { locale: es })
                   ) : (
                     <span>Seleccione una fecha (MM/YY)</span>
                   )}
