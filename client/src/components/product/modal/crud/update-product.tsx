@@ -6,68 +6,80 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { useUpdateProductDialog } from "@/hooks/use-product-dialog";
 import { FormDataProduct } from "@/schemas/product-schema";
 import { fetcher } from "@/utils/fetcher";
-import { useEffect, useState, useTransition } from "react";
+import { useState } from "react";
 import { itemToasts } from "@/components/item-toasts";
-import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
+import { useDataMutation } from "@/hooks/use-data-mutation";
 import { dtoProduct } from "@/components/product/dto/dto-product";
 import ProductUpdated from "@/components/product/modal/crud/already/product-updated";
 
 const UpdateProduct = () => {
   const [alreadyUpdated, setAlreadyUpdated] = useState<boolean>(false)
   const [updatedProductData, setUpdatedProductData] = useState<FormDataProduct | null>(null)
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
   const { isOpen, setIsOpen, product, setProduct, isLoadingProduct } = useUpdateProductDialog()
-  const [isPending, startTransition] = useTransition()
-  const { invalidateData } = useInvalidateQuery()
 
-  // Mover el useEffect antes del early return para evitar problemas de hooks
-  useEffect(() => {
-    if (errorMessage && alreadyUpdated) {
-      setErrorMessage(undefined)
-    }
-  }, [alreadyUpdated, errorMessage])
+  // Optimized mutation with useDataMutation
+  const updateProductMutation = useDataMutation({
+    queryType: "product",
+    mutationFn: async (values: FormDataProduct) => {
+      if (!product) throw new Error("No se encontró el producto a actualizar");
 
-  if (product === null) return null;
-
-  const handleUpdate = async (values: FormDataProduct) => {
-    startTransition(async () => {
       const productDTO = {
         ...values,
-        labour_time: 1, //
-        indirect_costs: [  // SEGUNDO
-          { // SEGUNDO
-            id: "", // SE BORRÓ LA BASE DE DATOS
-            usage: 0 // SEGUNDO
-          } // SEGUNDO
-        ], // SEGUNDO
+        labour_time: 1,
+        indirect_costs: [
+          {
+            id: "",
+            usage: 0
+          }
+        ],
         feedstocks: values.feedstocks.map(fs => ({
           id: fs.id,
           quantity_required: fs.quantity_required
         }))
       }
 
-      const data = await fetcher({ input: `/api/product/${product.id}`, method: "PUT", body: JSON.stringify(productDTO) })
+      const data = await fetcher({
+        input: `/api/product/${product.id}`,
+        method: "PUT",
+        body: JSON.stringify(productDTO)
+      });
+
+      // Handle error responses
       if (data.error || !data.message?.includes("successfully")) {
         let posibleMessage = data.detail || data.error || data.description || data.message
         if (Array.isArray(posibleMessage)) {
           posibleMessage = (posibleMessage.map((detail) => detail.msg)).join(". \n")
         }
-        console.error(data)
-        setErrorMessage(posibleMessage)
-      } else {
-        setUpdatedProductData(values);
-        setAlreadyUpdated(true)
-        itemToasts.updateSuccess({ description: values.name, type: "producto" })
-        invalidateData("product")
+        throw new Error(posibleMessage || "Error al actualizar el producto");
       }
-    })
+
+      return data;
+    },
+    onSuccess: (data, variables) => {
+      setUpdatedProductData(variables);
+      setAlreadyUpdated(true);
+      itemToasts.updateSuccess({ description: variables.name, type: "producto" });
+    },
+    onError: (error) => {
+      console.error(error);
+      itemToasts.error({
+        description: "Error al actualizar producto",
+        message: error.message,
+        type: "producto"
+      });
+    }
+  });
+
+  const handleUpdate = (values: FormDataProduct) => {
+    updateProductMutation.mutate(values);
   };
+
+  if (product === null) return null;
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setAlreadyUpdated(false)
       setUpdatedProductData(null)
-      setErrorMessage(undefined)
     }
     setIsOpen(open)
   }
@@ -77,7 +89,6 @@ const UpdateProduct = () => {
     setProduct(null)
     setAlreadyUpdated(false)
     setUpdatedProductData(null)
-    setErrorMessage(undefined)
   }
 
   return (
@@ -113,8 +124,8 @@ const UpdateProduct = () => {
               )}
 
               <FormProductFooter
-                errorMessage={errorMessage}
-                isPending={isPending}
+                errorMessage={updateProductMutation.error?.message}
+                isPending={updateProductMutation.isPending}
                 submitLabel="Guardar cambios"
                 submitingLabel="Actualizando..."
                 formId="update-product-form"

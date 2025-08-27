@@ -1,6 +1,5 @@
 "use client"
 import DetailIndirectCost from "@/components/indirect-cost/crud/detail-indirect-cost"
-import { itemToasts } from "@/components/item-toasts"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,15 +11,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useDeleteIndirectCostDialog } from "@/hooks/use-indirect-cost-dialog"
-import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
-import { fetcher } from "@/utils/fetcher"
+import { useIndirectCostMutations } from "@/hooks/mutations/use-indirect-cost-mutations"
 
 const DeleteIndirectCost = () => {
   const { isOpen, setIsOpen, indirectCost, setIndirectCost } = useDeleteIndirectCostDialog()
-  const { invalidateData } = useInvalidateQuery()
+  const { deleteIndirectCost } = useIndirectCostMutations()
 
   if (indirectCost === null) return;
-
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
@@ -29,21 +26,15 @@ const DeleteIndirectCost = () => {
     setIsOpen(open)
   }
 
-  const handleClick = async () => {
-    const data = await fetcher({ input: `/api/indirect_cost/${indirectCost.id}`, method: "DELETE" })
-
-    if (data.error || !data.message?.includes("successfully")) {
-      let posibleMessage = data.error || data.description || data.message || data.detail
-      if (Array.isArray(posibleMessage)) {
-        posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
+  const handleClick = () => {
+    deleteIndirectCost.mutate(
+      { indirectCostId: indirectCost.id, indirectCostType: indirectCost.type },
+      {
+        onSuccess: () => {
+          handleOpenChange(false)
+        }
       }
-      console.error(data)
-      itemToasts.error({ description: indirectCost.type, message: posibleMessage, type: "costo indirecto" })
-    } else {
-      itemToasts.deleteSuccess({ description: indirectCost.type, type: "costo indirecto" })
-      handleOpenChange(false)
-      invalidateData("indirect_cost")
-    }
+    )
   }
 
   return (

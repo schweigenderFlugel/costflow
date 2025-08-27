@@ -12,12 +12,47 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useDeleteProductDialog } from "@/hooks/use-product-dialog"
-import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
+import { useDataMutation } from "@/hooks/use-data-mutation";
 import { fetcher } from "@/utils/fetcher"
 
 const DeleteProduct = () => {
   const { isOpen, setIsOpen, product, setProduct } = useDeleteProductDialog()
-  const { invalidateData } = useInvalidateQuery()
+
+  // Optimized mutation with useDataMutation
+  const deleteProductMutation = useDataMutation({
+    queryType: "product",
+    mutationFn: async () => {
+      if (!product) throw new Error("No se encontró el producto a eliminar");
+
+      const data = await fetcher({
+        input: `/api/product/${product.id}`,
+        method: "DELETE"
+      });
+
+      // Handle error responses
+      if (data.error || !data.message?.includes("successfully")) {
+        let posibleMessage = data.error || data.description || data.message || data.detail
+        if (Array.isArray(posibleMessage)) {
+          posibleMessage = (posibleMessage.map((detail) => detail.msg)).join(". \n")
+        }
+        throw new Error(posibleMessage || "Error al eliminar el producto");
+      }
+
+      return data;
+    },
+    onSuccess: () => {
+      itemToasts.deleteSuccess({ description: product?.name || "Producto", type: "producto" });
+      handleOpenChange(false);
+    },
+    onError: (error) => {
+      console.error(error);
+      itemToasts.error({
+        description: product?.name || "Producto",
+        message: error.message,
+        type: "producto"
+      });
+    }
+  });
 
   if (product === null) return;
 
@@ -29,20 +64,8 @@ const DeleteProduct = () => {
     setIsOpen(open)
   }
 
-  const handleClick = async () => {
-    const data = await fetcher({ input: `/api/product/${product.id}`, method: "DELETE" })
-    if (data.error || !data.message?.includes("successfully")) {
-      let posibleMessage = data.error || data.description || data.message || data.detail
-      if (Array.isArray(posibleMessage)) {
-        posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
-      }
-      console.error(data)
-      itemToasts.error({ description: product.name, message: posibleMessage, type: "producto" })
-    } else {
-      itemToasts.deleteSuccess({ description: product.name, type: "producto" })
-      handleOpenChange(false)
-      invalidateData("product")
-    }
+  const handleClick = () => {
+    deleteProductMutation.mutate(undefined);
   }
 
   return (

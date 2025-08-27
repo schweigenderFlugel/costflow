@@ -3,11 +3,9 @@ import FeedstockForm from "@/components/feedstock/form/feedstock-form";
 import FormFeedstockFooter from "@/components/feedstock/form/form-feedstock-footer";
 import { useUpdateFeedstockDialog } from "@/hooks/use-feedstock-dialog";
 import { FormDataFeedstock } from "@/schemas/feedstock-schema";
-import { itemToasts } from "@/components/item-toasts";
-import { fetcher } from "@/utils/fetcher";
-import { useEffect, useState, useTransition } from "react";
+import { useState } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
+import { useFeedstockMutations } from "@/hooks/mutations/use-feedstock-mutations";
 import FeedstockUpdated from "@/components/feedstock/modal/crud/already/feedstock-updated";
 
 
@@ -15,45 +13,26 @@ const UpdateFeedstock = () => {
   const { isOpen, setIsOpen, feedstock, setFeedstock } = useUpdateFeedstockDialog()
   const [alreadyUpdated, setAlreadyUpdated] = useState<boolean>(false)
   const [updatedFeedstockData, setUpdatedFeedstockData] = useState<FormDataFeedstock | null>(null)
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
-  const [isPending, startTransition] = useTransition()
-  const { invalidateData } = useInvalidateQuery()
-
-  // Limpiar mensaje de error cuando se actualiza exitosamente
-  useEffect(() => {
-    if (errorMessage && alreadyUpdated) {
-      setErrorMessage(undefined)
-    }
-  }, [alreadyUpdated, errorMessage])
+  const { updateFeedstock } = useFeedstockMutations()
 
   if (feedstock === null) return;
 
-  const handleUpdate = async (values: FormDataFeedstock) => {
-    startTransition(async () => {
-      const data = await fetcher({ input: `/api/feedstock/${feedstock.id}`, method: "PUT", body: JSON.stringify(values) })
-
-      if (data.error || !data.message?.includes("successfully")) {
-        let posibleMessage = data.detail || data.error || data.description || data.message
-        if (Array.isArray(posibleMessage)) {
-          posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
+  const handleUpdate = (values: FormDataFeedstock) => {
+    updateFeedstock.mutate(
+      { feedstockId: feedstock.id, ...values },
+      {
+        onSuccess: (data) => {
+          setUpdatedFeedstockData(values)
+          setAlreadyUpdated(true)
         }
-        console.error(data)
-        setErrorMessage(posibleMessage)
       }
-      else {
-        setUpdatedFeedstockData(values)
-        setAlreadyUpdated(true)
-        itemToasts.updateSuccess({ description: data.name })
-        invalidateData("feedstock")
-      }
-    })
+    )
   };
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setAlreadyUpdated(false)
       setUpdatedFeedstockData(null)
-      setErrorMessage(undefined)
     }
     setIsOpen(open)
   }
@@ -63,7 +42,6 @@ const UpdateFeedstock = () => {
     setFeedstock(null)
     setAlreadyUpdated(false)
     setUpdatedFeedstockData(null)
-    setErrorMessage(undefined)
   }
 
   return (
@@ -94,8 +72,8 @@ const UpdateFeedstock = () => {
               />
 
               <FormFeedstockFooter
-                errorMessage={errorMessage}
-                isPending={isPending}
+                errorMessage={updateFeedstock.error?.message}
+                isPending={updateFeedstock.isPending}
                 submitLabel="Guardar cambios"
                 submitingLabel="Actualizando..."
                 formId="update-feedstock-form"
