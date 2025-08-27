@@ -1,12 +1,15 @@
 from fastapi import HTTPException
+from fastapi.responses import JSONResponse
 from sqlmodel import select, extract
 from datetime import datetime, timezone
-from uuid import uuid4
+import json
 
 from deps.db_session_dep import SessionDep
+from deps.cache_dep import CacheDep
 
 from models.labour_model import Labour, CreateLabour, UpdateLabour
-from models.historial_model import Historial
+
+from .historial_service import get_historial_id
 
 def get_labour(db: SessionDep):
     try:
@@ -18,20 +21,31 @@ def get_labour(db: SessionDep):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
-def get_labour_by_id(db: SessionDep, id: str):
+def get_labour_by_id(db: SessionDep, cache: CacheDep, id: str):
     try:
+        cached_item = cache.get(f"labour_{id}")
+
+        if cached_item:
+            return JSONResponse(content=json.loads(cached_item))
         statement = select(Labour).where(Labour.id == id)
         labour_found: Labour = db.exec(statement=statement).first()
         if not labour_found:
             raise HTTPException(status_code=404, detail="Labour info not found")
-        return labour_found.model_dump()
+        data = labour_found.model_dump()
+        cache.set(f"labour_{id}", json.dumps(data), ex=120)
+        return JSONResponse(content=data)
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
-def get_current_labour(db: SessionDep):
+def get_current_labour(db: SessionDep, cache: CacheDep):
     try:
+        cached_item = cache.get("labour")
+
+        if cached_item:
+            return JSONResponse(content=json.loads(cached_item))
+
         this_month = datetime.now().month
         this_year = datetime.now().year
 
@@ -43,7 +57,9 @@ def get_current_labour(db: SessionDep):
         labour_found = db.exec(statement=statement).first()
         if not labour_found:
             raise HTTPException(status_code=404, detail="Labour info not found")
-        return labour_found.model_dump()
+        data = labour_found.model_dump()
+        cache.set("labour", json.dumps(data), ex=120)
+        return JSONResponse(content=data)
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
@@ -54,19 +70,7 @@ def create_labour(db: SessionDep, body: CreateLabour):
         this_year = datetime.now().year
         this_month = datetime.now().month
 
-        historial_statement = select(Historial).where(
-            extract('month', Historial.date) == this_month,
-            extract('year', Historial.date) == this_year
-        )
-
-        existing_historial = db.exec(statement=historial_statement).first()
-
-        historial_id = existing_historial.model_dump()['id'] if existing_historial else uuid4()
-
-        if not existing_historial:
-            historial = Historial.model_validate({"id": historial_id, "date": datetime.now(timezone.utc) })
-            db.add(historial)
-            db.commit()
+        historial_id = get_historial_id(db=db)
 
         labour_statement = select(Labour).where(
             extract('month', Labour.date) == this_month,
@@ -92,24 +96,12 @@ def create_labour(db: SessionDep, body: CreateLabour):
     except Exception as e:
         raise HTTPException (status_code=500, detail=str(e))
 
-def update_labour(db: SessionDep, id: str, body: UpdateLabour): # type: ignore
+def update_labour(db: SessionDep, cache: CacheDep, id: str, body: UpdateLabour): # type: ignore
     try:
         this_month = datetime.now().month
         this_year = datetime.now().year
 
-        historial_statement = select(Historial).where(
-            extract('month', Historial.date) == this_month,
-            extract('year', Historial.date) == this_year
-        )
-
-        existing_historial = db.exec(statement=historial_statement).first()
-
-        historial_id = existing_historial.model_dump()['id'] if existing_historial else uuid4()
-
-        if not existing_historial:
-            historial = Historial.model_validate({"id": historial_id, "date": datetime.now(timezone.utc) })
-            db.add(historial)
-            db.commit()
+        historial_id = get_historial_id(db=db)
 
         labour_found = db.get(Labour, id)
         data = body.model_dump(exclude_unset=True)
@@ -128,13 +120,18 @@ def update_labour(db: SessionDep, id: str, body: UpdateLabour): # type: ignore
             db.add(labour)
             db.commit()
 
+        cached_item = cache.get(f"labour_{id}")
+
+        if cached_item:
+            cache.delete(f"labour_{id}")
+
         return { "message": 'Labour info successfully updated!' }
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-def delete_labour(db: SessionDep, id: str):
+def delete_labour(db: SessionDep, cache: CacheDep, id: str):
     try:
         labour_found = db.get(Labour, id)
         if labour_found is None:
@@ -142,6 +139,11 @@ def delete_labour(db: SessionDep, id: str):
         labour_found.sqlmodel_update({ "is_deleted": True })
         db.add(labour_found)
         db.commit()
+
+        cached_item = cache.get(f"labour_{id}")
+
+        if cached_item:
+            cache.delete(f"labour_{id}")
 
         return { "message": 'Labour info successfully deleted!' }
     except HTTPException as http_err:

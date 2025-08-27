@@ -22,7 +22,6 @@ router = APIRouter(
 
 @router.get("",
   status_code=200,
-  tags=['Feedstocks'],
   summary='Get a list of feedstocks',
   response_model=List[FeedstockResponse],
   responses={
@@ -48,7 +47,6 @@ def get_feedstocks(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRole:
 
 @router.get("/{id}",
   status_code=200,
-  tags=['Feedstocks'],
   summary='Get a feedstock',
   response_model=FeedstockResponse,
   responses={
@@ -75,7 +73,6 @@ def get_feedstock_by_id(session: SessionDep, cache: CacheDep, jwt: JwtDep, admin
 @router.post("",
   status_code=201,
   summary='Create a feedstock',
-  tags=['Feedstocks'], 
   responses={
     201: Response(
       description='Feedstock successfully created',
@@ -105,7 +102,6 @@ def create_feedstock(session: SessionDep, jwt: JwtDep, admin: AdminRoleDep, cach
 @router.put("/{id}",
   status_code=201, 
   summary='Update a feedstock',
-  tags=['Feedstocks'],
   responses={
     201: Response(
       description='Feedstock successfully updated',
@@ -135,7 +131,6 @@ def update_feedstock(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRol
 @router.delete("/{id}",
   status_code=201, 
   summary='Delete a feedstock',
-  tags=['Feedstocks'],
   responses={
     201: Response(
       description='Feedstock successfully deleted',

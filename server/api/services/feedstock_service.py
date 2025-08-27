@@ -13,8 +13,13 @@ from models.feedstock_model import Feedstock, CreateFeedstock, UpdateFeedstock
 from schemas.pagination import Pagination
 from models.historial_model import Historial
 
+from .historial_service import get_historial_id
+
 def get_feedstocks(db: SessionDep, cache: CacheDep, pagination: Pagination):
     try:
+        this_year = datetime.now().year
+        this_month = datetime.now().month
+        
         cached_list = cache.get("feedstocks_list")
     
         if cached_list:
@@ -22,7 +27,7 @@ def get_feedstocks(db: SessionDep, cache: CacheDep, pagination: Pagination):
         
         statement = select(Feedstock).filter(Feedstock.is_deleted == False).offset(pagination.page).limit(pagination.limit)
         feedstocks: list[Feedstock] = db.exec(statement=statement).all()
-        data = [feedstock.model_dump(exclude=["is_deleted"], mode="json") for feedstock in feedstocks]
+        data = [feedstock.model_dump(exclude=["is_deleted", "historial_id"], mode="json") for feedstock in feedstocks]
         cache.set("feedstocks_list", json.dumps(data), ex=120)
         return JSONResponse(content=data)
     except HTTPException as http_err:
@@ -55,19 +60,7 @@ def create_feedstock(db: SessionDep, cache: CacheDep, body: CreateFeedstock):
         this_year = datetime.now().year
         this_month = datetime.now().month
 
-        historial_statement = select(Historial).where(
-            extract('month', Historial.date) == this_month,
-            extract('year', Historial.date) == this_year
-        )
-
-        existing_historial = db.exec(statement=historial_statement).first()
-
-        historial_id = existing_historial.model_dump()['id'] if existing_historial else uuid4()
-
-        if not existing_historial:
-            historial = Historial.model_validate({"id": historial_id, "date": datetime.now(timezone.utc) })
-            db.add(historial)
-            db.commit()
+        historial_id = get_historial_id(db=db)
 
         data = body.model_dump()
 
@@ -106,19 +99,7 @@ def update_feedstock(db: SessionDep, cache: CacheDep, id: str, body: UpdateFeeds
         this_year = datetime.now().year
         this_month = datetime.now().month
 
-        historial_statement = select(Historial).where(
-            extract('month', Historial.date) == this_month,
-            extract('year', Historial.date) == this_year
-        )
-
-        existing_historial = db.exec(statement=historial_statement).first()
-
-        historial_id = existing_historial.model_dump()['id'] if existing_historial else uuid4()
-
-        if not existing_historial:
-            historial = Historial.model_validate({"id": historial_id, "date": datetime.now(timezone.utc) })
-            db.add(historial)
-            db.commit()
+        historial_id = get_historial_id(db=db)
 
         feedstock_found = db.get(Feedstock, id)
 
@@ -136,8 +117,8 @@ def update_feedstock(db: SessionDep, cache: CacheDep, id: str, body: UpdateFeeds
             db.add(feedstock_found)
             db.commit()
         else:
-            feedstock_found.sqlmodel_update({**feedstock_found.model_dump(), **data, "sku": sku, "date": datetime.now(timezone.utc)})
-            db.add(feedstock_found)
+            feedstock = Feedstock.model_validate({**feedstock_found.model_dump(), **data, "historial_id": historial_id, "sku": sku, "date": datetime.now(timezone.utc)})
+            db.add(feedstock)
             db.commit()
 
         cached_list = cache.get("feedstocks_list")
