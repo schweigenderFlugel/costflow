@@ -44,7 +44,7 @@ export default function FormForgotPassword() {
         <div className="flex gap-2 justify-center mt-2 text-gray-500">
           <p className="text-sm">¿Ya tienes una cuenta?</p>
           <Link
-            href="/login"
+            href="/inicio-de-sesion"
             className="text-sm hover:text-gray-200 lg:hover:text-gray-700"
           >
             Inicia sesión

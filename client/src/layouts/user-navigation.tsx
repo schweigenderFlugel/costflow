@@ -13,7 +13,7 @@ const UserNavigation = () => {
   const onLogout = () => {
     startTransition(async () => {
       const data = await fetcher({ input: "/api/auth/logout" })
-      toast(data.detail || data.message)
+      toast(data.message || data.detail)
       window.location.reload()
     })
   }
