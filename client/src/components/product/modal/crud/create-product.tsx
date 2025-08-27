@@ -24,7 +24,13 @@ const CreateProduct = () => {
     startTransition(async () => {
       const productDTO = {
         ...values,
-        labour_time: 1, // EXTRA AGREGADO AHORA EN BACKEND (HARTO)
+        labour_time: 1, //
+        indirect_costs: [  // SEGUNDO
+          { // SEGUNDO
+            id: "", // SEGUNDO
+            usage: 0 // SEGUNDO
+          } // SEGUNDO
+        ], // SEGUNDO
         feedstocks: values.feedstocks.map(fs => ({
           id: fs.id,
           quantity_required: fs.quantity_required
@@ -34,7 +40,7 @@ const CreateProduct = () => {
       const data = await fetcher({ input: `/api/product`, method: "POST", body: JSON.stringify(productDTO) })
 
       if (data.error || !data.message?.includes("successfully")) {
-        let posibleMessage = data.error || data.description || data.message || data.detail
+        let posibleMessage = data.detail || data.error || data.description || data.message
         if (Array.isArray(posibleMessage)) {
           posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
         }

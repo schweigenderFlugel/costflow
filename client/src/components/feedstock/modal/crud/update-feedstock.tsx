@@ -33,7 +33,7 @@ const UpdateFeedstock = () => {
       const data = await fetcher({ input: `/api/feedstock/${feedstock.id}`, method: "PUT", body: JSON.stringify(values) })
 
       if (data.error || !data.message?.includes("successfully")) {
-        let posibleMessage = data.error || data.description || data.message || data.detail
+        let posibleMessage = data.detail || data.error || data.description || data.message
         if (Array.isArray(posibleMessage)) {
           posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
         }

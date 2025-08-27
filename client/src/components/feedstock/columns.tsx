@@ -26,8 +26,9 @@ const columns: ColumnDef<ObjFeedstock>[] = [
     fontWeight: "medium"
   }),
 
-  createTranslatedColumn<ObjFeedstock, StateMatter>("state", "Estado", translateStateMatter, {
-    capitalize: true
+  createTranslatedColumn<ObjFeedstock, StateMatter>("state", "Materia", translateStateMatter, {
+    capitalize: true,
+    alignment: "left"
   }),
 
   createTranslatedColumn<ObjFeedstock, MeasureUnit>("measure_unit", "Unidad", translateMeasureUnit),

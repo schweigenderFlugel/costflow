@@ -183,26 +183,44 @@ export const createTranslatedColumn = <T, V = unknown>(
   accessorKey: string,
   header: string,
   translateFunction: (value: V) => string,
-  options?: {
-    capitalize?: boolean
-  }
+  options: {
+    capitalize?: boolean,
+    alignment?: "left" | "center" | "right"
+  } = {
+      alignment: "left",
+      capitalize: false
+    }
 ): ColumnDef<T> => ({
   accessorKey,
   header: ({ column }) => (
     <Button
       variant="ghost"
       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      className="w-full h-full justify-start hover:bg-transparent hover:text-inherit"
+      className={`w-full h-full ${options?.alignment === "left" ? "justify-start" : options?.alignment === "center" ? "justify-center" : "justify-end"} hover:bg-transparent hover:text-inherit`}
     >
       {header}
       <ArrowUpDown />
     </Button>
   ),
-  cell: ({ row }) => (
-    <div className={`pr-3 truncate ${options?.capitalize ? "capitalize" : ""}`}>
-      {translateFunction(row.getValue(accessorKey) as V)}
-    </div>
-  ),
+  cell: ({ row }) => {
+    const value = row.getValue(accessorKey) as V;
+    const customColorToValue = () => {
+      if (header != "Estado") return "";
+      switch (value) {
+        case "PENDING":
+          return "text-yellow-600";
+        case "ACCEPTED":
+          return "text-green-600";
+        default:
+          return "text-red-600";
+      }
+    };
+    return (
+      <div className={`pr-3 truncate text-${options?.alignment} ${options?.capitalize ? "capitalize" : ""} ${customColorToValue()}`}>
+        {translateFunction(value)}
+      </div>
+    );
+  }
 })
 
 // Helper para crear columna de acciones

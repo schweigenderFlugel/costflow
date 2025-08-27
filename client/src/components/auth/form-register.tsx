@@ -166,7 +166,7 @@ export default function FormRegister() {
             variant="ghost"
             className="p-6 w-full md:flex-1 bg-gray-900 text-white lg:text-black hover:bg-gray-800 hover:text-white lg:bg-transparent lg:hover:bg-gray-100 lg:hover:text-black"
           >
-            <Link href="/login">Iniciar sesión</Link>
+            <Link href="/inicio-de-sesion">Iniciar sesión</Link>
           </Button>
         </div>
       </form>

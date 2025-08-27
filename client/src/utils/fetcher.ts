@@ -25,7 +25,11 @@ export const fetcher = async ({ input, method = "GET", body, headers, cache }: F
         const detailData = await res.json();
         errorDetail = detailData.detail;
       } catch {
-        errorDetail = await res.text();
+        try {
+          errorDetail = await res?.text();
+        } catch (error) {
+          errorDetail = "Error desconocido";
+        }
       }
 
       if (res.status === 401 && errorDetail) {
