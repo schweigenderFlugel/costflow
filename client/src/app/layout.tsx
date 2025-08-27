@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import Header from "@/layouts/header";
 import Footer from "@/layouts/footer";
+import ReactQueryProvider from "@/providers/query-client-provider";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -30,10 +31,12 @@ export default function RootLayout({
       <body
         className={`${nunito.variable} ${nunito.className} ${geistMono.variable} antialiased flex flex-col justify-between h-svh max-w-svw`}
       >
-        <Header />
-        <main>{children}</main>
-        <Toaster />
-        <Footer />
+        <ReactQueryProvider>
+          <Header />
+          <main>{children}</main>
+          <Toaster />
+          <Footer />
+        </ReactQueryProvider>
       </body>
     </html>
   );

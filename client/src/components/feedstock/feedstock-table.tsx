@@ -42,8 +42,7 @@ const FeedstockTable = async () => {
           <p className="text-xs text-muted-foreground">Usando datos de prueba</p>
         </div>
       }
-      <GenericDataTable
-        <ObjFeedstock>
+      <GenericDataTable<ObjFeedstock>
         initialData={!(data.detail || data.error) ? data : mockFeedstocks}
         columns={columns}
       />
