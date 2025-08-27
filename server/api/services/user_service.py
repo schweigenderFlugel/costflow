@@ -53,7 +53,6 @@ def reject_user(db: SessionDep, id: str):
         user_found = db.get(User, id)
         if user_found is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-
         variables = {"name": user_found.model_dump()['name']}
 
         send_email(
