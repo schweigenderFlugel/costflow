@@ -13,11 +13,11 @@ import { useDeleteFeedstockDialog } from "@/hooks/use-feedstock-dialog"
 import { fetcher } from "@/utils/fetcher"
 import { itemToasts } from "@/components/item-toasts"
 import DetailFeedstock from "@/components/feedstock/modal/crud/detail-feedstock"
-import { useUpdateDataTable } from "@/hooks/use-update-data-table"
+import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
 
 const DeleteFeedstock = () => {
   const { isOpen, setIsOpen, feedstock, setFeedstock } = useDeleteFeedstockDialog()
-  const { toggle: tableToggle } = useUpdateDataTable("feedstock")
+  const { invalidateData } = useInvalidateQuery()
 
   if (feedstock === null) return;
 
@@ -48,7 +48,7 @@ const DeleteFeedstock = () => {
           description: feedstock.name,
         })
         handleOpenChange(false)
-        tableToggle()
+        invalidateData("feedstock")
       }
     } catch (error) {
       console.error(error)

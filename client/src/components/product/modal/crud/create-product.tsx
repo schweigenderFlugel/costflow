@@ -8,7 +8,7 @@ import { useEffect, useState, useTransition } from "react";
 import { fetcher } from "@/utils/fetcher";
 import { Product } from "@/types/items/product";
 import { itemToasts } from "@/components/item-toasts";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
 import ProductCreated from "@/components/product/modal/crud/already/product-created";
 
 
@@ -18,7 +18,7 @@ const CreateProduct = () => {
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
   const { isOpen, setIsOpen, close } = useCreateProductDialog()
   const [isPending, startTransition] = useTransition()
-  const { toggle: updateTable } = useUpdateDataTable("product")
+  const { invalidateData } = useInvalidateQuery()
 
   const handleCreate = async (values: FormDataProduct) => {
     startTransition(async () => {
@@ -51,7 +51,7 @@ const CreateProduct = () => {
         setCurrentProduct(values)
         setAlreadyCreated(true)
         itemToasts.createSuccess({ description: values.name, type: "producto" })
-        updateTable()
+        invalidateData("product")
       }
     })
   };

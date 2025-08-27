@@ -4,7 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import { fetcher } from "@/utils/fetcher";
 import { itemToasts } from "@/components/item-toasts";
 import { FormDataIndirectCost } from "@/schemas/indirect-cost-schema";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
 import IndirectCostForm, { COST_TYPES } from "@/components/indirect-cost/form/indirect-cost-form";
 import { useUpdateIndirectCostDialog } from "@/hooks/use-indirect-cost-dialog";
 import { Dialog, DialogFooter, DialogHeader, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
@@ -20,7 +20,7 @@ const UpdateIndirectCost = () => {
   const [indirectCostDetail, setIndirectCostDetail] = useState<IndirectCostInput | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
   const { isOpen, setIsOpen, indirectCost } = useUpdateIndirectCostDialog()
-  const { toggle: tableToggle } = useUpdateDataTable("indirect_cost")
+  const { invalidateData } = useInvalidateQuery()
   const [isPending, startTransition] = useTransition();
 
 
@@ -74,7 +74,7 @@ const UpdateIndirectCost = () => {
             description: `${finalType} - $${values.amount}`,
             type: "costo indirecto"
           });
-          tableToggle()
+          invalidateData("indirect_cost")
           isSuccess = true;
           setIndirectCostDetail(values)
           setAlreadyUpdated(true)

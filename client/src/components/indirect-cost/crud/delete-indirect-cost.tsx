@@ -12,12 +12,12 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useDeleteIndirectCostDialog } from "@/hooks/use-indirect-cost-dialog"
-import { useUpdateDataTable } from "@/hooks/use-update-data-table"
+import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
 import { fetcher } from "@/utils/fetcher"
 
 const DeleteIndirectCost = () => {
   const { isOpen, setIsOpen, indirectCost, setIndirectCost } = useDeleteIndirectCostDialog()
-  const { toggle: updateTable } = useUpdateDataTable("indirect_cost")
+  const { invalidateData } = useInvalidateQuery()
 
   if (indirectCost === null) return;
 
@@ -42,7 +42,7 @@ const DeleteIndirectCost = () => {
     } else {
       itemToasts.deleteSuccess({ description: indirectCost.type, type: "costo indirecto" })
       handleOpenChange(false)
-      updateTable()
+      invalidateData("indirect_cost")
     }
   }
 

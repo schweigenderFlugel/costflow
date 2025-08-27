@@ -8,7 +8,7 @@ import { fetcher } from "@/utils/fetcher";
 import { useEffect, useState, useTransition } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Feedstock } from "@/types/items/feedstock";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
 import FeedstockCreated from "@/components/feedstock/modal/crud/already/feedstock-created";
 
 
@@ -18,7 +18,7 @@ const CreateFeedstock = () => {
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
   const { isOpen, setIsOpen, close } = useCreateFeedstockDialog()
   const [isPending, startTransition] = useTransition()
-  const { toggle: tableToggle } = useUpdateDataTable("feedstock")
+  const { invalidateData } = useInvalidateQuery()
 
   const handleCreate = async (values: FormDataFeedstock) => {
     startTransition(async () => {
@@ -36,7 +36,7 @@ const CreateFeedstock = () => {
         setCurrentFeedstock(values)
         setAlreadyCreated(true)
         itemToasts.createSuccess({ description: values.name })
-        tableToggle()
+        invalidateData("feedstock")
       }
     })
   };

@@ -2,19 +2,21 @@
 
 import { itemToasts } from "@/components/item-toasts";
 import { Button } from "@/components/ui/button";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
 import { UsersData } from "@/types/items/users";
 import { fetcher } from "@/utils/fetcher";
 import { CircleCheck, CircleX } from "lucide-react";
 
+const queryType = "users" as const;
+
 const UserActions = ({ user }: { user: UsersData }) => {
-  const { toggle } = useUpdateDataTable("users")
+  const { invalidateData } = useInvalidateQuery()
 
 
   const handleAccept = async () => {
     const data = await fetcher({ input: `/api/users/accept?id=${user.id}` })
     if (data.success) {
-      toggle()
+      invalidateData(queryType)
       itemToasts.info({ description: data.message, type: "usuario" })
     } else {
       itemToasts.error({ description: (data.message || data.detail || data.error), type: "usuario" })
@@ -24,7 +26,7 @@ const UserActions = ({ user }: { user: UsersData }) => {
   const handleReject = async () => {
     const data = await fetcher({ input: `/api/users/reject?id=${user.id}` })
     if (data.success) {
-      toggle()
+      invalidateData(queryType)
       itemToasts.info({ description: data.message, type: "usuario" })
     } else {
       itemToasts.error({ description: (data.message || data.detail || data.error), type: "usuario" })

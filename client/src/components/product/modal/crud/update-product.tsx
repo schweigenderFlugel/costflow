@@ -8,7 +8,7 @@ import { FormDataProduct } from "@/schemas/product-schema";
 import { fetcher } from "@/utils/fetcher";
 import { useEffect, useState, useTransition } from "react";
 import { itemToasts } from "@/components/item-toasts";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
 import { dtoProduct } from "@/components/product/dto/dto-product";
 import ProductUpdated from "@/components/product/modal/crud/already/product-updated";
 
@@ -18,7 +18,7 @@ const UpdateProduct = () => {
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
   const { isOpen, setIsOpen, product, setProduct, isLoadingProduct } = useUpdateProductDialog()
   const [isPending, startTransition] = useTransition()
-  const { toggle: updateTable } = useUpdateDataTable("product")
+  const { invalidateData } = useInvalidateQuery()
 
   // Mover el useEffect antes del early return para evitar problemas de hooks
   useEffect(() => {
@@ -58,7 +58,7 @@ const UpdateProduct = () => {
         setUpdatedProductData(values);
         setAlreadyUpdated(true)
         itemToasts.updateSuccess({ description: values.name, type: "producto" })
-        updateTable()
+        invalidateData("product")
       }
     })
   };

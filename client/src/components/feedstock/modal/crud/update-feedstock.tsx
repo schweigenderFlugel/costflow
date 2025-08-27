@@ -7,7 +7,7 @@ import { itemToasts } from "@/components/item-toasts";
 import { fetcher } from "@/utils/fetcher";
 import { useEffect, useState, useTransition } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
 import FeedstockUpdated from "@/components/feedstock/modal/crud/already/feedstock-updated";
 
 
@@ -17,7 +17,7 @@ const UpdateFeedstock = () => {
   const [updatedFeedstockData, setUpdatedFeedstockData] = useState<FormDataFeedstock | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
   const [isPending, startTransition] = useTransition()
-  const { toggle: tableToggle } = useUpdateDataTable("feedstock")
+  const { invalidateData } = useInvalidateQuery()
 
   // Limpiar mensaje de error cuando se actualiza exitosamente
   useEffect(() => {
@@ -44,7 +44,7 @@ const UpdateFeedstock = () => {
         setUpdatedFeedstockData(values)
         setAlreadyUpdated(true)
         itemToasts.updateSuccess({ description: data.name })
-        tableToggle()
+        invalidateData("feedstock")
       }
     })
   };

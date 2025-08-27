@@ -12,12 +12,12 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useDeleteProductDialog } from "@/hooks/use-product-dialog"
-import { useUpdateDataTable } from "@/hooks/use-update-data-table"
+import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
 import { fetcher } from "@/utils/fetcher"
 
 const DeleteProduct = () => {
   const { isOpen, setIsOpen, product, setProduct } = useDeleteProductDialog()
-  const { toggle: updateTable } = useUpdateDataTable("product")
+  const { invalidateData } = useInvalidateQuery()
 
   if (product === null) return;
 
@@ -41,7 +41,7 @@ const DeleteProduct = () => {
     } else {
       itemToasts.deleteSuccess({ description: product.name, type: "producto" })
       handleOpenChange(false)
-      updateTable()
+      invalidateData("product")
     }
   }
 

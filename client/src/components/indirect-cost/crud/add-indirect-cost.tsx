@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { fetcher } from "@/utils/fetcher";
 import { itemToasts } from "@/components/item-toasts";
 import { FormDataIndirectCost } from "@/schemas/indirect-cost-schema";
-import { useUpdateDataTable } from "@/hooks/use-update-data-table";
+import { useInvalidateQuery } from "@/hooks/use-invalidate-query";
 import IndirectCostForm from "@/components/indirect-cost/form/indirect-cost-form";
 import { useCreateIndirectCostDialog } from "@/hooks/use-indirect-cost-dialog";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ const defaultValues = {
 const AddIndirectCost = () => {
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
   const [isPending, startTransition] = useTransition();
-  const { toggle: tableToggle } = useUpdateDataTable("indirect_cost")
+  const { invalidateData } = useInvalidateQuery()
   const { setIsOpen, isOpen } = useCreateIndirectCostDialog()
 
   const handleSubmit = async (values: FormDataIndirectCost) => {
@@ -62,7 +62,7 @@ const AddIndirectCost = () => {
             description: `${finalType} - $${values.amount}`,
             type: "costo indirecto"
           });
-          tableToggle()
+          invalidateData("indirect_cost")
           isSuccess = true;
         }
       } catch (error) {
