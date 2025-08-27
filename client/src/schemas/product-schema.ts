@@ -14,7 +14,8 @@ export const productFeedstockInputSchema = z.object({
   measure_unit: z.nativeEnum(MeasureUnit), // unicamente para manejar el detalle
   quantity_required: z.number({
     error: () => ({ message: "La cantidad requerida debe ser un número" })
-  }).min(0.01, "La cantidad requerida debe ser mayor a 0"),
+  }).min(1, "La cantidad debe ser mayor a 0")
+    .int("La cantidad debe ser un número entero"),
 });
 
 // Esquema para creación de producto
@@ -36,7 +37,9 @@ export const productSchema = z.object({
   }),
   quantity: z.number({
     error: () => ({ message: "La cantidad debe ser un número" })
-  }).min(0.01, "La cantidad debe ser mayor a 0"),
+  })
+    .min(1, "La cantidad debe ser mayor a 0")
+    .int("La cantidad debe ser un número entero"),
   feedstocks: z.array(productFeedstockInputSchema)
     .min(1, "Debe incluir al menos un insumo"),
 }).refine((data) => {

@@ -7,6 +7,8 @@ import { translateFeedstockHeaders, translateProductsHeaders } from "@/utils/tra
 import { ObjProduct } from "@/types/items/product"
 import { translateUserHeaders } from "@/utils/translate/user"
 import { UsersData } from "@/types/items/users"
+import { translateIndirectCostHeaders } from "@/utils/translate/cost-translate"
+import { IndirectCostInput } from "@/types/items/indirect-cost"
 
 type DropdownProps<T> = {
   table: Table<T>;
@@ -42,7 +44,9 @@ const ColumnsDropdown = <TData,>({
                       ? translateFeedstockHeaders(column.id as keyof ObjFeedstock)
                       : columnsTo == "product"
                         ? translateProductsHeaders(column.id as keyof ObjProduct)
-                        : column.id
+                        : columnsTo == "indirect_cost"
+                          ? translateIndirectCostHeaders(column.id as keyof IndirectCostInput)
+                          : column.id
                 }
               </DropdownMenuCheckboxItem>
             );

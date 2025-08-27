@@ -43,8 +43,7 @@ const ProductTable = async () => {
         </div>
       }
 
-      <GenericDataTable
-        <ObjProduct>
+      <GenericDataTable<ObjProduct>
         columnsTo="product"
         initialData={!(data.detail || data.error) ? data : mockProducts}
         columns={columns}

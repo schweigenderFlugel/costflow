@@ -1,8 +1,9 @@
 import { UUID } from "crypto"
 
 interface Timestamp {
-  created_at: Date,
-  updated_at: Date
+  // created_at: Date,
+  // updated_at: Date
+  date: Date
 }
 
 export interface BackendProperties extends Timestamp {

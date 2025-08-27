@@ -10,17 +10,14 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useDeleteFeedstockDialog } from "@/hooks/use-feedstock-dialog"
-import { fetcher } from "@/utils/fetcher"
-import { itemToasts } from "@/components/item-toasts"
+import { useFeedstockMutations } from "@/hooks/mutations/use-feedstock-mutations"
 import DetailFeedstock from "@/components/feedstock/modal/crud/detail-feedstock"
-import { useUpdateDataTable } from "@/hooks/use-update-data-table"
 
 const DeleteFeedstock = () => {
   const { isOpen, setIsOpen, feedstock, setFeedstock } = useDeleteFeedstockDialog()
-  const { toggle: tableToggle } = useUpdateDataTable("feedstock")
+  const { deleteFeedstock } = useFeedstockMutations()
 
   if (feedstock === null) return;
-
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
@@ -29,34 +26,12 @@ const DeleteFeedstock = () => {
     setIsOpen(open)
   }
 
-  const handleClick = async () => {
-    try {
-      const data = await fetcher({ input: `/api/feedstock/${feedstock.id}`, method: "DELETE" })
-
-      if (data.error || !data.message?.includes("successfully")) {
-        let posibleMessage = data.error || data.description || data.message || data.detail
-
-        if (Array.isArray(posibleMessage)) {
-          posibleMessage = (posibleMessage.map(detail => detail.msg)).join(". \n")
-        }
-        console.error(data)
-        itemToasts.error({ description: feedstock.name, message: posibleMessage })
-      }
-      else {
-        // Usar el toast de éxito personalizado
-        itemToasts.deleteSuccess({
-          description: feedstock.name,
-        })
+  const handleClick = () => {
+    deleteFeedstock.mutate({ feedstockId: feedstock.id, feedstockName: feedstock.name }, {
+      onSuccess: () => {
         handleOpenChange(false)
-        tableToggle()
       }
-    } catch (error) {
-      console.error(error)
-      itemToasts.error({
-        description: feedstock.name,
-        message: "Error inesperado al eliminar el insumo"
-      })
-    }
+    })
   }
 
   return (

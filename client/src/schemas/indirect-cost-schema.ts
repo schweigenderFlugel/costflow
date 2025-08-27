@@ -8,7 +8,11 @@ export const indirectCostSchema = z.object({
   customType: z.string().optional(),
   amount: z.number({
     error: () => ({ message: "El monto debe ser un número válido" })
-  }).min(0.01, "El monto debe ser mayor a 0"),
+  }).min(1, "El monto debe ser mayor a 0"),
+  total_usage: z.number({
+    error: () => ({ message: "El uso total debe ser un número válido" })
+  }).min(1, "El uso total debe ser mayor a 0")
+    .int("La cantidad debe ser un número entero"),
   date: z.date({
     error: () => ({ message: "La fecha debe ser una fecha válida" })
   }).min(new Date("2020-01-01"), "La fecha no puede ser anterior al 1 de enero de 2020")

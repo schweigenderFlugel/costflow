@@ -162,8 +162,8 @@ export function FeedstockSelector({
                       <Input
                         id={`quantity-${index}`}
                         type="number"
-                        min="0.01"
-                        step="0.01"
+                        // min=""
+                        step="1"
                         className="pr-16"
                         {...formRegister(`feedstocks.${index}.quantity_required`, { valueAsNumber: true })}
                       />

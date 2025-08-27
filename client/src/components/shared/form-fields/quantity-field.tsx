@@ -22,8 +22,7 @@ export function QuantityField<T extends FieldValues>({
   name = "quantity" as Path<T>,
   label = "Cantidad",
   placeholder = "Cantidad",
-  min = 0,
-  step = "0.01"
+  step = "1"
 }: QuantityFieldProps<T>) {
   return (
     <FormField
@@ -35,7 +34,6 @@ export function QuantityField<T extends FieldValues>({
           <FormControl>
             <Input
               type="number"
-              min={min}
               step={step}
               placeholder={placeholder}
               value={field.value || ""}
