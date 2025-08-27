@@ -120,8 +120,6 @@ def recover_password(db: SessionDep, body: UserEmail):
     
         raw_code = binascii.hexlify(os.urandom(12)).decode()
 
-        user_found.sqlmodel_update({"recovery_code": raw_code })
-
         expiration = int((datetime.now(timezone.utc) + timedelta(minutes=15)).timestamp())
         text = f"{raw_code}.{str(expiration)}"
         recovery_code_dict = encrypt(text)
@@ -135,6 +133,8 @@ def recover_password(db: SessionDep, body: UserEmail):
             subject="Recuperaciòn de contraseña", 
             variables=variables
         )
+
+        user_found.sqlmodel_update({"recovery_code": raw_code })
 
         db.add(user_found)
         db.commit()

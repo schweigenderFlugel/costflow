@@ -137,7 +137,7 @@ def logout(res: Res, payload: RefreshSessionDep):
   res.delete_cookie(
     key=COOKIE_NAME, 
     httponly=True, 
-    secure=False, 
+    secure=True, 
     samesite='none',
   )
   return { "message": "Sucessfully logged out" }

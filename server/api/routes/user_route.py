@@ -19,7 +19,6 @@ router = APIRouter(
 
 @router.get("/me",
   status_code=200,
-  tags=['Users'], 
   summary='Get current user',
   response_model=User,
   responses={
@@ -41,7 +40,6 @@ def get_current_user(request: Request, jwt: JwtDep, session: SessionDep):
 
 @router.get("",
   status_code=200,
-  tags=['Users'], 
   summary='Get all the users',
   response_model=List[User],
   responses={
@@ -67,7 +65,6 @@ def get_all_users(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep):
 
 @router.get("/{id}",
   status_code=200,
-  tags=['Users'], 
   summary='Get user by id',
   response_model=User,
   responses={
@@ -93,7 +90,6 @@ def get_user_by_id(id: str, session: SessionDep, jwt: JwtDep, adminRole: AdminRo
 
 @router.get('/accept/{id}',
   status_code=200,
-  tags=['Users'], 
   summary='Accept user',
   responses={
     200: Response(
@@ -123,7 +119,6 @@ def accept_user(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, id: s
 
 @router.get('/reject/{id}',
   status_code=200,
-  tags=['Users'], 
   summary='Reject user',
   responses={
     200: Response(
@@ -153,7 +148,6 @@ def reject_user(session: SessionDep, jwt: JwtDep, adminRole: AdminRoleDep, id: s
 
 @router.get('/assign-role/{id}',
   status_code=200,
-  tags=['Users'], 
   summary='Assign role',
   responses={
     200: Response(

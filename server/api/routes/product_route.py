@@ -121,7 +121,6 @@ def update_product(db: SessionDep, cache: CacheDep, jwt: JwtDep, admin: AdminRol
 
 @router.delete("/{id}", 
     summary="Delete Products",
-    summary='Create a new product',
     status_code=200,
     responses={
         200: Response(
