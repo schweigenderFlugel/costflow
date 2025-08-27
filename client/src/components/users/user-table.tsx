@@ -19,7 +19,7 @@ const getData = async () => {
     },
     cache: "force-cache",
     next: {
-      tags: ["feedstocks"],
+      tags: ["users"],
     },
   });
 };

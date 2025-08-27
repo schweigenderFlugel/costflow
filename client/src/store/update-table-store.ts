@@ -8,6 +8,7 @@ type UpdateTableState = {
   prevProduct: boolean | null
   //  users
   updateUsers: null | boolean;
+  prevUsers: null | boolean;
   // indirect_cost
   updateIndirectCost: null | boolean;
   prevIndirectCost: null | boolean;
@@ -21,6 +22,7 @@ type UpdateTableActions = {
   markPrevProduct: (value: boolean | null) => void
   //  users
   setUpdateUsers: (open: boolean) => void;
+  markPrevUsers: (open: boolean | null) => void;
   // indirect_cost
   setUpdateIndirectCost: (open: boolean) => void;
   markPrevIndirectCost: (open: boolean | null) => void;
@@ -37,6 +39,7 @@ const useUpdateDataTableStore = create<UpdateTableStore>()((set) => ({
 
   // users
   updateUsers: null,
+  prevUsers: null,
 
   // indirect_cost
   updateIndirectCost: null,
@@ -50,6 +53,7 @@ const useUpdateDataTableStore = create<UpdateTableStore>()((set) => ({
 
   // users
   setUpdateUsers: (updateUsers: boolean) => set({ updateUsers }),
+  markPrevUsers: (value) => set({ prevUsers: value }),
 
   // indirect_cost
   setUpdateIndirectCost: (value) => set({ updateIndirectCost: value }),

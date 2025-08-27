@@ -6,14 +6,19 @@ export const useUpdateDataTable = (
   const {
     updateFeedstock,
     updateProduct,
-    updateUsers,
     setUpdateFeedstock,
     setUpdateProduct,
-    setUpdateUsers,
     prevFeedstock,
     prevProduct,
     markPrevFeedstock,
     markPrevProduct,
+
+    // users
+    updateUsers,
+    prevUsers,
+    setUpdateUsers,
+    markPrevUsers,
+
     // indirect_cost
     updateIndirectCost,
     prevIndirectCost,
@@ -25,7 +30,9 @@ export const useUpdateDataTable = (
   if (dataForTable === "users") {
     return {
       state: updateUsers,
+      prev: prevUsers,
       toggle: () => setUpdateUsers(!updateUsers),
+      markPrev: markPrevUsers,
     };
   }
 

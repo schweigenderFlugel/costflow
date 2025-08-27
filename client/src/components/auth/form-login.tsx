@@ -34,6 +34,7 @@ export default function FormLogin() {
         window.location.reload()
         itemToasts.info({
           description: data.message || data.description || data.detail,
+          type: "inicio de sesión"
         })
         return;
       }
