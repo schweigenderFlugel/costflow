@@ -33,13 +33,13 @@ const UpdateProduct = () => {
     startTransition(async () => {
       const productDTO = {
         ...values,
-        labour_time: 1, // EXTRA AGREGADO AHORA EN BACKEND (HARTO)
-        indirect_costs: [  // SEGUNDO EXTRA AGREGADO AHORA EN BACKEND (HARTO)
-          { // SEGUNDO EXTRA AGREGADO AHORA EN BACKEND (HARTO)
-            id: "7e16d151-bf57-4962-b2c1-6ce42587ea48", // SEGUNDO EXTRA AGREGADO AHORA EN BACKEND (HARTO)
-            usage: 0 // SEGUNDO EXTRA AGREGADO AHORA EN BACKEND (HARTO)
-          } // SEGUNDO EXTRA AGREGADO AHORA EN BACKEND (HARTO)
-        ], // SEGUNDO EXTRA AGREGADO AHORA EN BACKEND (HARTO)
+        labour_time: 1, //
+        indirect_costs: [  // SEGUNDO
+          { // SEGUNDO
+            id: "", // SE BORRÓ LA BASE DE DATOS
+            usage: 0 // SEGUNDO
+          } // SEGUNDO
+        ], // SEGUNDO
         feedstocks: values.feedstocks.map(fs => ({
           id: fs.id,
           quantity_required: fs.quantity_required

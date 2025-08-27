@@ -1,5 +1,5 @@
 import { Feedstock, ObjFeedstock } from "@/types/items/feedstock";
-import { translateMeasureUnit } from "@/utils/translate/shared-translate";
+import { translateMeasureUnit, translateStateMatter } from "@/utils/translate/shared-translate";
 
 
 const DetailFeedstock = ({ feedstock }: { feedstock: ObjFeedstock | Feedstock | null }) => {
@@ -37,6 +37,13 @@ const DetailFeedstock = ({ feedstock }: { feedstock: ObjFeedstock | Feedstock | 
                 currency: feedstock.currency,
               }).format(feedstock.unit_cost))
             }
+          </span>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <h3 className="text-sm">Estado:</h3>
+          <span className="text-sm font-medium text-foreground">
+            {translateStateMatter(feedstock.state)}
           </span>
         </div>
 

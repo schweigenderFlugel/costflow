@@ -6,7 +6,7 @@ import { Contact } from "@/components/landing/contact";
 import { Navbar5 } from "@/components/landing/navbar";
 
 export const metadata = {
-  title: "Inicio",
+  title: "Cotzia",
 };
 
 const Page = () => {
