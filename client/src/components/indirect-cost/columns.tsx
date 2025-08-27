@@ -23,8 +23,12 @@ const columns: ColumnDef<IndirectCostObj>[] = [
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   }),
+  createNumberColumn<IndirectCostObj>("total_usage", "Total de Uso", {
+    alignment: "right",
+    raw: true
+  }),
 
-  createDateColumn<IndirectCostObj>("date", "Fecha"),
+  createDateColumn<IndirectCostObj>("date", "Fecha", true),
 
   createActionsColumn<IndirectCostObj>(IndirectCostActions, "indirect_cost"),
 

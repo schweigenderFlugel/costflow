@@ -61,7 +61,8 @@ const UpdateIndirectCost = () => {
                 type: COST_TYPES.includes(indirectCost.type as typeof COST_TYPES[number]) ? indirectCost.type : COST_TYPES[10],
                 customType: COST_TYPES.includes(indirectCost.type as typeof COST_TYPES[number]) ? "" : indirectCost.type,
                 amount: indirectCost.amount,
-                date: new Date(indirectCost.date)
+                date: new Date(indirectCost.date),
+                total_usage: indirectCost.total_usage
               }}
             />
             :
