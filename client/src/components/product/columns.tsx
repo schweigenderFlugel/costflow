@@ -26,7 +26,8 @@ const columns: ColumnDef<ObjProduct>[] = [
   }),
 
   createTranslatedColumn<ObjProduct, StateMatter>("state", "Material", translateStateMatter, {
-    capitalize: true
+    capitalize: true,
+    alignment: "left"
   }),
 
   createNumberColumn<ObjProduct>("quantity", "Cantidad", {

@@ -196,7 +196,7 @@ export const createTranslatedColumn = <T, V = unknown>(
     <Button
       variant="ghost"
       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      className={`w-full h-full justify-${options?.alignment === "left" ? "start" : options?.alignment === "center" ? "center" : "end"} hover:bg-transparent hover:text-inherit`}
+      className={`w-full h-full ${options?.alignment === "left" ? "justify-start" : options?.alignment === "center" ? "justify-center" : "justify-end"} hover:bg-transparent hover:text-inherit`}
     >
       {header}
       <ArrowUpDown />
