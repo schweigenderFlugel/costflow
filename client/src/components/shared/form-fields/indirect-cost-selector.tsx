@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { useFieldArray, Control, UseFormRegister, FieldErrors } from "react-hook-form";
+import { useFieldArray, Control, UseFormRegister, FieldErrors, useWatch } from "react-hook-form";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { IndirectCostObj } from "@/types/items/indirect-cost";
-import { fetcher } from "@/utils/fetcher";
+import { useDataQuery } from "@/hooks/use-data-query";
 import { FormDataProduct } from "@/schemas/product-schema";
 
 interface IndirectCostSelectorProps {
@@ -25,47 +25,49 @@ export function IndirectCostSelector({
     name: "indirect_costs"
   });
 
-  const [indirectCosts, setIndirectCosts] = useState<IndirectCostObj[]>([]);
+  // Usar useWatch para obtener los valores reales del formulario
+  const watchedIndirectCosts = useWatch({
+    control,
+    name: "indirect_costs"
+  });
+
+  // Usar React Query para reutilizar datos cacheados - sin initialData para forzar fetch
+  const { data: indirectCosts = [], isLoading } = useDataQuery<IndirectCostObj[]>("indirect_cost", undefined);
+
   const [filteredIndirectCosts, setFilteredIndirectCosts] = useState<IndirectCostObj[]>([]);
   const [indirectCostSearch, setIndirectCostSearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
   // Para mostrar información completa de los costos indirectos seleccionados
-  const getIndirectCostInfo = (id: string) => {
-    return indirectCosts.find(ic => ic.id === id);
+  const getIndirectCostInfo = (indirectCostId: string) => {
+    if (!Array.isArray(indirectCosts)) return undefined;
+    return indirectCosts.find((ic: IndirectCostObj) => ic.id === indirectCostId);
   };
 
+  // Filtrar costos indirectos cuando cambia la búsqueda, los datos, o los campos seleccionados
   useEffect(() => {
-    fetcher({ input: "/api/indirect_cost" })
-      .then(data => {
-        if (!(data.error)) {
-          setIndirectCosts(data);
-          setFilteredIndirectCosts(data);
-        }
-      });
-  }, []);
+    if (!Array.isArray(indirectCosts) || !indirectCosts.length) return;
 
-  // Filtrar costos indirectos cuando cambia la búsqueda
-  useEffect(() => {
     let filtered = indirectCosts;
 
     // Filtrar por búsqueda
     if (indirectCostSearch.trim() !== "") {
-      filtered = filtered.filter(ic =>
+      filtered = filtered.filter((ic: IndirectCostObj) =>
         ic.type.toLowerCase().includes(indirectCostSearch.toLowerCase())
       );
     }
 
-    // Filtrar costos indirectos ya agregados
-    const addedIndirectCostIds = fields.map(field => field.id);
-    filtered = filtered.filter(ic => !addedIndirectCostIds.includes(ic.id));
+    // CLAVE: Usar watchedIndirectCosts para obtener los IDs reales del formulario
+    const addedIndirectCostIds = (watchedIndirectCosts || []).map((item: any) => item?.id).filter(Boolean);
+
+    filtered = filtered.filter((ic: IndirectCostObj) => !addedIndirectCostIds.includes(ic.id));
 
     setFilteredIndirectCosts(filtered);
-  }, [indirectCostSearch, indirectCosts, fields]);
+  }, [indirectCostSearch, indirectCosts, watchedIndirectCosts]);
 
   const handleIndirectCostSelect = (indirectCost: IndirectCostObj) => {
-    // Verificar si el costo indirecto ya está seleccionado
-    const alreadySelected = fields.some(field => field.id === indirectCost.id);
+    // Verificar si el costo indirecto ya está seleccionado usando watchedIndirectCosts
+    const alreadySelected = (watchedIndirectCosts || []).some((item: any) => item?.id === indirectCost.id);
 
     if (alreadySelected) {
       return;
@@ -110,7 +112,14 @@ export function IndirectCostSelector({
           />
 
           {/* Dropdown de costos indirectos */}
-          {showDropdown && filteredIndirectCosts.length > 0 && (
+          {showDropdown && isLoading && (
+            <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+              <div className="px-3 py-2 text-sm text-gray-500">
+                Cargando costos indirectos...
+              </div>
+            </div>
+          )}
+          {showDropdown && !isLoading && filteredIndirectCosts.length > 0 && (
             <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
               {filteredIndirectCosts.slice(0, 10).map((indirectCost) => (
                 <div
@@ -124,7 +133,7 @@ export function IndirectCostSelector({
               ))}
             </div>
           )}
-          {showDropdown && filteredIndirectCosts.length === 0 && indirectCostSearch && (
+          {showDropdown && !isLoading && filteredIndirectCosts.length === 0 && indirectCostSearch && (
             <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
               <div className="px-3 py-2 text-sm text-gray-500">
                 No se encontraron costos indirectos
@@ -145,7 +154,9 @@ export function IndirectCostSelector({
           <Label>Costos indirectos seleccionados</Label>
           <div className="space-y-3 px-2 max-h-[400px] overflow-y-auto">
             {fields?.map((field, index) => {
-              const indirectCostInfo = getIndirectCostInfo(field.id);
+              // Usar watchedIndirectCosts para obtener el ID real
+              const watchedItem = watchedIndirectCosts?.[index];
+              const indirectCostInfo = getIndirectCostInfo(watchedItem?.id);
               return (
                 <Card key={field.id} className="p-3 gap-1.5 animate-in slide-in-from-top-2 duration-300">
                   <div className="flex items-center justify-between gap-2">
