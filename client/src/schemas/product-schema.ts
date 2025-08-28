@@ -14,8 +14,15 @@ export const productFeedstockInputSchema = z.object({
   measure_unit: z.nativeEnum(MeasureUnit), // unicamente para manejar el detalle
   quantity_required: z.number({
     error: () => ({ message: "La cantidad requerida debe ser un número" })
-  }).min(1, "La cantidad debe ser mayor a 0")
+  }).min(1, "La cantidad debe ser mayor o igual a 1")
     .int("La cantidad debe ser un número entero"),
+});
+
+export const productIndirectCostInputSchema = z.object({
+  id: z.string().uuid("ID de costo indirecto debe ser un UUID válido"),
+  usage: z.number({
+    error: () => ({ message: "El uso debe ser un número" })
+  }).min(1, "El uso debe ser mayor o igual a 1")
 });
 
 // Esquema para creación de producto
@@ -37,11 +44,19 @@ export const productSchema = z.object({
   }),
   quantity: z.number({
     error: () => ({ message: "La cantidad debe ser un número" })
-  })
-    .min(1, "La cantidad debe ser mayor a 0")
+  }).min(1, "La cantidad debe ser mayor o igual a 1")
     .int("La cantidad debe ser un número entero"),
   feedstocks: z.array(productFeedstockInputSchema)
     .min(1, "Debe incluir al menos un insumo"),
+
+  labour_time: z.number({
+    error: () => ({ message: "El tiempo de trabajo debe ser un número" })
+  }).min(1, "El tiempo de trabajo debe ser mayor o igual a 1")
+    .int("El tiempo de trabajo debe ser un número entero"),
+
+  indirect_costs: z.array(productIndirectCostInputSchema)
+    .min(1, "Debe incluir al menos un costo indirecto"),
+
 }).refine((data) => {
   // Validación condicional de unidades de medida según el estado de la materia
   if (data.state === StateMatter.SOLID) {
@@ -63,13 +78,15 @@ export type FormDataProduct = z.infer<typeof productSchema>;
 
 // Esquema para edición (campos opcionales si tu API lo permite)
 export const updateProductSchema = productSchema.partial();
+export type FormDataUpdate = z.infer<typeof updateProductSchema>;
 
 // Esquema para respuesta del backend
 export const objProductSchema = productSchema.extend({
   id: z.string().uuid("ID debe ser un UUID válido"),
   is_deleted: z.boolean(),
-  created_at: z.date({ error: () => ({ message: "Fecha de creación inválida" }) }),
-  updated_at: z.date({ error: () => ({ message: "Fecha de actualización inválida" }) }),
+  // created_at: z.date({ error: () => ({ message: "Fecha de creación inválida" }) }),
+  // updated_at: z.date({ error: () => ({ message: "Fecha de actualización inválida" }) }),
+  date: z.date({ error: () => ({ message: "Fecha inválida" }) }),
   provider: z.string().optional(),
   subtotal: z.number().optional(),
 });

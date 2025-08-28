@@ -12,7 +12,8 @@ import {
   StateMatterField,
   MeasureUnitField,
   DescriptionField,
-  FeedstockSelector
+  FeedstockSelector,
+  IndirectCostSelector
 } from "@/components/shared/form-fields";
 
 interface ProductFormProps {
@@ -24,13 +25,14 @@ interface ProductFormProps {
 const ProductForm = ({
   defaultValues,
   onSubmit,
-  formId
+  formId,
 }: ProductFormProps) => {
   const form = useForm<FormDataProduct>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       ...defaultValues,
-      feedstocks: defaultValues.feedstocks || []
+      feedstocks: defaultValues.feedstocks,
+      indirect_costs: defaultValues.indirect_costs
     },
   });
 
@@ -46,7 +48,7 @@ const ProductForm = ({
         onSubmit={form.handleSubmit(onSubmit)}
         id={formId}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 px-2 sm:px-4">
+        <div className={`grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 px-2 sm:px-4`}>
 
           <div className="flex flex-col col-span-1 gap-y-4">
             <SkuField
@@ -79,6 +81,14 @@ const ProductForm = ({
               placeholder="Cantidad del producto"
             />
 
+            <QuantityField
+              name="labour_time"
+              control={form.control}
+              label="Tiempo de trabajo"
+              step="1"
+              placeholder="Minutos para fabricarlo"
+            />
+
             <DescriptionField
               control={form.control}
               placeholder="Descripción del producto"
@@ -88,6 +98,13 @@ const ProductForm = ({
 
           {/* Búsqueda y selección de insumos */}
           <FeedstockSelector
+            control={form.control}
+            formRegister={form.register}
+            formErrors={form.formState.errors}
+          />
+
+          {/* Búsqueda y selección de costos indirectos */}
+          < IndirectCostSelector
             control={form.control}
             formRegister={form.register}
             formErrors={form.formState.errors}
