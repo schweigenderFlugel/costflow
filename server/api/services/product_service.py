@@ -265,14 +265,11 @@ def update_product(db: SessionDep, cache: CacheDep, id: str, body: UpdateProduct
                     usage=ic['usage']
                 )
 
-                indirect_cost = float(ic['usage']) * cost_per_usage
-                product_indirect_costs.append(indirect_cost)
-
                 db.add(indirect_cost_link)
                 db.commit()
 
         product_name = str(data['name']) if data.get('name') else product_found.model_dump()['name']
-        labour_time = int(data['labour_time']) if data.get('labour_time') else product_found.model_dump()['labour_time']
+        labour_time = int(data['labour_time']) if data.get('labour_time') else int(product_found.model_dump()['labour_time'])
 
         for fs_found in product_found.feedstocks:
             feedstock = db.exec(select(Feedstock).where(Feedstock.id == fs_found.id)).first()
@@ -281,6 +278,14 @@ def update_product(db: SessionDep, cache: CacheDep, id: str, body: UpdateProduct
             product_feedstock_found = db.exec(statement=product_feedstock_statement).first()
             product_feedstock_cost = float(product_feedstock_found.model_dump()['quantity_required']) * unit_cost
             product_feedstocks_costs.append(product_feedstock_cost)
+
+        for ic_found in product_found.indirect_costs:
+            indirect_cost_found = db.exec(select(IndirectCost).where(IndirectCost.id == ic_found.id)).first()
+            ic_cost = float(indirect_cost_found.model_dump()['amount']) / float(indirect_cost_found.model_dump()['total_usage'])
+            product_ic_statement = select(ProductIndirectCost).where(ProductIndirectCost.indirect_cost_id == ic_found.id)
+            product_ic_found = db.exec(statement=product_ic_statement).first()
+            product_ic_usage_cost = float(product_ic_found.model_dump()['usage']) * ic_cost
+            product_indirect_costs.append(product_ic_usage_cost)
 
         labour = db.exec(select(Labour).where(
             extract('month', Labour.date) == this_month,
