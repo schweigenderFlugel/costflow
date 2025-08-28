@@ -120,7 +120,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    scroll-behavior: smooth;
   }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -134,4 +133,7 @@ input[type=number] {
 }
 
 
+  html{
+        scroll-behavior: smooth !important;
+  }
 }

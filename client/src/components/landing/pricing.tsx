@@ -72,7 +72,7 @@ export function Pricing() {
           {pricingPlans.map((plan) => (
             <Card
               key={plan.title}
-              className={`flex flex-col h-full bg-white/90 backdrop-blur-sm shadow-2xl rounded-2xl transition-transform transform-gpu
+              className={`flex flex-col h-full bg-white/90 backdrop-blur-sm shadow-2xl rounded-2xl transition-transform transform-gpu gap-0
                 ${plan.isRecommended ? "scale-105" : "scale-100"}`}
             >
               <CardHeader className="p-6">
