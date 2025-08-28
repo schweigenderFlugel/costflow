@@ -61,6 +61,8 @@ export function FeedstockSelector({
 
   const handleFeedstockSelect = (feedstock: ObjFeedstock) => {
     // Verificar si el insumo ya está seleccionado
+    console.log(feedstock);
+    console.log(fields);
     const alreadySelected = fields.some(field => field.id === feedstock.id);
 
     if (alreadySelected) {
@@ -96,7 +98,7 @@ export function FeedstockSelector({
   return (
     <div className="col-span-1 space-y-4 h-full">
       <div className="space-y-2">
-        <Label htmlFor="feedstock-search">Buscar Insumos</Label>
+        <Label htmlFor="feedstock-search">Insumos necesarios</Label>
         <div className="relative">
           <Input
             id="feedstock-search"

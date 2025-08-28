@@ -5,71 +5,23 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { useCreateProductDialog } from "@/hooks/use-product-dialog";
 import { FormDataProduct } from "@/schemas/product-schema";
 import { useEffect, useState } from "react";
-import { fetcher } from "@/utils/fetcher";
-import { Product } from "@/types/items/product";
-import { itemToasts } from "@/components/item-toasts";
-import { useDataMutation } from "@/hooks/use-data-mutation";
 import ProductCreated from "@/components/product/modal/crud/already/product-created";
+import useProductMutations from "@/hooks/mutations/use-product-mutations";
 
 
 const CreateProduct = () => {
   const [alreadyCreated, setAlreadyCreated] = useState<boolean>(false)
-  const [currentProduct, setCurrentProduct] = useState<null | Product>(null)
+  const [currentProduct, setCurrentProduct] = useState<null | FormDataProduct>(null)
   const { isOpen, setIsOpen, close } = useCreateProductDialog()
-
-  // Optimized mutation with useDataMutation
-  const createProductMutation = useDataMutation({
-    queryType: "product",
-    mutationFn: async (values: FormDataProduct) => {
-      const productDTO = {
-        ...values,
-        labour_time: 1,
-        indirect_costs: [
-          {
-            id: "",
-            usage: 0
-          }
-        ],
-        feedstocks: values.feedstocks.map(fs => ({
-          id: fs.id,
-          quantity_required: fs.quantity_required
-        }))
-      }
-
-      const data = await fetcher({
-        input: `/api/product`,
-        method: "POST",
-        body: JSON.stringify(productDTO)
-      });
-
-      // Handle error responses
-      if (data.error || !data.message?.includes("successfully")) {
-        let posibleMessage = data.detail || data.error || data.description || data.message
-        if (Array.isArray(posibleMessage)) {
-          posibleMessage = (posibleMessage.map((detail) => detail.msg)).join(". \n")
-        }
-        throw new Error(posibleMessage || "Error al crear el producto");
-      }
-
-      return data;
-    },
-    onSuccess: (data, variables) => {
-      setCurrentProduct(variables as Product);
-      setAlreadyCreated(true);
-      itemToasts.createSuccess({ description: variables.name, type: "producto" });
-    },
-    onError: (error) => {
-      console.error(error);
-      itemToasts.error({
-        description: "Error al crear producto",
-        message: error.message,
-        type: "producto"
-      });
-    }
-  });
+  const { createProduct } = useProductMutations()
 
   const handleCreate = (values: FormDataProduct) => {
-    createProductMutation.mutate(values);
+    createProduct.mutate(values, {
+      onSuccess: (data) => {
+        setCurrentProduct(values)
+        setAlreadyCreated(true)
+      }
+    })
   };
 
   const handleOpenChange = (open: boolean) => {
@@ -90,7 +42,7 @@ const CreateProduct = () => {
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-      <SheetContent className="py-6 px-4 gap-10 justify-start sm:max-w-xl">
+      <SheetContent className="py-6 px-4 gap-10 justify-start sm:max-w-4xl">
 
         <SheetHeader className={alreadyCreated ? "sr-only" : "p-0"}>
           <SheetTitle className="text-xl">Agregar producto</SheetTitle>
@@ -117,18 +69,20 @@ const CreateProduct = () => {
                   name: "",
                   description: "",
                   feedstocks: [],
+                  indirect_costs: [],
                   measure_unit: undefined,
-                  quantity: 0,
+                  quantity: 1,
                   sku: "",
-                  state: undefined
+                  state: undefined,
+                  labour_time: 1
                 }}
                 onSubmit={handleCreate}
                 formId="create-product-form"
               />
 
               <FormProductFooter
-                errorMessage={createProductMutation.error?.message}
-                isPending={createProductMutation.isPending}
+                errorMessage={createProduct.error?.message}
+                isPending={createProduct.isPending}
                 submitLabel="Agregar producto"
                 submitingLabel="Agregando..."
                 formId="create-product-form"

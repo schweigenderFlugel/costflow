@@ -3,10 +3,16 @@ import { Currency } from "@/types/measure/currency"
 import { ItemMeasure, MeasureUnit } from "@/types/measure/measure-unit"
 import { UUID } from "crypto"
 
+export interface ProductIndirectCostInput {
+  id: string,
+  usage: number
+}
+
+
 // Interfaz para la relación entre productos y materias primas
-interface ProductFeedstockInput {
+export interface ProductFeedstockInput {
   name: string; // unicamente para el detalle
-  id: UUID | string;
+  id: string;
   quantity_required: number;
 }
 
@@ -29,17 +35,12 @@ export interface Product extends ItemMeasure {
   description?: string;
   feedstocks: ProductFeedstockInput[];
   sku: string;
+  // news
+  labour_time: number;
+  indirect_costs: ProductIndirectCostInput[];
 }
 
 export interface ObjProduct extends Omit<Product, 'feedstocks'>, BackendProperties, ItemMeasure {
   feedstocks: ObjProductFeedstock[];
+  indirect_costs: ProductIndirectCostInput[];
 }
-
-/* SUPUESTAMENTE DEVUELVE ESTO TMB PERO LO TENDRÁ Q CORREGIR EL BACK
-  "measure_unit": "GRAMS",
-  "resale_percentage": 2.5,
-  "quantity": 20,
-  "indirect_cost": 16.5,
-  "public_percentage": 1.5,
-}
-*/

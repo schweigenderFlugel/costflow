@@ -44,12 +44,10 @@ export const useProductMutations = () => {
     mutationFn: async (values) => {
       const productDTO = {
         ...values,
-        labour_time: 1,
-        indirect_costs: [{ id: "", usage: 0 }],
         feedstocks: values.feedstocks.map(fs => ({
           id: fs.id,
           quantity_required: fs.quantity_required
-        }))
+        })),
       };
 
       const data = await fetcher({
@@ -84,10 +82,10 @@ export const useProductMutations = () => {
   const updateProduct = useDataMutation<SuccessResponse, UpdateProductVariables>({
     queryType: "product",
     mutationFn: async ({ productId, ...values }) => {
+      console.log(values);
+
       const productDTO = {
         ...values,
-        labour_time: 1,
-        indirect_costs: [{ id: "", usage: 0 }],
         feedstocks: values.feedstocks.map(fs => ({
           id: fs.id,
           quantity_required: fs.quantity_required

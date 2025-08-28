@@ -12,47 +12,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useDeleteProductDialog } from "@/hooks/use-product-dialog"
-import { useDataMutation } from "@/hooks/use-data-mutation";
-import { fetcher } from "@/utils/fetcher"
+import useProductMutations from "@/hooks/mutations/use-product-mutations"
 
 const DeleteProduct = () => {
   const { isOpen, setIsOpen, product, setProduct } = useDeleteProductDialog()
-
-  // Optimized mutation with useDataMutation
-  const deleteProductMutation = useDataMutation({
-    queryType: "product",
-    mutationFn: async () => {
-      if (!product) throw new Error("No se encontró el producto a eliminar");
-
-      const data = await fetcher({
-        input: `/api/product/${product.id}`,
-        method: "DELETE"
-      });
-
-      // Handle error responses
-      if (data.error || !data.message?.includes("successfully")) {
-        let posibleMessage = data.error || data.description || data.message || data.detail
-        if (Array.isArray(posibleMessage)) {
-          posibleMessage = (posibleMessage.map((detail) => detail.msg)).join(". \n")
-        }
-        throw new Error(posibleMessage || "Error al eliminar el producto");
-      }
-
-      return data;
-    },
-    onSuccess: () => {
-      itemToasts.deleteSuccess({ description: product?.name || "Producto", type: "producto" });
-      handleOpenChange(false);
-    },
-    onError: (error) => {
-      console.error(error);
-      itemToasts.error({
-        description: product?.name || "Producto",
-        message: error.message,
-        type: "producto"
-      });
-    }
-  });
+  const { deleteProduct } = useProductMutations()
 
   if (product === null) return;
 
@@ -65,7 +29,11 @@ const DeleteProduct = () => {
   }
 
   const handleClick = () => {
-    deleteProductMutation.mutate(undefined);
+    deleteProduct.mutate({ productId: product.id, productName: product.name }, {
+      onSuccess: () => {
+        handleOpenChange(false)
+      }
+    })
   }
 
   return (

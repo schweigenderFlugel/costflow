@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
 import { ObjProduct, Product } from "@/types/items/product";
+import { FormDataProduct } from "@/schemas/product-schema";
 import { translateMeasureUnit } from "@/utils/translate/shared-translate";
 
 
-const DetailProduct = ({ product }: { product: ObjProduct | Product | null }) => {
+const DetailProduct = ({ product }: { product: ObjProduct | Product | FormDataProduct | null }) => {
 
   if (product == null) return null;
   const hasFeedstocks = Array.isArray(product.feedstocks)
@@ -45,39 +46,15 @@ const DetailProduct = ({ product }: { product: ObjProduct | Product | null }) =>
           </div>
 
           <div className="flex justify-between items-center">
-            <h4 className="text-sm">Fecha de creación:</h4>
+            <h4 className="text-sm">Fecha:</h4>
             <span className="text-sm font-medium text-foreground">
               {
-                'created_at' in product ?
-                  new Date(product.created_at).toLocaleDateString()
+                'date' in product ?
+                  new Date(product.date).toLocaleDateString()
                   : new Date().toLocaleDateString()
               }
             </span>
           </div>
-          {
-            'created_at' in product &&
-              (product.created_at === product.updated_at) ?
-              <div className="flex justify-between items-center">
-                <h4 className="text-sm">Fecha de modificación:</h4>
-                <span className="text-sm font-medium text-foreground">
-                  {
-                    new Date(product.updated_at).toLocaleDateString()
-                  }
-                </span>
-              </div>
-              : ""
-          }
-          <div className="flex justify-between items-center">
-            <h4 className="text-sm">Agregado en la fecha:</h4>
-            <span className="text-sm font-medium text-foreground">
-              {
-                'created_at' in product ?
-                  new Date(product.created_at).toLocaleDateString()
-                  : new Date().toLocaleDateString()
-              }
-            </span>
-          </div>
-
 
         </div>
 
