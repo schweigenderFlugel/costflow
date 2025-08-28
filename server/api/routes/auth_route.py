@@ -112,11 +112,10 @@ def refresh(res: Res, session: SessionDep, payload: RefreshSessionDep):
   return { "access_token": tokens['access_token'] }
 
 @router.get("/logout",
-  status_code=200,
   tags=['Auth'], 
   summary='Logout',
   responses={
-    201: Response(
+    200: Response(
       description='Successfully logged out',
       content_type='application/json',
       message='Successfully logged out',
@@ -147,7 +146,7 @@ def logout(res: Res, payload: RefreshSessionDep):
   tags=['Auth'], 
   summary='Password Recovery',
   responses={
-    201: Response(
+    200: Response(
       description='Email for recovery successfully sent',
       content_type='application/json',
       message='Email for recovery successfully sent!',

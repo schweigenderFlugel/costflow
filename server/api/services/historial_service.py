@@ -41,7 +41,7 @@ def get_historial(db: SessionDep, cache: CacheDep):
                     product_indirect_costs.append(float(mp.model_dump()['indirect_costs']))
             labour = h.labour.model_dump(mode="json", exclude=["date", "historial", "historial_id", "is_deleted"]) if h.labour else None
             services = [svc.model_dump(mode="json", exclude=["historial", "historial_id", "is_deleted", "date"]) for svc in h.indirect_costs] if h.indirect_costs else None
-            feedstocks = [fs.model_dump(mode="json", exclude=["historial", "historial_id", "is_deleted", "date", "measure_unit", "provider", "sku", "state"]) for fs in h.feedstocks] if h.feedstocks else None
+            feedstocks = [fs.model_dump(mode="json", exclude=["historial", "historial_id", "is_deleted", "date", "provider", "sku", "state"]) for fs in h.feedstocks] if h.feedstocks else None
             final_historial.append({
                 "period": datetime.fromisoformat(h.model_dump(mode="json")["date"]).strftime("%m-%Y"),
                 "labour":  labour,
