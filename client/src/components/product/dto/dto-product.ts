@@ -10,9 +10,11 @@ export const dtoProduct = (prod: ObjProduct) => {
       sku: prod?.sku || "",
       state: prod?.state as StateMatter,
       measure_unit: prod?.measure_unit as MeasureUnit,
-      quantity: prod?.quantity || 0,
+      quantity: prod?.quantity || 1,
       description: prod?.description || "",
-      feedstocks: []
+      labour_time: prod?.labour_time || 1,
+      feedstocks: [],
+      indirect_costs: [],
     };
     return result;
   }
@@ -31,7 +33,14 @@ export const dtoProduct = (prod: ObjProduct) => {
         id: fs.feedstock || fs.id,
         quantity_required: fs.quantity_required
       };
-    })
+    }),
+    indirect_costs: Array.isArray(prod.indirect_costs) ? prod.indirect_costs.map(ic => {
+      return {
+        id: ic.id,
+        usage: ic.usage
+      };
+    }) : [],
+    labour_time: prod.labour_time || 1
   };
   return result;
 }

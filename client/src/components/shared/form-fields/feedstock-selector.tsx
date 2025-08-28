@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { useFieldArray, Control, UseFormRegister, FieldErrors } from "react-hook-form";
+import { useFieldArray, Control, UseFormRegister, FieldErrors, useWatch } from "react-hook-form";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { ObjFeedstock } from "@/types/items/feedstock";
-import { fetcher } from "@/utils/fetcher";
+import { useDataQuery } from "@/hooks/use-data-query";
 import { translateMeasureUnit } from "@/utils/translate/shared-translate";
 import { FormDataProduct } from "@/schemas/product-schema";
 
@@ -26,42 +26,43 @@ export function FeedstockSelector({
     name: "feedstocks"
   });
 
-  const [feedstocks, setFeedstocks] = useState<ObjFeedstock[]>([]);
+  // Usar useWatch para obtener los valores reales del formulario
+  const watchedFeedstocks = useWatch({
+    control,
+    name: "feedstocks"
+  });
+
+  // Usar React Query para reutilizar datos cacheados - sin initialData para forzar fetch
+  const { data: feedstocks = [], isLoading } = useDataQuery<ObjFeedstock[]>("feedstock", undefined);
+
   const [filteredFeedstocks, setFilteredFeedstocks] = useState<ObjFeedstock[]>([]);
   const [feedstockSearch, setFeedstockSearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
+  // Filtrar insumos cuando cambia la búsqueda, los datos, o los campos seleccionados
   useEffect(() => {
-    fetcher({ input: "/api/feedstock" })
-      .then(data => {
-        if (!(data.error)) {
-          setFeedstocks(data);
-          setFilteredFeedstocks(data);
-        }
-      });
-  }, []);
+    if (!Array.isArray(feedstocks) || !feedstocks.length) return;
 
-  // Filtrar insumos cuando cambia la búsqueda
-  useEffect(() => {
     let filtered = feedstocks;
 
     // Filtrar por búsqueda
     if (feedstockSearch.trim() !== "") {
-      filtered = filtered.filter(fs =>
+      filtered = filtered.filter((fs: ObjFeedstock) =>
         fs.name.toLowerCase().includes(feedstockSearch.toLowerCase())
       );
     }
 
-    // Filtrar insumos ya agregados
-    const addedFeedstockIds = fields.map(field => field.id);
-    filtered = filtered.filter(fs => !addedFeedstockIds.includes(fs.id));
+    // CLAVE: Usar watchedFeedstocks para obtener los IDs reales del formulario
+    const addedFeedstockIds = (watchedFeedstocks || []).map((item: any) => item?.id).filter(Boolean);
+
+    filtered = filtered.filter((fs: ObjFeedstock) => !addedFeedstockIds.includes(fs.id));
 
     setFilteredFeedstocks(filtered);
-  }, [feedstockSearch, feedstocks, fields]);
+  }, [feedstockSearch, feedstocks, watchedFeedstocks]);
 
   const handleFeedstockSelect = (feedstock: ObjFeedstock) => {
-    // Verificar si el insumo ya está seleccionado
-    const alreadySelected = fields.some(field => field.id === feedstock.id);
+    // Verificar si el insumo ya está seleccionado usando watchedFeedstocks
+    const alreadySelected = (watchedFeedstocks || []).some((item: any) => item?.id === feedstock.id);
 
     if (alreadySelected) {
       return;
@@ -96,7 +97,7 @@ export function FeedstockSelector({
   return (
     <div className="col-span-1 space-y-4 h-full">
       <div className="space-y-2">
-        <Label htmlFor="feedstock-search">Buscar Insumos</Label>
+        <Label htmlFor="feedstock-search">Insumos necesarios</Label>
         <div className="relative">
           <Input
             id="feedstock-search"
@@ -108,7 +109,14 @@ export function FeedstockSelector({
           />
 
           {/* Dropdown de insumos */}
-          {showDropdown && filteredFeedstocks.length > 0 && (
+          {showDropdown && isLoading && (
+            <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+              <div className="px-3 py-2 text-sm text-gray-500">
+                Cargando insumos...
+              </div>
+            </div>
+          )}
+          {showDropdown && !isLoading && filteredFeedstocks.length > 0 && (
             <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
               {filteredFeedstocks.slice(0, 10).map((feedstock) => (
                 <div
@@ -121,7 +129,7 @@ export function FeedstockSelector({
               ))}
             </div>
           )}
-          {showDropdown && filteredFeedstocks.length === 0 && feedstockSearch && (
+          {showDropdown && !isLoading && filteredFeedstocks.length === 0 && feedstockSearch && (
             <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
               <div className="px-3 py-2 text-sm text-gray-500">
                 No se encontraron insumos
