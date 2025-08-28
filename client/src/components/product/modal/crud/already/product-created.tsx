@@ -1,10 +1,11 @@
 import DetailProduct from "@/components/product/modal/crud/detail-product";
 import { Button } from "@/components/ui/button";
 import { ObjProduct, Product } from "@/types/items/product";
+import { FormDataProduct } from "@/schemas/product-schema";
 import { ClipboardCheck } from "lucide-react";
 
 interface AlreadyCreatedProps {
-  product: ObjProduct | Product | null;
+  product: ObjProduct | Product | FormDataProduct | null;
   handleClose: () => void;
   handleReturn: () => void;
 }
