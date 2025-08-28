@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EmailField } from "@/components/field-forms/email-field";
+import { EmailField } from "@/components/shared/auth-fields/email-field";
 import {
   ForgotPasswordSchema,
   forgotSchema,

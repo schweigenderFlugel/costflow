@@ -6,7 +6,7 @@ import {
   createNumberColumn,
   createDateColumn,
   createActionsColumn
-} from "@/components/data-table/column-helpers"
+} from "@/components/shared/data-table/column-helpers"
 import { IndirectCostObj } from "@/types/items/indirect-cost"
 import IndirectCostActions from "@/components/indirect-cost/indirect-cost-actions"
 

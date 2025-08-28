@@ -1,4 +1,4 @@
-import ColumnsDropdown from "@/components/data-table/columns-dropdown";
+import ColumnsDropdown from "@/components/shared/data-table/columns-dropdown";
 import CreateFeedstockTrigger from "@/components/feedstock/modal/trigger/create-feedstock-trigger";
 import CreateIndirectCostTrigger from "@/components/indirect-cost/trigger/create-indirect-cost-trigger";
 import CreateProductTrigger from "@/components/product/modal/trigger/create-product-trigger";

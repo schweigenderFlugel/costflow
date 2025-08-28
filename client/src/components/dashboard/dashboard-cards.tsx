@@ -1,6 +1,6 @@
 "use client";
 
-import CardsHome from "@/components/home/cards-home";
+import CardsHome from "@/components/dashboard/cards-home";
 
 interface DashboardCardsProps {
   data: {

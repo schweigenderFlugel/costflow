@@ -1,4 +1,4 @@
-import GenericDataTable from "@/components/data-table/generic-data-table";
+import GenericDataTable from "@/components/shared/data-table/generic-data-table";
 import columns from "@/components/indirect-cost/columns";
 import { indirectCostMock } from "@/components/indirect-cost/indirect-cost-mock";
 import { IndirectCostObj } from "@/types/items/indirect-cost";

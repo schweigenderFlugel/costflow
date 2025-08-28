@@ -2,7 +2,7 @@
 
 import PageHeaderSection from "@/components/shared/page-header-section";
 import StatsChart from "@/components/dashboard/stats-chart";
-import DashboardCards from "@/components/home/dashboard-cards";
+import DashboardCards from "@/components/dashboard/dashboard-cards";
 import { useEffect, useState } from "react";
 import { fetcher } from "@/utils/fetcher";
 

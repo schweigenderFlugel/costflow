@@ -1,4 +1,4 @@
-import GenericDataTable from "@/components/data-table/generic-data-table"
+import GenericDataTable from "@/components/shared/data-table/generic-data-table"
 import columns from "@/components/feedstock/columns"
 import { mockFeedstocks } from "@/components/feedstock/mock-feedstocks"
 import { ObjFeedstock } from "@/types/items/feedstock"

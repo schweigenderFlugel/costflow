@@ -1,4 +1,4 @@
-import GenericDataTable from "@/components/data-table/generic-data-table";
+import GenericDataTable from "@/components/shared/data-table/generic-data-table";
 import { columns } from "@/components/users/columns";
 import { fetcher } from "@/utils/fetcher";
 import { getToken } from "@/utils/get-token";

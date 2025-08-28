@@ -1,5 +1,5 @@
 
-import GenericDataTable from "@/components/data-table/generic-data-table"
+import GenericDataTable from "@/components/shared/data-table/generic-data-table"
 import columns from "@/components/product/columns"
 import { mockProducts } from "@/components/product/mock-product"
 import { ObjProduct } from "@/types/items/product"

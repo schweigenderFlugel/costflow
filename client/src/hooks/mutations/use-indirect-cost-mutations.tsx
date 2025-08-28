@@ -2,7 +2,7 @@
 
 import { useDataMutation } from "@/hooks/use-data-mutation";
 import { fetcher } from "@/utils/fetcher";
-import { itemToasts } from "@/components/item-toasts";
+import { itemToasts } from "@/components/shared/item-toasts";
 import { FormDataIndirectCost } from "@/schemas/indirect-cost-schema";
 
 export const useIndirectCostMutations = () => {

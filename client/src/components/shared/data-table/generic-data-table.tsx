@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import OnlyTable from "@/components/data-table/only-table";
+import OnlyTable from "@/components/shared/data-table/only-table";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -13,8 +13,8 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import PaginationTable from "@/components/data-table/pagination-table";
-import HeaderTable from "@/components/data-table/header-table";
+import PaginationTable from "@/components/shared/data-table/pagination-table";
+import HeaderTable from "@/components/shared/data-table/header-table";
 import { useDataQuery } from "@/hooks/use-data-query";
 
 interface GenericDataTableProps<TData> {
