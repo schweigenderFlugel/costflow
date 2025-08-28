@@ -48,9 +48,9 @@ const UpdateProduct = () => {
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-      <SheetContent className="py-6 px-4 gap-10 justify-start sm:max-w-2xl">
+      <SheetContent className="py-6 px-4 gap-1 justify-start sm:max-w-2xl">
 
-        <SheetHeader className={alreadyUpdated ? "sr-only" : "p-0"}>
+        <SheetHeader className={alreadyUpdated ? "sr-only" : "px-0"}>
           <SheetTitle className="text-xl">Editar producto</SheetTitle>
           <SheetDescription className="text-left">
             Actualizá la información de un producto ya cargado, modificando su nombre, cantidad, insumos o cualquier otro dato relevante para mantener tus registros siempre correctos y actualizados.

@@ -19,17 +19,17 @@ const Page = () => {
         triggerInfo
       />
       <section className="max-w-[calc(100svw-2rem)] w-6xl mx-auto my-8 px-1 sm:px-5">
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
-          <IndirectCostTable className="col-span-7" />
-          <div className="space-y-6 col-span-5">
-            <AddIndirectCost />
-          </div>
-        </div>
+        {/* <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center"> */}
+        <IndirectCostTable className="col-span-7" />
+        {/* <div className="space-y-6 col-span-5"> */}
+        {/* </div>
+        </div> */}
       </section>
 
 
 
       <Suspense>
+        <AddIndirectCost />
         <UpdateIndirectCost />
         <DeleteIndirectCost />
         <PageInfoDialog

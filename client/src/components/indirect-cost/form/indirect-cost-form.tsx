@@ -4,7 +4,7 @@ import { FormDataIndirectCost, indirectCostSchema } from "@/schemas/indirect-cos
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { Button } from "@/components/ui/button";
 import SpinLoader from "@/components/shared/spin-loader";
 import DateField from "@/components/date-field";
@@ -34,11 +34,12 @@ interface IndirectCostFormFormProps {
   isPending: boolean;
   submitingText: string;
   submitText: string;
-  initialIsCustomType?: boolean
+  initialIsCustomType?: boolean;
+  errorMessage?: ReactNode;
 }
 
 
-const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose, submitingText, submitText, initialIsCustomType = false }: IndirectCostFormFormProps) => {
+const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose, submitingText, submitText, initialIsCustomType = false, errorMessage }: IndirectCostFormFormProps) => {
   const [isCustomType, setIsCustomType] = useState(initialIsCustomType);
 
   const form = useForm<FormDataIndirectCost>({
@@ -63,20 +64,20 @@ const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose,
     onClose?.();
   }
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       <Form {...form}>
         <form
           autoComplete="off"
           id={formId}
           onSubmit={handleSubmit}
-          className="px-1.5 grid grid-cols-2 gap-x-2 gap-y-5"
+          className="px-1.5 flex flex-col gap-y-5 py-3"
         >
 
           <FormField
             name="type"
             control={form.control}
             render={({ field }) => (
-              <FormItem className={isCustomType ? "col-span-1" : "col-span-2"}>
+              <FormItem>
                 <FormLabel>Tipo de costo indirecto</FormLabel>
                 <FormControl>
                   <Select
@@ -165,13 +166,14 @@ const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose,
 
           <DateField
             formControl={form.control}
-            className="col-span-2"
             formatStr={"'Corresponde a' MMMM 'del año' yyyy"}
           />
 
         </form>
       </Form>
-
+      {
+        errorMessage && errorMessage
+      }
       <div className="grid grid-cols-2 gap-4 w-full">
         <Button
           type="button"

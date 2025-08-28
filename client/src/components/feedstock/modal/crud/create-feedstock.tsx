@@ -43,9 +43,9 @@ const CreateFeedstock = () => {
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-      <SheetContent className="py-6 px-4 gap-10 justify-start">
+      <SheetContent className="py-6 px-4 gap-1 justify-start">
 
-        <SheetHeader className={alreadyCreated ? "sr-only" : " p-0"}>
+        <SheetHeader className={alreadyCreated ? "sr-only" : " px-0"}>
           <SheetTitle className="text-xl">Crear insumo</SheetTitle>
           <SheetDescription className="text-left">
             Acá vas a cargar y mantener la lista de {(" ")}

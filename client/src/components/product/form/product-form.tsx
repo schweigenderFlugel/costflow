@@ -47,70 +47,68 @@ const ProductForm = ({
         autoComplete="off"
         onSubmit={form.handleSubmit(onSubmit)}
         id={formId}
-      >
-        <div className={`grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 px-2 sm:px-4`}>
+        className={`grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 px-2 sm:px-4 py-5`}>
 
-          <div className="flex flex-col col-span-1 gap-y-4">
-            <SkuField
-              control={form.control}
-              placeholder="Código SKU del producto"
-            />
-
-            <NameField
-              control={form.control}
-              label="Nombre del producto"
-              placeholder="Nombre del producto"
-            />
-
-            <StateMatterField
-              control={form.control}
-              onStateChange={handleStateChange}
-            />
-
-            <MeasureUnitField
-              control={form.control}
-              availableUnits={getAvailableMeasureUnits()}
-              disabled={!selectedState}
-              className="truncate"
-              placeholderDisabled="Primero selecciona el estado de la materia"
-            />
-
-            <QuantityField
-              control={form.control}
-              label="Cantidad del producto"
-              placeholder="Cantidad del producto"
-            />
-
-            <QuantityField
-              name="labour_time"
-              control={form.control}
-              label="Tiempo de trabajo"
-              step="1"
-              placeholder="Minutos para fabricarlo"
-            />
-
-            <DescriptionField
-              control={form.control}
-              placeholder="Descripción del producto"
-              className=""
-            />
-          </div>
-
-          {/* Búsqueda y selección de insumos */}
-          <FeedstockSelector
+        <div className="flex flex-col col-span-1 gap-y-4">
+          <SkuField
             control={form.control}
-            formRegister={form.register}
-            formErrors={form.formState.errors}
+            placeholder="Código SKU del producto"
           />
 
-          {/* Búsqueda y selección de costos indirectos */}
-          < IndirectCostSelector
+          <NameField
             control={form.control}
-            formRegister={form.register}
-            formErrors={form.formState.errors}
+            label="Nombre del producto"
+            placeholder="Nombre del producto"
           />
 
+          <StateMatterField
+            control={form.control}
+            onStateChange={handleStateChange}
+          />
+
+          <MeasureUnitField
+            control={form.control}
+            availableUnits={getAvailableMeasureUnits()}
+            disabled={!selectedState}
+            className="truncate"
+            placeholderDisabled="Primero selecciona el estado de la materia"
+          />
+
+          <QuantityField
+            control={form.control}
+            label="Cantidad del producto"
+            placeholder="Cantidad del producto"
+          />
+
+          <QuantityField
+            name="labour_time"
+            control={form.control}
+            label="Tiempo de trabajo"
+            step="1"
+            placeholder="Minutos para fabricarlo"
+          />
+
+          <DescriptionField
+            control={form.control}
+            placeholder="Descripción del producto"
+            className=""
+          />
         </div>
+
+        {/* Búsqueda y selección de insumos */}
+        <FeedstockSelector
+          control={form.control}
+          formRegister={form.register}
+          formErrors={form.formState.errors}
+        />
+
+        {/* Búsqueda y selección de costos indirectos */}
+        < IndirectCostSelector
+          control={form.control}
+          formRegister={form.register}
+          formErrors={form.formState.errors}
+        />
+
       </form>
     </Form>
   );

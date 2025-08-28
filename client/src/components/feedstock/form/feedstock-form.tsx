@@ -42,7 +42,7 @@ const FeedstockForm = ({
         autoComplete="off"
         onSubmit={form.handleSubmit(onSubmit)}
         id={formId}
-        className="flex flex-col gap-5 px-1.5"
+        className="flex flex-col gap-5 px-1.5 py-3"
       >
         <SkuField
           control={form.control}
@@ -67,13 +67,15 @@ const FeedstockForm = ({
           disabled={!selectedState}
           className="overflow-hidden"
         />
+        <div className="grid grid-cols-2 gap-1">
 
-        <UnitCostField
-          control={form.control}
-          placeholder="Costo unitario del insumo"
-        />
+          <UnitCostField
+            control={form.control}
+            placeholder="Costo unitario del insumo"
+          />
 
-        <CurrencyField control={form.control} />
+          <CurrencyField control={form.control} />
+        </div>
 
       </form>
     </Form>
