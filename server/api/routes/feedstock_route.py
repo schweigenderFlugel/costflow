@@ -42,8 +42,8 @@ router = APIRouter(
     ).custom_response(),
   },            
 )
-def get_feedstocks(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRole: AdminRoleDep, pagination: Pagination = Query()):
-  return feedstock_service.get_feedstocks(db=session, cache=cache, pagination=pagination)
+def get_feedstocks(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRole: AdminRoleDep):
+  return feedstock_service.get_feedstocks(db=session, cache=cache)
 
 @router.get("/{id}",
   status_code=200,

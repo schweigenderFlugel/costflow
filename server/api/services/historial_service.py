@@ -56,6 +56,7 @@ def get_historial(db: SessionDep, cache: CacheDep):
                     "services": services 
                 },
                 "feedstocks": feedstocks,
+                "dolar": get_dolar_price()
             })
 
         cache.set("historial", json.dumps(final_historial), ex=300)
