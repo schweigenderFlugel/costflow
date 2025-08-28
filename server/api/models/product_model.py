@@ -38,7 +38,7 @@ class ProductBase(SQLModel):
     state: MatterState = Field(sa_column=Column(ENUM(MatterState)), description='The matter state of the feedstock')
     measure_unit: MeasureUnit = Field(sa_column=Column(ENUM(MeasureUnit)), description='Unit measure for the product')
     quantity: int = Field(sa_column=Column(INTEGER), description='Quantity of units')
-    labour_time: int = Field(sa_column=Column(FLOAT), description='Minutes required for labour')
+    labour_time: int = Field(sa_column=Column(INTEGER), description='Minutes required for labour')
     
 class Timestamp(SQLModel):
     date: datetime = Field(sa_column=Column(TIMESTAMP), description='Last date of update', default_factory=lambda: datetime.now(timezone.utc))

@@ -46,10 +46,10 @@ def get_historial(db: SessionDep, cache: CacheDep):
                 "period": datetime.fromisoformat(h.model_dump(mode="json")["date"]).strftime("%m-%Y"),
                 "labour":  labour,
                 "monthly_production": {
-                    "feedstocks_costs": sum(feedstock_costs),
-                    "labour_costs": sum(products_labour_costs),
-                    "indirect_costs": sum(product_indirect_costs),
-                    "products": [prod.model_dump(mode="json", exclude=["id", "historial_id", "is_deleted", "date"]) for prod in h.monthly_production]
+                    "feedstocks_costs": round(sum(feedstock_costs), 2),
+                    "labour_costs": round(sum(products_labour_costs), 2),
+                    "indirect_costs": round(sum(product_indirect_costs), 2),
+                    "products": [prod.model_dump(mode="json", exclude=["historial_id", "is_deleted", "date"]) for prod in h.monthly_production]
                 },
                 "indirect_costs": {
                     "total": sum(indirect_costs), 

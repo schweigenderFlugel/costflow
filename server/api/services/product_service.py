@@ -97,24 +97,24 @@ def get_product_by_id(db: SessionDep, cache: CacheDep, id: str):
         for ic in product_found.indirect_costs:
             product_indirect_cost_statement = select(ProductIndirectCost).where(ProductIndirectCost.indirect_cost_id == ic.id)
             product_indirect_cost_found = db.exec(product_indirect_cost_statement).first()
-            indirect_cost_json = ic.model_dump(mode="json", exclude=["is_deleted", "date", "historial_id", "historial"])
+            indirect_cost_json = ic.model_dump(mode="json", exclude=["is_deleted", "date", "amount", "total_usage", "historial_id", "historial"])
             product_indirect_cost_json = product_indirect_cost_found.model_dump(mode="json")
-            indirect_costs_found.append({
-                **indirect_cost_json, 
-                "usage": product_indirect_cost_json["usage"]
-            })
 
             usage = float(product_indirect_cost_json["usage"]) if product_indirect_cost_found.usage != None else 0
-            indirect_cost = float(indirect_cost_json['amount']) / float(indirect_cost_json['total_usage']) * usage
-            indirect_costs.append(indirect_cost)
+            indirect_cost = float(ic.model_dump()['amount']) / float(ic.model_dump()['total_usage']) * usage
+
+            indirect_costs_found.append({
+                **indirect_cost_json, 
+                "usage": product_indirect_cost_json["usage"],
+                "amount": round(indirect_cost, 2)
+            })
 
         data = {
             **product_found.model_dump(exclude=["is_deleted"], mode="json"), 
             "subtotal": sum(feedstock_costs), 
-            "feedstocks": feedstocks_found,
-            "indirect_costs": round(sum(indirect_costs), 2),
             "labour_costs": round((amount_per_minutes * int(product_found.model_dump()["labour_time"])), 2),
-
+            "feedstocks": feedstocks_found,
+            "indirect_costs": indirect_costs_found, 
         }
 
         cache.set(f"product_{id}", json.dumps(data), ex=120)
@@ -195,6 +195,8 @@ def create_product(db: SessionDep, cache: CacheDep, body: CreateProduct):
             feedstocks_costs=sum(feedstock_costs),
             indirect_costs=sum(indirect_costs),
             labour_costs=labour_cost,
+            quantity=product_data["quantity"],
+            measure_unit=product_data["measure_unit"],
             historial_id=historial_id,
             date=datetime.now(timezone.utc)
         )
@@ -270,6 +272,8 @@ def update_product(db: SessionDep, cache: CacheDep, id: str, body: UpdateProduct
 
         product_name = str(data['name']) if data.get('name') else product_found.model_dump()['name']
         labour_time = int(data['labour_time']) if data.get('labour_time') else int(product_found.model_dump()['labour_time'])
+        quantity = int(data['quantity']) if data.get('quantity') else int(product_found.model_dump()['quantity'])
+        measure_unit = data['measure_unit'] if data.get('measure_unit') else product_found.model_dump()['measure_unit']
 
         for fs_found in product_found.feedstocks:
             feedstock = db.exec(select(Feedstock).where(Feedstock.id == fs_found.id)).first()
@@ -310,6 +314,8 @@ def update_product(db: SessionDep, cache: CacheDep, id: str, body: UpdateProduct
                 feedstocks_costs=sum(product_feedstocks_costs),
                 indirect_costs=sum(product_indirect_costs),
                 labour_costs=labour_cost,
+                quantity=quantity,
+                measure_unit=measure_unit,
                 historial_id=historial_id,
                 date=datetime.now(timezone.utc)
             )
@@ -324,6 +330,8 @@ def update_product(db: SessionDep, cache: CacheDep, id: str, body: UpdateProduct
                 "feedstocks_costs": sum(product_feedstocks_costs),
                 "indirect_costs": sum(product_indirect_costs),
                 "labour_costs": labour_cost,
+                "quantity": quantity,
+                "measure_unit": measure_unit,
             })
 
             db.add(existing_monthly_production)
