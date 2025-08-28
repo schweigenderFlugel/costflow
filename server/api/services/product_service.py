@@ -20,7 +20,6 @@ from schemas.pagination import Pagination
 
 from utils.dolar_api_utils import get_dolar_price
 from .historial_service import get_historial_id
-from .feedstock_service import get_feedstock_by_id
 
 def get_products(db: SessionDep, cache: CacheDep, pagination: Pagination):
     try:
@@ -134,7 +133,7 @@ def create_product(db: SessionDep, cache: CacheDep, body: CreateProduct):
         dolar = get_dolar_price()
         historial_id = get_historial_id(db=db)
 
-        product_statement = select(Product).where(Product.sku == body.sku)
+        product_statement = select(Product).where(Product.sku == str(body.sku).upper())
         existing_product = db.exec(statement=product_statement).first()
 
         if existing_product:
@@ -213,7 +212,7 @@ def create_product(db: SessionDep, cache: CacheDep, body: CreateProduct):
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=e)
 
 def update_product(db: SessionDep, cache: CacheDep, id: str, body: UpdateProduct): # type: ignore
     try:
@@ -272,13 +271,8 @@ def update_product(db: SessionDep, cache: CacheDep, id: str, body: UpdateProduct
                 db.add(indirect_cost_link)
                 db.commit()
 
-        monthly_production_statement = select(MonthlyProduction).where(
-            extract('month', MonthlyProduction.date) == this_month,
-            extract('year', MonthlyProduction.date) == this_year
-        )
-
         product_name = str(data['name']) if data.get('name') else product_found.model_dump()['name']
-        labour_time = float(data['labour_time']) if data.get('labour_time') else product_found.model_dump()['labour_time']
+        labour_time = int(data['labour_time']) if data.get('labour_time') else product_found.model_dump()['labour_time']
 
         for fs_found in product_found.feedstocks:
             feedstock = db.exec(select(Feedstock).where(Feedstock.id == fs_found.id)).first()
@@ -296,6 +290,12 @@ def update_product(db: SessionDep, cache: CacheDep, id: str, body: UpdateProduct
         cost_per_minutes = float(labour.model_dump()['salary']) / float(labour.model_dump()['hours']) / 60
 
         labour_cost = round((labour_time * cost_per_minutes), 2)
+
+        monthly_production_statement = select(MonthlyProduction).where(
+            extract('month', MonthlyProduction.date) == this_month,
+            extract('year', MonthlyProduction.date) == this_year,
+            MonthlyProduction.product_name == product_name
+        )
 
         existing_monthly_production = db.exec(statement=monthly_production_statement).first()
 
@@ -333,8 +333,9 @@ def update_product(db: SessionDep, cache: CacheDep, id: str, body: UpdateProduct
         if cached_item:
             cache.delete(f"product_{id}")
 
-        product_found.sqlmodel_update({**data, "sku": sku, "updated_at": datetime.now(timezone.utc) })
+        product_found.sqlmodel_update({**data, "sku": sku, "date": datetime.now(timezone.utc) })
         db.add(product_found)
+        db.commit()
         
         return { "message": 'Product successfully updated!' }
     except HTTPException as http_err:

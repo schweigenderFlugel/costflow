@@ -10,12 +10,9 @@ from deps.cache_dep import CacheDep
 
 from models.feedstock_model import Feedstock, CreateFeedstock, UpdateFeedstock
 
-from schemas.pagination import Pagination
-from models.historial_model import Historial
-
 from .historial_service import get_historial_id
 
-def get_feedstocks(db: SessionDep, cache: CacheDep, pagination: Pagination):
+def get_feedstocks(db: SessionDep, cache: CacheDep):
     try:
         this_year = datetime.now().year
         this_month = datetime.now().month
@@ -25,7 +22,11 @@ def get_feedstocks(db: SessionDep, cache: CacheDep, pagination: Pagination):
         if cached_list:
             return JSONResponse(content=json.loads(cached_list))
         
-        statement = select(Feedstock).filter(Feedstock.is_deleted == False).offset(pagination.page).limit(pagination.limit)
+        statement = select(Feedstock).filter(Feedstock.is_deleted == False).where(
+            extract('month', Feedstock.date) == this_month,
+            extract('year', Feedstock.date) == this_year,
+        )
+
         feedstocks: list[Feedstock] = db.exec(statement=statement).all()
         data = [feedstock.model_dump(exclude=["is_deleted", "historial_id"], mode="json") for feedstock in feedstocks]
         cache.set("feedstocks_list", json.dumps(data), ex=120)

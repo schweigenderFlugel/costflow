@@ -38,6 +38,6 @@ router = APIRouter(
     ).custom_response(),
   },            
 )
-def get_historial(session: SessionDep, cache: CacheDep, jwt: JwtDep, adminRole: AdminRoleDep):
+def get_historial(session: SessionDep, cache: CacheDep, jwt: JwtDep):
   return historial_service.get_historial(db=session, cache=cache)
 
