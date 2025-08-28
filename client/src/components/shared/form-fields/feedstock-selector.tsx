@@ -53,7 +53,7 @@ export function FeedstockSelector({
     }
 
     // CLAVE: Usar watchedFeedstocks para obtener los IDs reales del formulario
-    const addedFeedstockIds = (watchedFeedstocks || []).map((item: any) => item?.id).filter(Boolean);
+    const addedFeedstockIds = (watchedFeedstocks || []).map((item) => item?.id).filter(Boolean);
 
     filtered = filtered.filter((fs: ObjFeedstock) => !addedFeedstockIds.includes(fs.id));
 
@@ -62,7 +62,7 @@ export function FeedstockSelector({
 
   const handleFeedstockSelect = (feedstock: ObjFeedstock) => {
     // Verificar si el insumo ya está seleccionado usando watchedFeedstocks
-    const alreadySelected = (watchedFeedstocks || []).some((item: any) => item?.id === feedstock.id);
+    const alreadySelected = (watchedFeedstocks || []).some((item) => item?.id === feedstock.id);
 
     if (alreadySelected) {
       return;

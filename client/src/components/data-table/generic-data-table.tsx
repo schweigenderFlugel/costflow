@@ -39,7 +39,7 @@ const GenericDataTable = <TData,>({ columns, columnsTo = "feedstock", initialDat
   } = useDataQuery<TData[]>(columnsTo, initialData)
 
   const table = useReactTable<TData>({
-    data,
+    data: Array.isArray(data) ? data : [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

@@ -58,7 +58,7 @@ export function IndirectCostSelector({
     }
 
     // CLAVE: Usar watchedIndirectCosts para obtener los IDs reales del formulario
-    const addedIndirectCostIds = (watchedIndirectCosts || []).map((item: any) => item?.id).filter(Boolean);
+    const addedIndirectCostIds = (watchedIndirectCosts || []).map((item) => item?.id).filter(Boolean);
 
     filtered = filtered.filter((ic: IndirectCostObj) => !addedIndirectCostIds.includes(ic.id));
 
@@ -67,7 +67,7 @@ export function IndirectCostSelector({
 
   const handleIndirectCostSelect = (indirectCost: IndirectCostObj) => {
     // Verificar si el costo indirecto ya está seleccionado usando watchedIndirectCosts
-    const alreadySelected = (watchedIndirectCosts || []).some((item: any) => item?.id === indirectCost.id);
+    const alreadySelected = (watchedIndirectCosts || []).some((item) => item?.id === indirectCost.id);
 
     if (alreadySelected) {
       return;
