@@ -17,7 +17,7 @@ const CreateProduct = () => {
 
   const handleCreate = (values: FormDataProduct) => {
     createProduct.mutate(values, {
-      onSuccess: (data) => {
+      onSuccess: () => {
         setCurrentProduct(values)
         setAlreadyCreated(true)
       }

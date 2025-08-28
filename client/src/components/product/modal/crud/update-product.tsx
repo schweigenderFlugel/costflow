@@ -25,7 +25,7 @@ const UpdateProduct = () => {
       ...values
     },
       {
-        onSuccess: (data) => {
+        onSuccess: () => {
           setUpdatedProductData(values)
           setAlreadyUpdated(true)
         }

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { HeroTables } from "./hero-tables";
+import Image from "next/image";
 
 export function Hero() {
   return (
@@ -14,10 +15,12 @@ export function Hero() {
           <div className="flex flex-row items-center gap-5 justify-center md:justify-start">
             {/* Logo */}
             <div>
-              <img
+              <Image
                 src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg"
                 className="xl:size-34 size-26 brightness-0 invert"
                 alt="COTZIA"
+                width={136}
+                height={136}
               />
             </div>
 

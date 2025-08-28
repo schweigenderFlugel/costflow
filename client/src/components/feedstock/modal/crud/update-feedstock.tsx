@@ -21,7 +21,7 @@ const UpdateFeedstock = () => {
     updateFeedstock.mutate(
       { feedstockId: feedstock.id, ...values },
       {
-        onSuccess: (data) => {
+        onSuccess: () => {
           setUpdatedFeedstockData(values)
           setAlreadyUpdated(true)
         }

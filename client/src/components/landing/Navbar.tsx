@@ -2,6 +2,7 @@
 
 import { MenuIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -22,10 +23,12 @@ const Navbar5 = () => {
       <div className="container mx-auto flex justify-between items-center bg-gray-800/85 xl:rounded-xl text-white p-4">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2">
-          <img
+          <Image
             src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg"
             className="max-h-8 brightness-0 invert"
             alt="COTZIA"
+            width={32}
+            height={32}
           />
           <span className="text-lg font-semibold tracking-tighter">COTZIA</span>
         </a>
@@ -71,10 +74,12 @@ const Navbar5 = () => {
             <SheetHeader>
               <SheetTitle>
                 <a href="#" className="flex items-center gap-2">
-                  <img
+                  <Image
                     src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg"
                     className="max-h-8 brightness-0 invert"
                     alt="COTZIA"
+                    width={32}
+                    height={32}
                   />
                   <span className="text-lg font-semibold tracking-tighter text-white">
                     COTZIA

@@ -23,7 +23,7 @@ const UpdateIndirectCost = () => {
     updateIndirectCost.mutate(
       { ...values, indirectCostId: indirectCost.id },
       {
-        onSuccess: (data) => {
+        onSuccess: () => {
           setIndirectCostDetail(values)
           setAlreadyUpdated(true)
         }

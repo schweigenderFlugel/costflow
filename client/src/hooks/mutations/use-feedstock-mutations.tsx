@@ -55,7 +55,7 @@ export const useFeedstockMutations = () => {
 
       return data;
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (data) => {
       itemToasts.updateSuccess({ description: data.name });
     },
     onError: (error) => {

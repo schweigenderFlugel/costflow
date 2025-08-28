@@ -39,6 +39,8 @@ const translationsProductsHeaders: Record<keyof ObjProduct, string> = {
   quantity: "Cantidad",
   //
   feedstocks: "Materias Primas",
+  labour_time: "Tiempo de Mano de Obra",
+  indirect_costs: "Costos Indirectos",
 };
 
 
