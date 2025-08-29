@@ -41,6 +41,12 @@ export const fetcher = async ({ input, method = "GET", body, headers, cache }: F
           return { detail: "Credenciales inválidas" }
         }
       }
+      if (res.status === 403 && errorDetail) {
+        // Manejar el error 403 (prohibido) de manera específica si es necesario
+        if (errorDetail === "Not allowed to access") {
+          return { detail: "No tienes permiso para acceder a este recurso" }
+        }
+      }
       const errorMessage = res.status ? `Error - ${res.status ?? "interno"}: ${res.statusText ?? "Inténtalo más tarde."}` : errorDetail;
 
 
