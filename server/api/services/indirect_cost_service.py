@@ -14,12 +14,12 @@ from .historial_service import get_historial_id
 
 def get_indirect_cost(db: SessionDep, pagination: Pagination):
     try:
-        indirect_cost: list[IndirectCost] = db.exec(select(IndirectCost).filter(IndirectCost.is_deleted == False).offset(pagination.page).limit(pagination.limit)).all()
-        return [ic.model_dump() for ic in indirect_cost]
+        indirect_cost = db.exec(select(IndirectCost).filter(IndirectCost.is_deleted == False).offset(pagination.page).limit(pagination.limit)).all()
+        return [ic.model_dump(exclude=["is_deleted", "historial_id"]) for ic in indirect_cost]
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=500, detail=str(e))
     
 def get_indirect_cost_by_id(db: SessionDep, cache: CacheDep, id: str):
     try:
@@ -29,10 +29,10 @@ def get_indirect_cost_by_id(db: SessionDep, cache: CacheDep, id: str):
             return JSONResponse(content=json.loads(cached_item))
         
         statement = select(IndirectCost).where(IndirectCost.id == id, IndirectCost.is_deleted == False)
-        indirect_cost_found: IndirectCost = db.exec(statement=statement).first()
+        indirect_cost_found = db.exec(statement=statement).first()
         if not indirect_cost_found:
             raise HTTPException(status_code=404, detail="Indirect cost not found")
-        data = indirect_cost_found.model_dump()
+        data = indirect_cost_found.model_dump(mode="json", exclude=["is_deleted", "historial_id", "id"])
         cache.set(f"indirect_cost_{id}", json.dumps(data), ex=120)
         return JSONResponse(content=data)
     except HTTPException as http_err:
@@ -59,8 +59,8 @@ def get_current_indirect_costs(db: SessionDep, cache: CacheDep):
         indirect_costs_found = db.exec(statement=statement).all()
         if not indirect_costs_found:
             raise HTTPException(status_code=404, detail="Indirect cost not found")
-        data = [ic.model_dump(exclude=["historial_id", "is_deleted"]) for ic in indirect_costs_found]
-        cache.set("indirect_costs_list", json.dumps(data), ex=300)
+        data = [ic.model_dump(mode="json", exclude=["historial_id", "is_deleted", "date"]) for ic in indirect_costs_found]
+        cache.set("indirect_costs_list", json.dumps(data), ex=120)
         return JSONResponse(content=data)
     except HTTPException as http_err:
         raise http_err

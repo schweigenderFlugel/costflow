@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Query, Body
 from schemas.http_response import Response
 
@@ -10,6 +11,7 @@ from schemas.pagination import Pagination
 from services import indirect_cost_service
 
 from models.indirect_cost_model import CreateIndirectCost, UpdateIndirectCost
+from schemas.indirect_costs_response import IndirectCost, IndirectCostsList, CurrentIndirectCosts
 
 router = APIRouter(
     tags=['Indirect Costs'],
@@ -17,13 +19,9 @@ router = APIRouter(
 )
 
 @router.get("", 
-    summary="Get Indirect Costs", 
+    summary="Get Indirect Costs",
+    response_model=List[IndirectCostsList],
     responses={
-        200: Response(
-            description="Successfully Response",
-            content_type="application/json",
-            message="Successfully Response"
-        ).custom_response(),
         401: Response(
           description='Invalid or expired creadentials', 
           content_type='application/json',
@@ -50,13 +48,9 @@ def get_indirect_costs(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep,  pagina
     return indirect_cost_service.get_indirect_cost(db=db, pagination=pagination)
 
 @router.get("/current", 
-    summary="Get current indirect cost", 
+    summary="Get current indirect cost",
+    response_model=List[CurrentIndirectCosts],
     responses={
-        200: Response(
-            description="Successfully Response",
-            content_type="application/json",
-            message="Successfully Response"
-        ).custom_response(),
         401: Response(
             description='Invalid or expired creadentials', 
             content_type='application/json',
@@ -83,7 +77,8 @@ def get_current_labour(db: SessionDep, cache: CacheDep, jwt: JwtDep, admin: Admi
     return indirect_cost_service.get_current_indirect_costs(db=db, cache=cache)
 
 @router.get("/{id}", 
-    summary="Get indirect costs by id", 
+    summary="Get indirect costs by id",
+    response_model=IndirectCost,
     responses={
         200: Response(
             description="Successfully Response",
