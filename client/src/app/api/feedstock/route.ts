@@ -49,7 +49,6 @@ export async function POST(req: NextRequest) {
     // Invalidar cache ANTES de enviar respuesta
     revalidateTag(API_PATH)
     revalidatePath("/insumos")
-    revalidatePath("/inicio")
 
     return NextResponse.json(data);
   } catch (error) {
