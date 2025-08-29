@@ -78,6 +78,6 @@ Los principales usuarios de Cotzia son pequeños emprendedores quienes buscan au
 | Paola Garrido               | QA          | [Linkedin](https://www.linkedin.com/in/paola-garrido-tester-qa/) |    [GitHub](https://github.com/PaolaGGarrido)
 | Ana Villanueva               | Analista funcional          | [LinkedIn](www.linkedin.com/in/anavillanueva-analista-funcional)                                 |                                     [GitHub](https://github.com/anavillanueva1)                                  
 | Matias Diaconchuk              | Frontend Developer          | [LinkedIn](https://www.linkedin.com/in/diaconchukm/)                                | [GitHub]( https://github.com/mdiaconchuk)    
-| Sofia Baeza Brandauer | Diseñadora UX UI  | [Linkedin](https://www.linkedin.com/in/sofia-brandauer) | [GitHub](https://github.com/Sbrandauer) | [Behance](https://www.behance.net/aylen-sol-martel)
+| Sofia Baeza Brandauer | Diseñadora UX UI  | [Linkedin](https://www.linkedin.com/in/sofia-brandauer) | [GitHub](https://github.com/Sbrandauer) | [Behance](https://www.behance.net/sofiabrandauer)
 | Uriel Celli | Backend Developer  | [Linkedin](https://ar.linkedin.com/in/uriel-celli-5287602aa)  | [GitHub](https://github.com/CelliUriel) | |                                      |    
 ---
