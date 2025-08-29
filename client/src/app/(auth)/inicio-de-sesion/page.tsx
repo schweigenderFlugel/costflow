@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function LoginPage() {
   return (
-    <div className="flex flex-col lg:flex-row ">
+    <main className="flex flex-col lg:flex-row ">
       <div
         className="hidden lg:block w-full md:w-5/8 lg:h-auto bg-cover bg-center"
         style={{ backgroundImage: "url('assets/images/gradientelogin.jpg')" }}
@@ -31,6 +31,6 @@ export default function LoginPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </main>
   );
 }
