@@ -1,6 +1,7 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import { useCreateProductDialog } from "@/hooks/use-product-dialog"
-import { Plus } from "lucide-react"
+import { PlusIcon } from "@heroicons/react/24/outline"
 
 
 const CreateProductTrigger = () => {
@@ -13,7 +14,7 @@ const CreateProductTrigger = () => {
       onClick={() => setIsOpen(true)}
       data-slot="product-create-dialog-trigger"
     >
-      <Plus />
+      <PlusIcon className="size-5" />
       Agregar producto
     </Button >
   )

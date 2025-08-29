@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { usePageInfoDialog } from "@/hooks/use-page-info-dialog";
 import { cn } from "@/lib/utils";
-import { Info } from "lucide-react";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 const PageInfoTrigger = ({ className }: { className?: string }) => {
   const { open } = usePageInfoDialog()
@@ -10,12 +10,13 @@ const PageInfoTrigger = ({ className }: { className?: string }) => {
   return (<Button
     type="button"
     variant={"ghost"}
+    size={"icon"}
     title="Información sobre página"
     className={cn("cursor-pointer", className)}
     data-slot="page-info-dialog-trigger"
     onClick={open}
   >
-    <Info className="size-full" />
+    <ExclamationCircleIcon className="size-full p-1.5" />
   </Button>)
 }
 

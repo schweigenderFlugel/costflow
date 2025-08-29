@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { useCreateIndirectCostDialog } from "@/hooks/use-indirect-cost-dialog"
-import { Plus } from "lucide-react"
+import { PlusIcon } from "@heroicons/react/24/outline"
 
 
 const CreateIndirectCostTrigger = () => {
@@ -13,7 +13,7 @@ const CreateIndirectCostTrigger = () => {
       onClick={() => setIsOpen(true)}
       data-slot="indirect-cost-create-dialog-trigger"
     >
-      <Plus />
+      <PlusIcon className="size-5" />
       Agregar Costo Indirecto
     </Button>
   )

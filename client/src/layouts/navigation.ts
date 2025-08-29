@@ -27,7 +27,7 @@ export const websiteName: NavItem = {
 };
 
 export const mainNavigation: NavItem[] = [
-  { title: "inicio", href: "/dashboard", icon: HomeIcon, activeIcon: HomeIconActive },
+  { title: "inicio", href: "/inicio", icon: HomeIcon, activeIcon: HomeIconActive },
   { title: "insumos", href: "/insumos", icon: CubeIcon, activeIcon: CubeIconActive },
   { title: "productos", href: "/productos", icon: BeakerIcon, activeIcon: BeakerIconActive },
   { title: "simulador", href: "/simulador", icon: CalculatorIcon, activeIcon: CalculatorIconActive },
