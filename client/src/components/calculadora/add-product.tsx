@@ -13,14 +13,12 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { useQuery } from "@tanstack/react-query";
-import {
-  HistorialData,
-  MonthlyProduction,
-} from "@/components/calculadora/interface-historial";
+import { HistorialData } from "@/components/calculadora/interface-historial";
 import { Product, ProductTable } from "@/components/calculadora/table-product";
 import { ProductCalculation } from "@/components/calculadora/table-calculation";
 
 type ProductOption = {
+  id: string;
   product_name: string;
   indirect_costs: number;
   feedstocks_costs: number;
@@ -76,22 +74,19 @@ export default function AddProductSheet({
       const updatedProducts = [...prev];
 
       selectedProducts.forEach((sp) => {
-        // Buscar por nombre
         const existingIndex = updatedProducts.findIndex(
-          (p) => p.name === sp.name
+          (p) => p.id === sp.id // 👈 ahora buscamos por id
         );
 
         if (existingIndex >= 0) {
-          // Si ya existe, sumamos la cantidad
           updatedProducts[existingIndex] = {
             ...updatedProducts[existingIndex],
             quantity:
               updatedProducts[existingIndex].quantity + (sp.quantity ?? 1),
           };
         } else {
-          // Si no existe, agregamos nuevo producto
           updatedProducts.push({
-            id: crypto.randomUUID(), // UUID único solo para tabla
+            id: sp.id, // 👈 usamos el mismo id
             name: sp.name,
             quantity: sp.quantity ?? 1,
             unit: sp.unit ?? "pza",
@@ -134,13 +129,12 @@ export default function AddProductSheet({
   // Productos SOLO del último periodo
   const products: ProductOption[] = React.useMemo(() => {
     if (!latestPeriodData) return [];
+
     return (
       latestPeriodData.monthly_production?.products
-        ?.filter(
-          (p): p is MonthlyProduction & { product_name: string } =>
-            !!p.product_name
-        ) // 👈 asegura que product_name es string
+        ?.filter((p) => !!p.product_name) // 👈 solo filtrar los que tengan nombre
         .map((p) => ({
+          id: p.id,
           product_name: p.product_name,
           indirect_costs: p.indirect_costs,
           feedstocks_costs: p.feedstocks_costs,
@@ -160,11 +154,12 @@ export default function AddProductSheet({
   }, [search, products]);
 
   const handleSelectProduct = (product: ProductOption) => {
-    if (!selectedProducts.find((p) => p.name === product.product_name)) {
+    if (!selectedProducts.find((p) => p.id === product.id)) {
+      // 👈 filtrar por id
       setSelectedProducts((prev) => [
         ...prev,
         {
-          id: crypto.randomUUID(),
+          id: product.id, // 👈 toma el id original
           name: product.product_name,
           quantity: 1,
           unit: "pza",

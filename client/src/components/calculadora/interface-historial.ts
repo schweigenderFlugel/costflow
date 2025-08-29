@@ -14,10 +14,15 @@ export interface Dolar {
 
 export interface Feedstock {
   name: string;
-  currency: string;
+  currency: Currency;
+  measure_unit: string;
   id: string;
   unit_cost: number;
-  measure_unit: string;
+}
+
+export enum Currency {
+  Ars = "ARS",
+  Usd = "USD",
 }
 
 export interface IndirectCosts {
@@ -26,22 +31,31 @@ export interface IndirectCosts {
 }
 
 export interface Service {
-  type: string;
-  amount: number;
   total_usage: number | null;
+  amount: number;
   id: string;
+  type: string;
 }
 
 export interface Labour {
-  salary: number;
-  id: string;
   hours: number;
+  id: string;
+  salary: number;
 }
 
 export interface MonthlyProduction {
   feedstocks_costs: number;
   labour_costs: number;
   indirect_costs: number;
-  products?: MonthlyProduction[];
-  product_name?: string;
+  products: Product[];
+}
+
+export interface Product {
+  product_name: string;
+  feedstocks_costs: number;
+  labour_costs: number;
+  measure_unit: string;
+  indirect_costs: number;
+  id: string;
+  quantity: number;
 }

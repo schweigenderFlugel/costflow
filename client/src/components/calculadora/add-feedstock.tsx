@@ -102,7 +102,7 @@ export default function AddFeedstockSheet({
   const handleSelectFeedstock = (f: FeedstockOption) => {
     console.log(f);
     setSelectedFeedstocks((prev) => {
-      const existing = prev.find((sf) => sf.name === f.name);
+      const existing = prev.find((sf) => sf.id === f.id);
       if (existing) return prev; // ya está en la lista temporal, no agregamos otra vez
       const unitValue =
         f.currency === "USD"
@@ -129,7 +129,7 @@ export default function AddFeedstockSheet({
     setProducts((prev) => {
       const updated = [...prev];
       selectedFeedstocks.forEach((sf) => {
-        const existingIndex = updated.findIndex((p) => p.name === sf.name);
+        const existingIndex = updated.findIndex((p) => p.id === sf.id);
 
         if (existingIndex >= 0) {
           updated[existingIndex] = {
@@ -196,6 +196,7 @@ export default function AddFeedstockSheet({
                       onClick={() => handleSelectFeedstock(f)}
                     >
                       {f.name}
+                      {/* ${f.unit_cost} */}
                     </div>
                   ))}
                 </div>
