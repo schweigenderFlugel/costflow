@@ -1,11 +1,14 @@
 import InfoCard from "@/components/dashboard/info-card";
 import MonthlyStatistics from "@/components/dashboard/monthly-statistics";
+import getFeedstocks from "@/components/feedstock/get-feedstocks";
 import CreateFeedstock from "@/components/feedstock/modal/crud/create-feedstock";
 import CreateFeedstockTrigger from "@/components/feedstock/modal/trigger/create-feedstock-trigger";
+import getProducts from "@/components/product/get-products";
 import CreateProduct from "@/components/product/modal/crud/create-product";
 import CreateProductTrigger from "@/components/product/modal/trigger/create-product-trigger";
 import PageHeaderSection from "@/components/shared/page-header-section";
 import PageInfoDialog from "@/components/shared/page-info-dialog";
+import { fetcher } from "@/utils/fetcher";
 import { Suspense } from "react";
 
 export const metadata = {
@@ -19,9 +22,29 @@ const infoList = [
   { heading: "Notificaciones clave", description: "Alertas sobre precios, insumos críticos o novedades." },
   { heading: "Atajos rápidos", description: "Accesos directos para crear o configurar sin perder tiempo." },
 ]
+const getOfficialDollar = async () => {
+  return await fetcher({
+    input: 'https://dolarapi.com/v1/dolares/oficial',
+    cache: "force-cache", // Habilitar cache
+    next: {
+      tags: ["dollar"],
+      revalidate: 300 // Revalidar cada 5 minutos automáticamente
+    }
+  })
+}
 
+function numberFormat(value: number | string) {
+  return new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS"
+  }).format(Number(value));
+}
 
-export default function Page() {
+export default async function Page() {
+  const dollar = await getOfficialDollar()
+  const feedstocks = await getFeedstocks()
+  const products = await getProducts()
+
   return (
     <main className="space-y-8 py-10">
       <PageHeaderSection
@@ -38,18 +61,23 @@ export default function Page() {
       <section className="w-6xl max-w-[calc(100svw-2rem)] px-1 sm:px-5 flex md:flex-row flex-col justify-center md:justify-between gap-6 mx-auto items-center">
         <InfoCard
           type="dollar"
-          value="320"
-          description={"Descripción del dólar actual"}
+          value={numberFormat(dollar.compra)}
+          secondValue={numberFormat(dollar.venta)}
+          description={`${new Date(dollar.fechaActualizacion).toLocaleDateString("es-ar", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          })}`}
         />
         <InfoCard
           type="product"
-          value="320"
+          value={products.length}
           description={"Comparado con el último mes"}
           percentage="8.5%"
         />
         <InfoCard
           type="feedstock"
-          value="320"
+          value={feedstocks.length}
           description={"Comparado con el último mes"}
           percentage="-4.3%"
         />

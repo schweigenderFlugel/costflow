@@ -50,11 +50,12 @@ const infoCards: Record<"dollar" | "product" | "feedstock", InfoCard> = {
 interface InfoCardProps {
   type: "dollar" | "product" | "feedstock";
   value: string | number;
+  secondValue?: string | number;
   description: string;
   percentage?: string;
 }
 
-const InfoCard: React.FC<InfoCardProps> = ({ type, value, description, percentage }) => {
+const InfoCard: React.FC<InfoCardProps> = ({ type, value, secondValue, description, percentage }) => {
   const { iconBg, iconColor, Icon, SolidIcon } = infoCards[type];
 
   //  hardcodeado xd
@@ -77,16 +78,16 @@ const InfoCard: React.FC<InfoCardProps> = ({ type, value, description, percentag
 
   switch (type) {
     case "dollar":
-      hover = "hover:bg-[#DCFCE7]/50";
+      hover = "hover:bg-[#DCFCE7]/50 focus:bg-[#DCFCE7]/50 hover:dark:bg-[#A5D6A7]/50 focus:dark:bg-[#A5D6A7]/50";
       break;
     case "product":
-      hover = "hover:bg-[#E2EEF9]/50";
+      hover = "hover:bg-[#E2EEF9]/50 focus:bg-[#E2EEF9]/50 hover:dark:bg-[#A5D6A7]/50 focus:dark:bg-[#A5D6A7]/50";
       break;
     case "feedstock":
-      hover = "hover:bg-[#FAC2FF]/50";
+      hover = "hover:bg-[#FAC2FF]/50 focus:bg-[#FAC2FF]/50 hover:dark:bg-[#A5D6A7]/50 focus:dark:bg-[#A5D6A7]/50";
       break;
     default:
-      hover = "hover:bg-muted-foreground/10";
+      hover = "hover:bg-muted-foreground/10 hover:dark:bg-muted-foreground/20 focus:bg-muted-foreground/10";
   }
 
   return (
@@ -121,8 +122,24 @@ const InfoCard: React.FC<InfoCardProps> = ({ type, value, description, percentag
         }
       </CardHeader>
 
-      <CardContent className="text-foreground font-bold text-3xl md:text-4xl">
-        <h3>{value}</h3>
+      <CardContent className="text-foreground">
+        {
+          type === "dollar"
+            ?
+            <div className="flex justify-between items-center gap-3 h-full">
+              <div>
+                <span className="text-sm text-muted-foreground">Compra</span>
+                <h4 className="font-bold text-2xl md:text-xl lg:text-2xl">{value}</h4>
+
+              </div>
+              <div>
+                <span className="text-sm text-muted-foreground">Venta</span>
+                <h4 className="font-bold text-2xl md:text-xl lg:text-2xl">{secondValue}</h4>
+              </div>
+            </div>
+            :
+            <h3 className="font-bold text-3xl md:text-4xl">{value}</h3>
+        }
       </CardContent>
       <CardFooter className="text-muted-foreground text-xs">
         <p>{description}</p>
