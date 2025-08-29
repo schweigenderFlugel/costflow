@@ -18,12 +18,26 @@ import {
   MonthlyProduction,
 } from "@/components/calculadora/interface-historial";
 import { Product, ProductTable } from "@/components/calculadora/table-product";
+import { ProductCalculation } from "@/components/calculadora/table-calculation";
 
 type ProductOption = {
   product_name: string;
+  indirect_costs: number;
+  feedstocks_costs: number;
+  labour_costs: number;
 };
 
-export default function AddProductSheet() {
+export type SelectedProduct = Product & {
+  indirect_costs: number;
+  feedstocks_costs: number;
+  labour_costs: number;
+};
+
+export default function AddProductSheet({
+  setProducts,
+}: {
+  setProducts: React.Dispatch<React.SetStateAction<ProductCalculation[]>>;
+}) {
   const [highlightedIndex, setHighlightedIndex] = React.useState(0);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -50,7 +64,49 @@ export default function AddProductSheet() {
   };
 
   const [search, setSearch] = React.useState("");
-  const [selectedProducts, setSelectedProducts] = React.useState<Product[]>([]);
+  const [selectedProducts, setSelectedProducts] = React.useState<
+    SelectedProduct[]
+  >([]);
+
+  const [open, setOpen] = React.useState(false);
+  const handleAddToList = () => {
+    if (selectedProducts.length === 0) return;
+
+    setProducts((prev) => {
+      const updatedProducts = [...prev];
+
+      selectedProducts.forEach((sp) => {
+        // Buscar por nombre
+        const existingIndex = updatedProducts.findIndex(
+          (p) => p.name === sp.name
+        );
+
+        if (existingIndex >= 0) {
+          // Si ya existe, sumamos la cantidad
+          updatedProducts[existingIndex] = {
+            ...updatedProducts[existingIndex],
+            quantity:
+              updatedProducts[existingIndex].quantity + (sp.quantity ?? 1),
+          };
+        } else {
+          // Si no existe, agregamos nuevo producto
+          updatedProducts.push({
+            id: crypto.randomUUID(), // UUID único solo para tabla
+            name: sp.name,
+            quantity: sp.quantity ?? 1,
+            unit: sp.unit ?? "pza",
+            unitValue:
+              sp.indirect_costs + sp.feedstocks_costs + sp.labour_costs,
+          });
+        }
+      });
+
+      return updatedProducts;
+    });
+
+    setSelectedProducts([]);
+    setOpen(false);
+  };
 
   const { data: rawData = [] } = useQuery({
     queryKey: ["historial-products"],
@@ -58,17 +114,40 @@ export default function AddProductSheet() {
     staleTime: 1000 * 60 * 5,
   });
 
-  // Flatten products
-  const products: ProductOption[] = React.useMemo(() => {
-    if (!Array.isArray(rawData)) return [];
-    const allProducts: ProductOption[] = [];
-    rawData.forEach((item: HistorialData) => {
-      item.monthly_production?.products?.forEach((p: MonthlyProduction) => {
-        if (p.product_name) allProducts.push({ product_name: p.product_name });
-      });
+  // Obtener el periodo más reciente
+  const latestPeriodData: HistorialData | null = React.useMemo(() => {
+    if (!Array.isArray(rawData) || rawData.length === 0) return null;
+
+    // Ordenamos por fecha (año-mes)
+    const sorted = [...rawData].sort((a, b) => {
+      const [monthA, yearA] = a.period.split("-").map(Number);
+      const [monthB, yearB] = b.period.split("-").map(Number);
+
+      // Comparar primero por año, luego por mes
+      if (yearA !== yearB) return yearB - yearA;
+      return monthB - monthA;
     });
-    return allProducts;
+
+    return sorted[0]; // el más reciente
   }, [rawData]);
+
+  // Productos SOLO del último periodo
+  const products: ProductOption[] = React.useMemo(() => {
+    if (!latestPeriodData) return [];
+    return (
+      latestPeriodData.monthly_production?.products
+        ?.filter(
+          (p): p is MonthlyProduction & { product_name: string } =>
+            !!p.product_name
+        ) // 👈 asegura que product_name es string
+        .map((p) => ({
+          product_name: p.product_name,
+          indirect_costs: p.indirect_costs,
+          feedstocks_costs: p.feedstocks_costs,
+          labour_costs: p.labour_costs,
+        })) ?? []
+    );
+  }, [latestPeriodData]);
 
   // Filtered products for autocomplete
   const filteredProducts = React.useMemo(() => {
@@ -88,8 +167,10 @@ export default function AddProductSheet() {
           id: crypto.randomUUID(),
           name: product.product_name,
           quantity: 1,
-          unit: "kg",
-          // unit: product.measure_unit |"kg",
+          unit: "pza",
+          indirect_costs: product.indirect_costs,
+          feedstocks_costs: product.feedstocks_costs,
+          labour_costs: product.labour_costs,
         },
       ]);
     }
@@ -97,7 +178,7 @@ export default function AddProductSheet() {
   };
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button className="flex-1">+ Agregar producto</Button>
       </SheetTrigger>
@@ -135,7 +216,7 @@ export default function AddProductSheet() {
                   {filteredProducts.map((p, idx) => (
                     <div
                       key={idx}
-                      className={`p-2 cursor-pointer ${
+                      className={`p-2 cursor-pointer text-sm ${
                         idx === highlightedIndex
                           ? "bg-blue-200"
                           : "hover:bg-blue-200"
@@ -162,15 +243,16 @@ export default function AddProductSheet() {
 
           <div className="mt-5">
             <ProductTable
-              products={selectedProducts}
-              setProducts={setSelectedProducts}
+              products={selectedProducts as Product[]}
+              setProducts={
+                setSelectedProducts as React.Dispatch<
+                  React.SetStateAction<Product[]>
+                >
+              }
             />
           </div>
 
-          <Button
-            className="w-fit px-6 mt-5"
-            onClick={() => console.log(selectedProducts)}
-          >
+          <Button className="w-fit px-6 mt-5" onClick={handleAddToList}>
             + Agregar a la lista
           </Button>
         </SheetHeader>

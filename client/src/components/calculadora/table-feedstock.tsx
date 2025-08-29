@@ -21,41 +21,37 @@ import {
 } from "@/components/ui/table";
 import { Trash2 } from "lucide-react";
 import QuantityInput from "@/components/calculadora/quantity-input";
+import { FeedstockCalculation } from "./feedstock-type";
+import { MeasureUnits } from "@/components/calculadora/measure-units";
 
-// 🔹 Tipo de datos
-export type Product = {
-  id: string;
-  name: string;
-  quantity: number;
-  unit?: string;
-};
-
-// 🔹 Tabla ahora recibe productos desde el Sheet
-export function ProductTable({
-  products,
-  setProducts,
-  className,
-}: {
-  products: Product[];
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+interface FeedstockTableProps {
+  feedstocks: FeedstockCalculation[];
+  setFeedstocks: React.Dispatch<React.SetStateAction<FeedstockCalculation[]>>;
   className?: string;
-}) {
+}
+
+export default function FeedstockTable({
+  feedstocks,
+  setFeedstocks,
+  className,
+}: FeedstockTableProps) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const handleDeleteRow = (id: string) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+    setFeedstocks((prev) => prev.filter((f) => f.id !== id));
   };
 
-  const handleDeleteSelected = (table: ReactTableInstance<Product>) => {
+  const handleDeleteSelected = (
+    table: ReactTableInstance<FeedstockCalculation>
+  ) => {
     const selectedIds = table
       .getSelectedRowModel()
       .rows.map((row) => row.original.id);
-    setProducts((prev) => prev.filter((p) => !selectedIds.includes(p.id)));
+    setFeedstocks((prev) => prev.filter((f) => !selectedIds.includes(f.id)));
     table.resetRowSelection();
   };
 
-  // 🔹 Definición de columnas
-  const columns: ColumnDef<Product>[] = [
+  const columns: ColumnDef<FeedstockCalculation>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -80,15 +76,25 @@ export function ProductTable({
     },
     {
       accessorKey: "name",
-      header: "Producto",
+      header: "Insumo",
       cell: ({ row }) => <div>{row.getValue("name")}</div>,
     },
     {
       accessorKey: "quantity",
       header: "Cantidad",
       cell: ({ row }) => (
-        <QuantityInput item={row.original} setItems={setProducts} />
+        <QuantityInput item={row.original} setItems={setFeedstocks} />
       ),
+    },
+    {
+      accessorKey: "unit",
+      header: "Tipo de unidad",
+      cell: ({ row }) => {
+        const unitKey = row.getValue("unit") as keyof typeof MeasureUnits;
+        return (
+          <div>{MeasureUnits[unitKey]?.label ?? row.getValue("unit")}</div>
+        );
+      },
     },
     {
       id: "delete",
@@ -115,7 +121,7 @@ export function ProductTable({
   ];
 
   const table = useReactTable({
-    data: products,
+    data: feedstocks,
     columns,
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
@@ -126,7 +132,7 @@ export function ProductTable({
     <div
       className={`w-full overflow-hidden rounded-md border ${className ?? ""}`}
     >
-      {products.length > 0 ? (
+      {feedstocks.length > 0 ? (
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -162,15 +168,12 @@ export function ProductTable({
       ) : (
         <div className="flex flex-col items-center justify-center gap-2 p-6 text-center bg-blue-200">
           <p className="text-xl font-bold">
-            Aquí verás todos los productos disponibles para crear tu presupuesto
+            Aquí verás todos los insumos disponibles para crear tu presupuesto
           </p>
           <p className="text-sm">
-            Utiliza el buscador para seleccionar los productos que quieras
-            agregar a la lista.
+            Utiliza el buscador para seleccionar los insumos que quieras agregar
+            a la lista.
           </p>
-          {/* <Button onClick={() => console.log("Abrir Sheet")}>
-            + Agregar producto
-          </Button> */}
         </div>
       )}
     </div>

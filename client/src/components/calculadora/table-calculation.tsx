@@ -20,24 +20,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Trash2 } from "lucide-react";
-import QuantityInput from "@/components/calculadora/quantity-input";
+import { MeasureUnits } from "@/components/calculadora/measure-units";
 
-// 🔹 Tipo de datos
-export type Product = {
+export type ProductCalculation = {
   id: string;
   name: string;
   quantity: number;
-  unit?: string;
+  unit: string;
+  unitValue: number;
 };
 
-// 🔹 Tabla ahora recibe productos desde el Sheet
-export function ProductTable({
+export function CalculationTable({
   products,
   setProducts,
   className,
 }: {
-  products: Product[];
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  products: ProductCalculation[];
+  setProducts: React.Dispatch<React.SetStateAction<ProductCalculation[]>>;
   className?: string;
 }) {
   const [rowSelection, setRowSelection] = React.useState({});
@@ -46,7 +45,9 @@ export function ProductTable({
     setProducts((prev) => prev.filter((p) => p.id !== id));
   };
 
-  const handleDeleteSelected = (table: ReactTableInstance<Product>) => {
+  const handleDeleteSelected = (
+    table: ReactTableInstance<ProductCalculation>
+  ) => {
     const selectedIds = table
       .getSelectedRowModel()
       .rows.map((row) => row.original.id);
@@ -55,7 +56,7 @@ export function ProductTable({
   };
 
   // 🔹 Definición de columnas
-  const columns: ColumnDef<Product>[] = [
+  const columns: ColumnDef<ProductCalculation>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -80,16 +81,63 @@ export function ProductTable({
     },
     {
       accessorKey: "name",
-      header: "Producto",
+      header: "Artículo",
       cell: ({ row }) => <div>{row.getValue("name")}</div>,
     },
+
     {
       accessorKey: "quantity",
       header: "Cantidad",
-      cell: ({ row }) => (
-        <QuantityInput item={row.original} setItems={setProducts} />
-      ),
+      cell: ({ row }) => {
+        const { quantity, unit } = row.original;
+
+        const displayUnit =
+          unit === "pza" && quantity > 1
+            ? "pzas"
+            : MeasureUnits[unit as keyof typeof MeasureUnits]?.label ?? unit;
+
+        return (
+          <div>
+            {quantity} {displayUnit}
+          </div>
+        );
+      },
     },
+
+    {
+      accessorKey: "unitValue",
+      header: "Valor por Unidad",
+      cell: ({ row }) => {
+        const { unitValue } = row.original;
+        return (
+          <div>
+            $
+            {unitValue.toLocaleString("es-AR", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </div>
+        );
+      },
+    },
+    {
+      id: "total",
+      header: "Valor Total",
+      cell: ({ row }) => {
+        const { quantity, unitValue } = row.original;
+        const total = quantity * unitValue;
+        return (
+          <div>
+            $
+            {total.toLocaleString("es-AR", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </div>
+        );
+      },
+    },
+
     {
       id: "delete",
       header: ({ table }) => (
@@ -123,9 +171,7 @@ export function ProductTable({
   });
 
   return (
-    <div
-      className={`w-full overflow-hidden rounded-md border ${className ?? ""}`}
-    >
+    <div className={`w-full overflow-hidden rounded-md ${className ?? ""}`}>
       {products.length > 0 ? (
         <Table>
           <TableHeader>
@@ -159,20 +205,7 @@ export function ProductTable({
             ))}
           </TableBody>
         </Table>
-      ) : (
-        <div className="flex flex-col items-center justify-center gap-2 p-6 text-center bg-blue-200">
-          <p className="text-xl font-bold">
-            Aquí verás todos los productos disponibles para crear tu presupuesto
-          </p>
-          <p className="text-sm">
-            Utiliza el buscador para seleccionar los productos que quieras
-            agregar a la lista.
-          </p>
-          {/* <Button onClick={() => console.log("Abrir Sheet")}>
-            + Agregar producto
-          </Button> */}
-        </div>
-      )}
+      ) : null}
     </div>
   );
 }

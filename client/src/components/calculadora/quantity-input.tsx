@@ -1,21 +1,25 @@
+"use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import * as React from "react";
-import { Product } from "@/components/calculadora/table-product";
 
-type QuantityInputProps = {
-  product: Product;
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-};
+// T es cualquier tipo que tenga al menos id y quantity
+interface QuantityInputProps<T extends { id: string; quantity: number }> {
+  item: T;
+  setItems: React.Dispatch<React.SetStateAction<T[]>>;
+}
 
-function QuantityInput({ product, setProducts }: QuantityInputProps) {
-  const [localQuantity, setLocalQuantity] = React.useState(product.quantity);
+function QuantityInput<T extends { id: string; quantity: number }>({
+  item,
+  setItems,
+}: QuantityInputProps<T>) {
+  const [localQuantity, setLocalQuantity] = React.useState(item.quantity);
 
   const handleChange = (delta: number) => {
     setLocalQuantity((prev) => Math.max(0, prev + delta));
-    setProducts((prev) =>
+    setItems((prev) =>
       prev.map((p) =>
-        p.id === product.id
+        p.id === item.id
           ? { ...p, quantity: Math.max(0, p.quantity + delta) }
           : p
       )
@@ -27,9 +31,9 @@ function QuantityInput({ product, setProducts }: QuantityInputProps) {
   };
 
   const handleBlur = () => {
-    setProducts((prev) =>
+    setItems((prev) =>
       prev.map((p) =>
-        p.id === product.id ? { ...p, quantity: Math.max(0, localQuantity) } : p
+        p.id === item.id ? { ...p, quantity: Math.max(0, localQuantity) } : p
       )
     );
   };
@@ -40,7 +44,7 @@ function QuantityInput({ product, setProducts }: QuantityInputProps) {
         size="icon"
         variant="outline"
         onClick={() => handleChange(-1)}
-        disabled={product.quantity <= 0}
+        disabled={item.quantity <= 0}
         className="border-none shadow-none font-bold"
       >
         -

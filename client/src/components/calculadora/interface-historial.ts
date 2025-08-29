@@ -4,18 +4,20 @@ export interface HistorialData {
   monthly_production: MonthlyProduction;
   indirect_costs: IndirectCosts;
   feedstocks: Feedstock[];
+  dolar: Dolar;
+}
+
+export interface Dolar {
+  price: number;
+  date: Date;
 }
 
 export interface Feedstock {
   name: string;
-  currency: Currency;
+  currency: string;
   id: string;
   unit_cost: number;
-}
-
-export enum Currency {
-  Ars = "ARS",
-  Usd = "USD",
+  measure_unit: string;
 }
 
 export interface IndirectCosts {
@@ -24,16 +26,16 @@ export interface IndirectCosts {
 }
 
 export interface Service {
-  total_usage: number | null;
-  amount: number;
-  id: string;
   type: string;
+  amount: number;
+  total_usage: number | null;
+  id: string;
 }
 
 export interface Labour {
-  hours: number;
-  id: string;
   salary: number;
+  id: string;
+  hours: number;
 }
 
 export interface MonthlyProduction {
