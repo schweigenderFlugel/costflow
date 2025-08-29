@@ -38,7 +38,7 @@ const CreateProduct = () => {
 
   useEffect(() => {
     if (currentProduct) setCurrentProduct(null)
-  }, [currentProduct])
+  }, [])
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>

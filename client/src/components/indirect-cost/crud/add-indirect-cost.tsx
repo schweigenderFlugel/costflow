@@ -5,7 +5,7 @@ import { useIndirectCostMutations } from "@/hooks/mutations/use-indirect-cost-mu
 import IndirectCostForm from "@/components/indirect-cost/form/indirect-cost-form";
 import { useCreateIndirectCostDialog } from "@/hooks/use-indirect-cost-dialog";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IndirectCostInput } from "@/types/items/indirect-cost";
 import { Button } from "@/components/ui/button";
 import DetailIndirectCost from "@/components/indirect-cost/crud/detail-indirect-cost";
@@ -39,6 +39,10 @@ const AddIndirectCost = () => {
   const handleCancel = () => {
     setIsOpen(false)
   };
+
+  useEffect(() => {
+    if (indirectCostDetail) setIndirectCostDetail(null)
+  }, [])
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>

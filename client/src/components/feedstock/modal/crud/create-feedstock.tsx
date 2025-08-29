@@ -17,9 +17,11 @@ const CreateFeedstock = () => {
   const { createFeedstock } = useFeedstockMutations()
 
   const handleCreate = (values: FormDataFeedstock) => {
+    console.log(values);
+
     createFeedstock.mutate(values, {
-      onSuccess: (data) => {
-        setCurrentFeedstock(data)
+      onSuccess: () => {
+        setCurrentFeedstock(values)
         setAlreadyCreated(true)
       }
     })
@@ -39,7 +41,7 @@ const CreateFeedstock = () => {
 
   useEffect(() => {
     if (currentFeedstock) setCurrentFeedstock(null)
-  }, [currentFeedstock])
+  }, [])
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
