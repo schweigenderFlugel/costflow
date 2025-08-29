@@ -2,6 +2,7 @@ import PageHeaderSection from "@/components/shared/page-header-section"
 import TableSkeleton from "@/components/skeletons/table-skeleton"
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
+import { pageMetadata } from "@/lib/seo"
 
 const FeedstockTable = dynamic(() => import("@/components/feedstock/feedstock-table"), {
   loading: () => <TableSkeleton type="feedstock" />
@@ -13,9 +14,7 @@ const DeleteFeedstock = dynamic(() => import("@/components/feedstock/modal/crud/
 const PageInfoDialog = dynamic(() => import("@/components/shared/page-info-dialog"))
 
 
-export const metadata = {
-  title: "Insumos"
-}
+export const metadata = pageMetadata.feedstock()
 
 export const revalidate = false
 export const dynamicParams = false

@@ -65,10 +65,10 @@ const LabourForm = ({ type = "create", onCancel, initialValues = { hours: undefi
           }
         </div>
         <div className="col-span-2 flex gap-2 w-fit ml-auto">
-          <Button type="button" variant={"outline-ghost"} size={"icon"} className="text-primary hover:text-primary cursor-pointer">
+          <Button type="button" variant={"outline-ghost"} size={"icon"} className="text-primary hover:text-primary cursor-pointer" disabled>
             <PencilIcon className="size-5" />
           </Button>
-          <Button type="button" variant={"outline-ghost"} size={"icon"} className="text-red-800 hover:text-red-800 cursor-pointer">
+          <Button type="button" variant={"outline-ghost"} size={"icon"} className="text-red-800 hover:text-red-800 cursor-pointer" disabled>
             <TrashIcon className="size-5" />
           </Button>
         </div>

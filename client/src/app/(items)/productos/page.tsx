@@ -2,6 +2,7 @@ import PageHeaderSection from "@/components/shared/page-header-section"
 import TableSkeleton from "@/components/skeletons/table-skeleton"
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
+import { pageMetadata } from "@/lib/seo"
 
 const ProductTable = dynamic(() => import("@/components/product/product-table"), {
   loading: () => <TableSkeleton type="product" />
@@ -13,9 +14,7 @@ const DeleteProduct = dynamic(() => import("@/components/product/modal/crud/dele
 const PageInfoDialog = dynamic(() => import("@/components/shared/page-info-dialog"))
 
 
-export const metadata = {
-  title: "Productos"
-}
+export const metadata = pageMetadata.products()
 
 export const revalidate = false
 export const dynamicParams = false

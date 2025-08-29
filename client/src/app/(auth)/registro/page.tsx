@@ -1,5 +1,8 @@
 import FormRegister from "@/components/auth/form-register";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata = pageMetadata.register();
 
 export default function RegisterPage() {
   return (

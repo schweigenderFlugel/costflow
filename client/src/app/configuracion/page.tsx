@@ -4,10 +4,9 @@ import DynamicTabContent from "@/components/configuration/dynamic-tab-content"
 import DynamicPageInfo from "@/components/configuration/dynamic-page-info"
 import { getToken } from "@/utils/get-token"
 import { fetcher } from "@/utils/fetcher"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata = {
-  title: "Configuración"
-}
+export const metadata = pageMetadata.configuration()
 
 const getIndirectCostData = async () => {
   const token = await getToken()

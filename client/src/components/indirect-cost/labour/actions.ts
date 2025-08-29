@@ -47,8 +47,7 @@ export const onCreateAction = async (values: FormData) => {
 
     return { success: true, data };
   }
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   catch (error: any) {
     console.log(error);
     return { error: error?.message ?? "Error desconocido" }

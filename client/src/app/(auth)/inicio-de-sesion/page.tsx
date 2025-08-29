@@ -1,5 +1,8 @@
 import FormLogin from "@/components/auth/form-login";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata = pageMetadata.login();
 
 export default function LoginPage() {
   return (
