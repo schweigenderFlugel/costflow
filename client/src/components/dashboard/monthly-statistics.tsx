@@ -5,21 +5,31 @@ import { fetcher } from "@/utils/fetcher";
 
 type DataItem = {
   month: string;
-  labour: number;
-  indirect: number;
-  feedstocks: number;
+  insumos: number;
+  productos: number;
+};
+
+type Feedstock = {
+  id: string;
+  name: string;
+  quantity: number;
+  unit_cost: number;
+  total_cost: number;
+};
+
+type Product = {
+  id: string;
+  name: string;
+  quantity: number;
+  unit_cost: number;
+  total_cost: number;
 };
 
 type ApiResponseItem = {
   period: string;
-  labour: {
-    salary: number;
-  };
-  indirect_costs: {
-    total: number;
-  };
-  feedstocks: {
-    total: number;
+  feedstocks: Feedstock[];
+  monthly_production: {
+    products: Product[];
   };
 };
 
@@ -64,9 +74,8 @@ const MonthlyStatistics = () => {
             const [mes, anio] = item.period.split("-");
             return {
               month: `${nombresMeses[parseInt(mes, 10) - 1]} ${anio}`,
-              labour: item.labour.salary,
-              indirect: item.indirect_costs.total,
-              feedstocks: item.feedstocks.total,
+              insumos: item.feedstocks?.length ?? 0,
+              productos: item.monthly_production?.products?.length ?? 0,
             };
           });
 
@@ -76,9 +85,7 @@ const MonthlyStatistics = () => {
     });
   }, []);
 
-  return (
-    <StatsChart data={chartData} loading={loading} />
-  );
-}
+  return <StatsChart data={chartData} loading={loading} />;
+};
 
 export default MonthlyStatistics;

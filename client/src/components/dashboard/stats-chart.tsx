@@ -14,9 +14,8 @@ import {
 
 type DataItem = {
   month: string;
-  labour: number;
-  indirect: number;
-  feedstocks: number;
+  insumos: number;
+  productos: number;
 };
 
 interface StatsChartProps {
@@ -33,10 +32,8 @@ export default function StatsChart({ data, loading }: StatsChartProps) {
             <ChartPie />
           </div>
           <div>
-            Costos y gastos
-            <p className="text-sm text-muted-foreground">
-              Últimos meses de gestión
-            </p>
+            Productos e insumos
+            <p className="text-sm text-muted-foreground">Últimos meses</p>
           </div>
         </CardTitle>
       </CardHeader>
@@ -58,7 +55,7 @@ export default function StatsChart({ data, loading }: StatsChartProps) {
                 <XAxis dataKey="month" />
                 <YAxis
                   label={{
-                    value: "Monto",
+                    value: "Cantidad",
                     angle: -90,
                     position: "insideLeft",
                     style: { textAnchor: "middle" },
@@ -66,10 +63,35 @@ export default function StatsChart({ data, loading }: StatsChartProps) {
                   }}
                 />
                 <Tooltip />
-                <Legend />
-                <Bar dataKey="indirect" name="Costos indirectos" fill="#B6CEE5" />
-                <Bar dataKey="feedstocks" name="Insumos" fill="#2B2D42" />
-                <Bar dataKey="labour" name="Mano de obra" fill="#D90429" />
+                <Legend
+                  content={({ payload }) => (
+                    <div className="flex gap-20 mt-2 items-center justify-center w-full ps-10">
+                      {payload
+                        ?.slice()
+                        .sort((a, b) => {
+                          if (a.value === "Productos") return -1;
+                          if (b.value === "Productos") return 1;
+                          return 0;
+                        })
+                        .map((entry, index) => (
+                          <div
+                            key={`item-${index}`}
+                            className="flex items-center gap-2"
+                          >
+                            <div
+                              className="w-4 h-4 "
+                              style={{ backgroundColor: entry.color }}
+                            />
+                            <span className="font-semibold text-sm">
+                              {entry.value}
+                            </span>
+                          </div>
+                        ))}
+                    </div>
+                  )}
+                />
+                <Bar dataKey="productos" name="Productos" fill="#060428" />
+                <Bar dataKey="insumos" name="Insumos" fill="#B6CEE5" />
               </BarChart>
             </ResponsiveContainer>
           )}

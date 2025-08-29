@@ -13,25 +13,20 @@ export function ExportPdfButton({
   products: ProductCalculation[];
 }) {
   const handleExport = () => {
-    // Crear PDF en horizontal
     const doc = new jsPDF({ orientation: "landscape" });
 
-    // Fecha y hora Argentina
     const argentinaTime = new Date().toLocaleString("es-AR", {
       timeZone: "America/Argentina/Buenos_Aires",
     });
 
-    // Título
-    doc.setFont("helvetica", "bold"); // Fuente Helvetica en negrita
+    doc.setFont("helvetica", "bold");
     doc.setFontSize(26);
     doc.text("Cotzia", 14, 22);
 
-    // Fecha normal
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     doc.text(`Exportado: ${argentinaTime}`, 14, 29);
 
-    // Calcular subtotal, IVA y total
     const subtotal = products.reduce(
       (acc, p) => acc + p.unitValue * p.quantity,
       0
@@ -40,7 +35,6 @@ export function ExportPdfButton({
     const iva = subtotal * ivaRate;
     const total = subtotal + iva;
 
-    // Datos de la tabla
     const tableColumn = [
       "Artículo",
       "Cantidad",
@@ -104,7 +98,19 @@ export function ExportPdfButton({
       headStyles: { fillColor: [0, 0, 115] },
     });
 
-    doc.save("presupuesto.pdf");
+    const argentinaDateForFile = new Date()
+      .toLocaleString("es-AR", {
+        timeZone: "America/Argentina/Buenos_Aires",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+      .replace(/[/: ]/g, "-")
+      .replace(",", "");
+
+    doc.save(`Presupuesto-Cotzia-${argentinaDateForFile}.pdf`);
   };
 
   return (
