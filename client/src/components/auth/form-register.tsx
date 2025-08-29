@@ -74,7 +74,7 @@ export default function FormRegister() {
           label="Nombre"
           control={form.control}
           errors={form.formState.errors}
-          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full"
           placeholder="Ingresá tu nombre"
         />
 
@@ -83,7 +83,7 @@ export default function FormRegister() {
           label="Apellido"
           control={form.control}
           errors={form.formState.errors}
-          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full"
           placeholder="Ingresá tu apellido"
         />
         <TextField<RegisterFormSchema>
@@ -91,7 +91,7 @@ export default function FormRegister() {
           label="Puesto"
           control={form.control}
           errors={form.formState.errors}
-          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full"
           placeholder="Ingresá tu puesto"
         />
 
@@ -101,7 +101,7 @@ export default function FormRegister() {
           type="email"
           control={form.control}
           errors={form.formState.errors}
-          className="placeholder:italic py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full"
           placeholder="Ingresá tu correo electrónico"
         />
 
