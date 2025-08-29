@@ -23,6 +23,6 @@ export const mainNavigation: NavItem[] = [
   { title: "inicio", href: "/dashboard", icon: House },
   { title: "insumos", href: "/insumos", icon: Box },
   { title: "productos", href: "/productos", icon: FlaskConical },
-  { title: "simulador", href: "/simulador", icon: Calculator },
+  { title: "calculadora", href: "/calculadora", icon: Calculator },
   { title: "configuración", href: "/configuracion", icon: Settings },
 ];
