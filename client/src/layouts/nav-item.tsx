@@ -17,7 +17,13 @@ const NavItem = ({ item, isActive }: { item: NavItemProp, isActive: boolean }) =
           isActive ? "bg-primary sm:font-normal text-primary-foreground" : "")
       }
     >
-      {item.icon && <item.icon className="size-4 sm:size-5 md:hidden lg:block lg:size-4" />}
+      {
+        (item.icon && item.activeIcon) ?
+          isActive
+            ? <item.activeIcon className="size-4 sm:size-5 md:hidden lg:block lg:size-4" />
+            : <item.icon className="size-4 sm:size-5 md:hidden lg:block lg:size-4" />
+          : null
+      }
       <span
         aria-label={item.title}
         className={cn(

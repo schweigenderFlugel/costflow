@@ -1,16 +1,23 @@
 import {
-  Box,
-  Calculator,
-  FlaskConical,
-  House,
-  Settings,
-  type LucideIcon,
-} from "lucide-react";
+  HomeIcon as HomeIconActive,
+  CubeIcon as CubeIconActive,
+  BeakerIcon as BeakerIconActive,
+  CalculatorIcon as CalculatorIconActive,
+  Cog6ToothIcon as Cog6ToothIconActive
+} from '@heroicons/react/24/solid'
+import {
+  HomeIcon,
+  CubeIcon,
+  BeakerIcon,
+  CalculatorIcon,
+  Cog6ToothIcon
+} from '@heroicons/react/24/outline'
 
 export type NavItem = {
   title: string;
   href: string;
-  icon?: LucideIcon;
+  icon?: typeof HomeIcon;
+  activeIcon?: typeof HomeIconActive;
 };
 
 export const websiteName: NavItem = {
@@ -20,9 +27,9 @@ export const websiteName: NavItem = {
 };
 
 export const mainNavigation: NavItem[] = [
-  { title: "inicio", href: "/dashboard", icon: House },
-  { title: "insumos", href: "/insumos", icon: Box },
-  { title: "productos", href: "/productos", icon: FlaskConical },
-  { title: "simulador", href: "/simulador", icon: Calculator },
-  { title: "configuración", href: "/configuracion", icon: Settings },
+  { title: "inicio", href: "/dashboard", icon: HomeIcon, activeIcon: HomeIconActive },
+  { title: "insumos", href: "/insumos", icon: CubeIcon, activeIcon: CubeIconActive },
+  { title: "productos", href: "/productos", icon: BeakerIcon, activeIcon: BeakerIconActive },
+  { title: "simulador", href: "/simulador", icon: CalculatorIcon, activeIcon: CalculatorIconActive },
+  { title: "configuración", href: "/configuracion", icon: Cog6ToothIcon, activeIcon: Cog6ToothIconActive },
 ];
