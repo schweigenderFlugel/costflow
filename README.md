@@ -42,7 +42,7 @@ Los principales usuarios de Cotzia son pequeños emprendedores quienes buscan au
 | Tecnología                                                                                           | Descripción                                                                                                  |
 |------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
 | [![Typescript](https://skillicons.dev/icons?i=typescript)](https://www.javascript.com/)               | Typescript es un lenguaje de programación similar a Javascript pero con tipado estático y fuerte.          |
-| [![Nextjs](https://skillicons.dev/icons?i=nextjs)](https://reactjs.org/)                                        | React es un framework de React para construir interfaces de usuario, usada especialmente para entornos de producción.      |
+| [![Nextjs](https://skillicons.dev/icons?i=nextjs)](https://reactjs.org/)                                        | Nextjs es un framework de React para construir interfaces de usuario, usada especialmente para entornos de producción.      |
 | [![Tailwind CSS](https://skillicons.dev/icons?i=tailwind)](https://tailwindcss.com/)                 | Tailwind CSS es un framework CSS que proporciona utilidades predefinidas para diseñar interfaces web de manera rápida y eficiente.       |
 
 
