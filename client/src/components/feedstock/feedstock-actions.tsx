@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button"
 import { useDeleteFeedstockDialog, useUpdateFeedstockDialog } from "@/hooks/use-feedstock-dialog"
 import { ObjFeedstock } from "@/types/items/feedstock"
-import { Trash2, Pencil } from "lucide-react"
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const FeedstockActions = ({ feedstock }: { feedstock: ObjFeedstock }) => {
   const { setIsOpen: setUpdateState, setFeedstock: setUpdateFeedstock } = useUpdateFeedstockDialog()
@@ -18,16 +18,16 @@ const FeedstockActions = ({ feedstock }: { feedstock: ObjFeedstock }) => {
   }
 
 
-  return (<div className="flex gap-1">
+  return (<div className="flex gap-0.5 justify-center">
     <Button
       data-slot="feedstock-update-dialog-trigger"
       onClick={handleUpdate}
       type="button"
       className="text-primary hover:text-primary cursor-pointer"
       variant={"ghost"}
-      size={"sm"}
+      size={"icon"}
     >
-      <Pencil className="size-4" />
+      <PencilIcon className="size-5" />
     </Button>
 
     <Button
@@ -36,9 +36,9 @@ const FeedstockActions = ({ feedstock }: { feedstock: ObjFeedstock }) => {
       type="button"
       className="text-red-800 hover:text-red-800 cursor-pointer"
       variant={"ghost"}
-      size={"sm"}
+      size={"icon"}
     >
-      <Trash2 className="size-4" />
+      <TrashIcon className="size-5" />
     </Button>
   </div>)
 }

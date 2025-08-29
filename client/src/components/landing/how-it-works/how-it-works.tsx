@@ -1,5 +1,5 @@
-import { Package, DatabaseZap, FileText, Download } from "lucide-react";
 import { HowTables } from "@/components/landing/how-it-works/how-tables";
+import { Package, DatabaseZap, FileText, Download } from "lucide-react";
 
 // Datos con la información de cada paso
 const stepsData = [

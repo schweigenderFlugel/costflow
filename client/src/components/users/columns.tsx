@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { UserRole, UsersData, UserState } from "../../types/items/users";
-import { createActionsColumn, createDateColumn, createTextColumn, createTranslatedColumn } from "@/components/data-table/column-helpers";
+import { createActionsColumn, createDateColumn, createTextColumn, createTranslatedColumn } from "@/components/shared/data-table/column-helpers";
 import { translateUserRole, translateUserState } from "@/utils/translate/user";
 import UserActions from "@/components/users/user-actions";
 

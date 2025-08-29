@@ -32,10 +32,14 @@ const DetailFeedstock = ({ feedstock }: { feedstock: ObjFeedstock | Feedstock | 
           <h3 className="text-sm">Costo unitario:</h3>
           <span className="text-sm font-medium text-foreground">
             {
-              (new Intl.NumberFormat("es-AR", {
-                style: "currency",
-                currency: feedstock.currency,
-              }).format(feedstock.unit_cost))
+              feedstock.currency ? (
+                new Intl.NumberFormat("es-AR", {
+                  style: "currency",
+                  currency: feedstock.currency,
+                }).format(feedstock.unit_cost)
+              ) : (
+                `$${feedstock.unit_cost}`
+              )
             }
           </span>
         </div>

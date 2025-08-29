@@ -67,11 +67,7 @@ export default function StatsChart({ data, loading }: StatsChartProps) {
                 />
                 <Tooltip />
                 <Legend />
-                <Bar
-                  dataKey="indirect"
-                  name="Costos indirectos"
-                  fill="#8D99AE"
-                />
+                <Bar dataKey="indirect" name="Costos indirectos" fill="#B6CEE5" />
                 <Bar dataKey="feedstocks" name="Insumos" fill="#2B2D42" />
                 <Bar dataKey="labour" name="Mano de obra" fill="#D90429" />
               </BarChart>

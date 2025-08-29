@@ -7,9 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { passwordSchema } from "@/schemas/register-schema";
-import { PasswordField } from "@/components/field-forms/password-field";
+import { PasswordField } from "@/components/shared/auth-fields/password-field";
 import { fetcher } from "@/utils/fetcher";
-import { itemToasts } from "@/components/item-toasts";
+import { itemToasts } from "@/components/shared/item-toasts";
 import { useTransition } from "react";
 import SpinLoader from "@/components/shared/spin-loader";
 
@@ -74,7 +74,7 @@ export default function CambiarContrasenaPage() {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+    <main className="flex flex-col items-center justify-center min-h-screen p-4">
       <h1 className="text-2xl font-bold mb-6">Cambiar contraseña</h1>
       <Form {...form}>
         <form onSubmit={onSubmit} className="w-full max-w-sm space-y-4">
@@ -100,6 +100,6 @@ export default function CambiarContrasenaPage() {
           </Button>
         </form>
       </Form>
-    </div>
+    </main>
   );
 }

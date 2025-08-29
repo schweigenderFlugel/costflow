@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useUserMutations } from "@/hooks/mutations/use-user-mutations";
 import { UsersData } from "@/types/items/users";
-import { CircleCheck, CircleX } from "lucide-react";
+import { PencilIcon, TrashIcon, CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 
 const UserActions = ({ user }: { user: UsersData }) => {
@@ -19,20 +19,31 @@ const UserActions = ({ user }: { user: UsersData }) => {
 
 
   if (user.state !== "PENDING") return (
-    <div className="text-center">
+    <div className="flex gap-0.5 justify-center">
       <Button
-        size="sm"
-        variant="outline"
-        className="bg-yellow-200 text-xs"
-        onClick={() => console.log("Change to pending", user.id)}
+        size="icon"
+        variant="outline-ghost"
+        className="text-primary hover:text-[#1B05DF]"
+        onClick={() => console.log("Change user", user.id)}
+        title="Editar usuario"
         disabled
       >
-        Modificar
+        <PencilIcon className="size-5" />
+      </Button>
+      <Button
+        size="icon"
+        variant="outline-ghost"
+        className="text-red-800 hover:text-red-600"
+        onClick={() => console.log("Delete user", user.id)}
+        title="Eliminar usuario"
+        disabled
+      >
+        <TrashIcon className="size-5" />
       </Button>
     </div>);
 
   return (
-    <div className="flex gap-1 justify-center">
+    <div className="flex gap-0.5 justify-center">
       <Button
         size="icon"
         variant="outline-ghost"
@@ -40,7 +51,7 @@ const UserActions = ({ user }: { user: UsersData }) => {
         onClick={handleAccept}
         title="Aceptar usuario"
       >
-        <CircleCheck className="size-6" />
+        <CheckCircleIcon className="size-5" />
       </Button>
       <Button
         size="icon"
@@ -49,7 +60,7 @@ const UserActions = ({ user }: { user: UsersData }) => {
         onClick={handleReject}
         title="Denegar usuario"
       >
-        <CircleX className="size-6" />
+        <XCircleIcon className="size-5" />
       </Button>
     </div>
   );
