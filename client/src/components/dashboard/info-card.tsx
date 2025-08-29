@@ -1,0 +1,135 @@
+"use client"
+import {
+  CurrencyDollarIcon as CurrencyDollarIconSolid,
+  CircleStackIcon as CircleStackIconSolid,
+  CubeIcon as CubeIconSolid
+} from "@heroicons/react/24/solid";
+import {
+  ArrowUpIcon,
+  ArrowDownIcon,
+  ArrowRightIcon,
+  CurrencyDollarIcon,
+  CircleStackIcon,
+  CubeIcon
+} from "@heroicons/react/24/outline";
+
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+
+
+interface InfoCard {
+  iconBg: string;
+  iconColor: string;
+  Icon: typeof CubeIcon;
+  SolidIcon: typeof CubeIconSolid;
+}
+
+const infoCards: Record<"dollar" | "product" | "feedstock", InfoCard> = {
+  dollar: {
+    iconBg: "bg-[#DCFCE7]",
+    iconColor: "text-[#308B00]",
+    Icon: CurrencyDollarIcon,
+    SolidIcon: CurrencyDollarIconSolid,
+  },
+  product: {
+    iconBg: "bg-[#E2EEF9]",
+    iconColor: "text-primary",
+    Icon: CircleStackIcon,
+    SolidIcon: CircleStackIconSolid,
+  },
+  feedstock: {
+    iconBg: "bg-[#FAC2FF]",
+    iconColor: "text-[#6E0078]",
+    Icon: CubeIcon,
+    SolidIcon: CubeIconSolid,
+  }
+} as const;
+
+
+
+
+interface InfoCardProps {
+  type: "dollar" | "product" | "feedstock";
+  value: string | number;
+  description: string;
+  percentage?: string;
+}
+
+const InfoCard: React.FC<InfoCardProps> = ({ type, value, description, percentage }) => {
+  const { iconBg, iconColor, Icon, SolidIcon } = infoCards[type];
+
+  //  hardcodeado xd
+  const numericPercentage = percentage ? parseFloat(percentage) : 0;
+
+  let trend: "up" | "down" | "right";
+  let trendColor: string;
+  let hover: string;
+
+  if (numericPercentage > 0) {
+    trend = "up";
+    trendColor = "text-[#308B00]";
+  } else if (numericPercentage < 0) {
+    trend = "down";
+    trendColor = "text-[#B2401E]";
+  } else {
+    trend = "right";
+    trendColor = "text-blue-700";
+  }
+
+  switch (type) {
+    case "dollar":
+      hover = "hover:bg-[#DCFCE7]/50";
+      break;
+    case "product":
+      hover = "hover:bg-[#E2EEF9]/50";
+      break;
+    case "feedstock":
+      hover = "hover:bg-[#FAC2FF]/50";
+      break;
+    default:
+      hover = "hover:bg-muted-foreground/10";
+  }
+
+  return (
+    <Card className={`shadow-sm hover:shadow-md ${hover} cursor-pointer transition w-full max-w-[calc(100%-2rem)] gap-1.5 md:gap-5 group py-4 md:py-6`}>
+      <CardHeader className="flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <div
+            className={`${iconBg} ${iconColor} inline-block rounded-[8px] p-2 relative`}
+          >
+            <Icon className="size-7 group-hover:opacity-0 transition-opacity duration-200" />
+            <SolidIcon className="size-7 absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+          </div>
+          <CardTitle className="text-muted-foreground">
+            {
+              type === "dollar"
+                ? "Dólar actual"
+                : type === "product"
+                  ? "Productos Totales"
+                  : "Materia prima en stock"
+            }
+          </CardTitle>
+        </div>
+
+        {
+          percentage &&
+          <div className={`flex items-center gap-1 ${trendColor} text-sm font-medium`}>
+            {trend === "up" && <ArrowUpIcon className={"size-4"} />}
+            {trend === "down" && <ArrowDownIcon className={"size-4"} />}
+            {trend === "right" && <ArrowRightIcon className={"size-4"} />}
+            <p>{percentage}</p>
+          </div>
+        }
+      </CardHeader>
+
+      <CardContent className="text-foreground font-bold text-3xl md:text-4xl">
+        <h3>{value}</h3>
+      </CardContent>
+      <CardFooter className="text-muted-foreground text-xs">
+        <p>{description}</p>
+      </CardFooter>
+    </Card>
+  );
+
+};
+
+export default InfoCard;

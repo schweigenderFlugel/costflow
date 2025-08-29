@@ -1,8 +1,5 @@
 "use client";
-
-import PageHeaderSection from "@/components/shared/page-header-section";
 import StatsChart from "@/components/dashboard/stats-chart";
-import DashboardCards from "@/components/dashboard/dashboard-cards";
 import { useEffect, useState } from "react";
 import { fetcher } from "@/utils/fetcher";
 
@@ -26,7 +23,7 @@ type ApiResponseItem = {
   };
 };
 
-export default function PageClient() {
+const MonthlyStatistics = () => {
   const [chartData, setChartData] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -80,30 +77,8 @@ export default function PageClient() {
   }, []);
 
   return (
-    <main className="space-y-8 py-10">
-      <PageHeaderSection
-        title="Mi gestión"
-        description="Gestioná, calculá y presupuestá desde el mismo lugar"
-      />
-
-      <section className="w-6xl max-w-[calc(100svw-2rem)] mx-auto">
-        <DashboardCards
-          data={{
-            revenue: { percentage: "12.5%", value: "$300 ARS" },
-            production: { percentage: "8.5%", value: "500 unidades" },
-            supplies: { percentage: "-4.3%", value: "50 insumos" },
-            customers: {
-              percentage: "0%",
-              value: "12 usuarios",
-              href: "/dashboard/usuarios",
-            },
-          }}
-        />
-      </section>
-
-      <section className="w-6xl max-w-[calc(100svw-2rem)] mx-auto py-6">
-        <StatsChart data={chartData} loading={loading} />
-      </section>
-    </main>
+    <StatsChart data={chartData} loading={loading} />
   );
 }
+
+export default MonthlyStatistics;
