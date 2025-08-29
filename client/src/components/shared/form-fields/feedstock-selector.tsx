@@ -197,9 +197,9 @@ export function FeedstockSelector({
 
       {/* Mensaje cuando no hay insumos seleccionados */}
       {fields.length === 0 && (
-        <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg">
-          <p>No hay insumos seleccionados</p>
-          <p className="text-sm">Usa el buscador para agregar insumos al producto</p>
+        <div className="text-center py-6 px-2 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg">
+          <p className="text-sm">No hay insumos seleccionados</p>
+          <p className="text-xs">Usa el buscador para agregar insumos al producto</p>
         </div>
       )}
     </div>

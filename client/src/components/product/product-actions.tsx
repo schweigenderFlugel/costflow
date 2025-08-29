@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { useDeleteProductDialog, useUpdateProductDialog } from "@/hooks/use-product-dialog"
 import { ObjProduct } from "@/types/items/product"
 import { fetcher } from "@/utils/fetcher"
-import { Trash2, Pencil } from "lucide-react"
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const ProductActions = ({ product }: { product: ObjProduct }) => {
   const { setIsOpen: setUpdateState, setProduct: setUpdateProduct, setIsLoadingProduct } = useUpdateProductDialog()
@@ -32,16 +32,16 @@ const ProductActions = ({ product }: { product: ObjProduct }) => {
   }
 
 
-  return (<div className="flex gap-1">
+  return (<div className="flex gap-0.5 justify-center">
     <Button
       data-slot="product-update-dialog-trigger"
       onClick={handleUpdate}
       type="button"
       className="text-primary hover:text-primary cursor-pointer"
       variant={"ghost"}
-      size={"sm"}
+      size={"icon"}
     >
-      <Pencil className="size-4" />
+      <PencilIcon className="size-5" />
     </Button>
 
     <Button
@@ -50,9 +50,9 @@ const ProductActions = ({ product }: { product: ObjProduct }) => {
       type="button"
       className="text-red-800 hover:text-red-800 cursor-pointer"
       variant={"ghost"}
-      size={"sm"}
+      size={"icon"}
     >
-      <Trash2 className="size-4" />
+      <TrashIcon className="size-5" />
     </Button>
   </div>)
 }
