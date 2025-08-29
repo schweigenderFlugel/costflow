@@ -8,14 +8,15 @@ from deps.db_session_dep import SessionDep
 from deps.cache_dep import CacheDep
 
 from models.labour_model import Labour, CreateLabour, UpdateLabour
+from schemas.pagination import Pagination
 
 from .historial_service import get_historial_id
 
-def get_labour(db: SessionDep):
+def get_labour(db: SessionDep, pagination: Pagination):
     try:
-        statement = select(Labour).filter(Labour.is_deleted == False)
+        statement = select(Labour).filter(Labour.is_deleted == False).offset(pagination.page).limit(pagination.limit)
         labour: list[Labour] = db.exec(statement=statement).all()
-        return [ic.model_dump() for ic in labour]
+        return [ic.model_dump(exclude=["is_deleted", "historial_id"]) for ic in labour]
     except HTTPException as http_err:
         raise http_err
     except Exception as e:
@@ -27,11 +28,11 @@ def get_labour_by_id(db: SessionDep, cache: CacheDep, id: str):
 
         if cached_item:
             return JSONResponse(content=json.loads(cached_item))
-        statement = select(Labour).where(Labour.id == id)
-        labour_found: Labour = db.exec(statement=statement).first()
+        statement = select(Labour).where(Labour.id == id, Labour.is_deleted == False)
+        labour_found = db.exec(statement=statement).first()
         if not labour_found:
             raise HTTPException(status_code=404, detail="Labour info not found")
-        data = labour_found.model_dump()
+        data = labour_found.model_dump(mode="json", exclude=["id", "historial_id", "is_deleted"])
         cache.set(f"labour_{id}", json.dumps(data), ex=120)
         return JSONResponse(content=data)
     except HTTPException as http_err:
@@ -57,7 +58,7 @@ def get_current_labour(db: SessionDep, cache: CacheDep):
         labour_found = db.exec(statement=statement).first()
         if not labour_found:
             raise HTTPException(status_code=404, detail="Labour info not found")
-        data = labour_found.model_dump()
+        data = labour_found.model_dump(mode="json", exclude=["id", "historial_id", "date", "is_deleted"])
         cache.set("labour", json.dumps(data), ex=120)
         return JSONResponse(content=data)
     except HTTPException as http_err:

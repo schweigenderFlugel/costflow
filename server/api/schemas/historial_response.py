@@ -17,18 +17,31 @@ class IndirectCosts(BaseModel):
     total: float = 628.5
     services: List[Service]
 
-class FeedstockDetails(BaseModel):
+class Feedstock(BaseModel):
     id: uuid
     name: str = "Azufre"
     unit_cost: float = 2000.5
     currency: str = "ARS"
+    measure_unit: str = "KILOGRAMS"
 
-class Feedstocks(BaseModel):
-    total: float = 570920.5
-    feedstocks: List[FeedstockDetails]
+class Product(BaseModel):
+    id: uuid
+    feedstocks_costs: float = 578723.0
+    product_name: str = "Detergente"
+    labour_costs: float = 28571.44
+    measure_unit: str = "LITERS"
+    indirect_costs: float = 11.952
+    quantity: int = 0
+
+class MonthlyProduction(BaseModel):
+    feedstocks_costs: float = 14291564.0
+    labour_costs: float = 61000.04
+    indirect_costs: float = 75866.87
+    products: List[Product]
 
 class HistorialResponse(BaseModel):
     period: str = "07-2025"
     labour: Labour
+    monthly_production: MonthlyProduction
     indirect_costs: IndirectCosts
-    feedstocks: Feedstocks
+    feedstocks: List[Feedstock]

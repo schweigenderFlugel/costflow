@@ -41,15 +41,16 @@ def get_historial(db: SessionDep, cache: CacheDep):
                     product_indirect_costs.append(float(mp.model_dump()['indirect_costs']))
             labour = h.labour.model_dump(mode="json", exclude=["date", "historial", "historial_id", "is_deleted"]) if h.labour else None
             services = [svc.model_dump(mode="json", exclude=["historial", "historial_id", "is_deleted", "date"]) for svc in h.indirect_costs] if h.indirect_costs else None
-            feedstocks = [fs.model_dump(mode="json", exclude=["historial", "historial_id", "is_deleted", "date", "measure_unit", "provider", "sku", "state"]) for fs in h.feedstocks] if h.feedstocks else None
+            feedstocks = [fs.model_dump(mode="json", exclude=["historial", "historial_id", "is_deleted", "date", "provider", "sku", "state"]) for fs in h.feedstocks] if h.feedstocks else None
+            products = [prod.model_dump(mode="json", exclude=["historial_id", "is_deleted", "date"]) for prod in h.monthly_production] if h.monthly_production else None
             final_historial.append({
                 "period": datetime.fromisoformat(h.model_dump(mode="json")["date"]).strftime("%m-%Y"),
                 "labour":  labour,
                 "monthly_production": {
-                    "feedstocks_costs": sum(feedstock_costs),
-                    "labour_costs": sum(products_labour_costs),
-                    "indirect_costs": sum(product_indirect_costs),
-                    "products": [prod.model_dump(mode="json", exclude=["id", "historial_id", "is_deleted", "date"]) for prod in h.monthly_production]
+                    "feedstocks_costs": round(sum(feedstock_costs), 2),
+                    "labour_costs": round(sum(products_labour_costs), 2),
+                    "indirect_costs": round(sum(product_indirect_costs), 2),
+                    "products": products,
                 },
                 "indirect_costs": {
                     "total": sum(indirect_costs), 

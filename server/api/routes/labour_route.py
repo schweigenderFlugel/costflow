@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Query, Body
 from schemas.http_response import Response
 
@@ -9,6 +10,8 @@ from deps.cache_dep import CacheDep
 from services import labour_service
 
 from models.labour_model import CreateLabour, UpdateLabour
+from schemas.labour_response import Labour, LabourList, CurrentLabour
+from schemas.pagination import Pagination
 
 router = APIRouter(
  tags=['Labour'],
@@ -16,13 +19,9 @@ router = APIRouter(
 )
 
 @router.get("", 
-    summary="Get labour info list", 
+    summary="Get labour info list",
+    response_model=List[LabourList],
     responses={
-        200: Response(
-            description="Successfully Response",
-            content_type="application/json",
-            message="Successfully Response"
-        ).custom_response(),
         401: Response(
             description='Invalid or expired creadentials', 
             content_type='application/json',
@@ -45,17 +44,13 @@ router = APIRouter(
         ).custom_response(),
     }
 )
-def get_labour(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep):
-    return labour_service.get_labour(db=db)
+def get_labour(db: SessionDep, jwt: JwtDep, admin: AdminRoleDep, pagination: Pagination = Query()):
+    return labour_service.get_labour(db=db, pagination=pagination)
 
 @router.get("/current", 
-    summary="Get current labour info", 
+    summary="Get current labour info",
+    response_model=CurrentLabour,
     responses={
-        200: Response(
-            description="Successfully Response",
-            content_type="application/json",
-            message="Successfully Response"
-        ).custom_response(),
         401: Response(
             description='Invalid or expired creadentials', 
             content_type='application/json',
@@ -82,13 +77,9 @@ def get_current_labour(db: SessionDep, cache: CacheDep, jwt: JwtDep, admin: Admi
     return labour_service.get_current_labour(db=db, cache=cache)
 
 @router.get("/{id}", 
-    summary="Get labour info by id", 
+    summary="Get labour info by id",
+    response_model=Labour,
     responses={
-        200: Response(
-            description="Successfully Response",
-            content_type="application/json",
-            message="Successfully Response"
-        ).custom_response(),
         401: Response(
             description='Invalid or expired creadentials', 
             content_type='application/json',
