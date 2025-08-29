@@ -11,7 +11,7 @@ import {
   createNumberColumn,
   createDateColumn,
   createActionsColumn
-} from "@/components/data-table/column-helpers"
+} from "@/components/shared/data-table/column-helpers"
 
 const columns: ColumnDef<ObjProduct>[] = [
   createSelectColumn<ObjProduct>(),

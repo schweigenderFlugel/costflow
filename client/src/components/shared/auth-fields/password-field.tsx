@@ -39,7 +39,7 @@ export function PasswordField<T extends FieldValues>({
                 id={name}
                 type={seePassword ? "text" : "password"}
                 placeholder={placeholder}
-                className="placeholder:italic py-5 bg-white text-black"
+                className="py-5 bg-white text-black"
                 {...field}
               />
               <button

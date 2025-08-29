@@ -13,8 +13,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 1200,
     provider: "Molinos Río de la Plata",
-    created_at: new Date("2025-08-01"),
-    updated_at: new Date("2025-08-01"),
+    date: new Date("2025-08-01"),
     is_deleted: false,
   },
   {
@@ -26,8 +25,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 950,
     provider: "Ledesma",
-    created_at: new Date("2025-07-28"),
-    updated_at: new Date("2025-07-28"),
+    date: new Date("2025-07-28"),
     is_deleted: false,
   },
   {
@@ -39,8 +37,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.LITERS,
     unit_cost: 2100,
     provider: "Aceitera General Deheza",
-    created_at: new Date("2025-07-30"),
-    updated_at: new Date("2025-07-30"),
+    date: new Date("2025-07-30"),
     is_deleted: false,
   },
   {
@@ -52,8 +49,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 8.5,
     provider: "La Serenísima",
-    created_at: new Date("2025-07-25"),
-    updated_at: new Date("2025-07-25"),
+    date: new Date("2025-07-25"),
     is_deleted: false,
   },
   {
@@ -65,8 +61,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.GRAMS,
     unit_cost: 12.3,
     provider: "Nestlé",
-    created_at: new Date("2025-07-20"),
-    updated_at: new Date("2025-07-20"),
+    date: new Date("2025-07-20"),
     is_deleted: false,
   },
   {
@@ -78,8 +73,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 450,
     provider: "Celusal",
-    created_at: new Date("2025-07-22"),
-    updated_at: new Date("2025-07-22"),
+    date: new Date("2025-07-22"),
     is_deleted: false,
   },
   {
@@ -91,8 +85,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.MILLILITERS,
     unit_cost: 320,
     provider: "Dr. Oetker",
-    created_at: new Date("2025-07-18"),
-    updated_at: new Date("2025-07-18"),
+    date: new Date("2025-07-18"),
     is_deleted: false,
   },
   {
@@ -104,8 +97,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.UNITS,
     unit_cost: 120,
     provider: "Granja Los Pinos",
-    created_at: new Date("2025-07-21"),
-    updated_at: new Date("2025-07-21"),
+    date: new Date("2025-07-21"),
     is_deleted: false,
   },
   {
@@ -117,8 +109,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.GRAMS,
     unit_cost: 2700,
     provider: "La Serenísima",
-    created_at: new Date("2025-07-19"),
-    updated_at: new Date("2025-07-19"),
+    date: new Date("2025-07-19"),
     is_deleted: false,
   },
   {
@@ -130,8 +121,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.GRAMS,
     unit_cost: 0.5,
     provider: "Levex",
-    created_at: new Date("2025-07-15"),
-    updated_at: new Date("2025-07-15"),
+    date: new Date("2025-07-15"),
     is_deleted: false,
   },
   {
@@ -143,8 +133,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 14.8,
     provider: "Barry Callebaut",
-    created_at: new Date("2025-07-12"),
-    updated_at: new Date("2025-07-12"),
+    date: new Date("2025-07-12"),
     is_deleted: false,
   },
   {
@@ -156,8 +145,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.GRAMS,
     unit_cost: 1800,
     provider: "Arcor",
-    created_at: new Date("2025-07-10"),
-    updated_at: new Date("2025-07-10"),
+    date: new Date("2025-07-10"),
     is_deleted: false,
   },
   {
@@ -169,8 +157,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.GRAMS,
     unit_cost: 9.4,
     provider: "Frutos Secos del Valle",
-    created_at: new Date("2025-07-08"),
-    updated_at: new Date("2025-07-08"),
+    date: new Date("2025-07-08"),
     is_deleted: false,
   },
   {
@@ -182,8 +169,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.MILLILITERS,
     unit_cost: 2500,
     provider: "La Serenísima",
-    created_at: new Date("2025-07-05"),
-    updated_at: new Date("2025-07-05"),
+    date: new Date("2025-07-05"),
     is_deleted: false,
   },
   {
@@ -195,8 +181,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.METERS,
     unit_cost: 900,
     provider: "Cocina Pro",
-    created_at: new Date("2025-07-02"),
-    updated_at: new Date("2025-07-02"),
+    date: new Date("2025-07-02"),
     is_deleted: false,
   },
   {
@@ -208,8 +193,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 3500,
     provider: "La Paulina",
-    created_at: new Date("2025-07-01"),
-    updated_at: new Date("2025-07-01"),
+    date: new Date("2025-07-01"),
     is_deleted: false,
   },
   {
@@ -221,8 +205,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.LITERS,
     unit_cost: 1200,
     provider: "La Campagnola",
-    created_at: new Date("2025-06-28"),
-    updated_at: new Date("2025-06-28"),
+    date: new Date("2025-06-28"),
     is_deleted: false,
   },
   {
@@ -234,8 +217,7 @@ export const mockFeedstocks: ObjFeedstock[] = [
     measure_unit: MeasureUnit.KILOGRAMS,
     unit_cost: 4200,
     provider: "Paladini",
-    created_at: new Date("2025-06-25"),
-    updated_at: new Date("2025-06-25"),
+    date: new Date("2025-06-25"),
     is_deleted: false,
   }
 ];

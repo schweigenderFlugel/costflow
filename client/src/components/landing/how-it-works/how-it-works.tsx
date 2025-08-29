@@ -1,25 +1,25 @@
-import { Package, DatabaseZap, FileText, Download } from "lucide-react";
 import { HowTables } from "@/components/landing/how-it-works/how-tables";
+import { Package, DatabaseZap, FileText, Download } from "lucide-react";
 
 // Datos con la información de cada paso
 const stepsData = [
   {
-    icon: <Package className="h-7 w-7 text-purple-600" />,
+    icon: <Package className="size-7 text-purple-600" />,
     bgColor: "bg-purple-100",
     text: "Cargá tus productos e insumos con precios y stock",
   },
   {
-    icon: <DatabaseZap className="h-7 w-7 text-blue-600" />,
+    icon: <DatabaseZap className="size-7 text-blue-600" />,
     bgColor: "bg-blue-100",
     text: "Configurá tus costos indirectos",
   },
   {
-    icon: <FileText className="h-7 w-7 text-green-600" />,
+    icon: <FileText className="size-7 text-green-600" />,
     bgColor: "bg-green-100",
     text: "Creá tu presupuesto seleccionando ítems y cantidades",
   },
   {
-    icon: <Download className="h-7 w-7 text-orange-600" />,
+    icon: <Download className="size-7 text-orange-600" />,
     bgColor: "bg-orange-100",
     text: "Descargá el PDF en segundos y compartilo con tu cliente",
   },
@@ -42,7 +42,7 @@ export function HowItWorks() {
                 key={index}
                 className="flex items-center gap-4 w-full max-w-md mx-auto md:mx-0"
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${step.bgColor}`}>
+                <div className={`max-w-12 max-h-12 p-3 rounded-xl flex items-center justify-center ${step.bgColor}`}>
                   {step.icon}
                 </div>
                 <p className="text-lg font-semibold text-slate-700">{step.text}</p>

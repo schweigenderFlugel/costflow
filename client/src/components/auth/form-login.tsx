@@ -6,11 +6,11 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema } from "@/schemas/login-schema";
-import { EmailField } from "@/components/field-forms/email-field";
-import { PasswordField } from "@/components/field-forms/password-field";
+import { EmailField } from "@/components/shared/auth-fields/email-field";
+import { PasswordField } from "@/components/shared/auth-fields/password-field";
 import type { LoginFormSchema } from "@/schemas/login-schema";
 import { fetcher } from "@/utils/fetcher";
-import { itemToasts } from "@/components/item-toasts";
+import { itemToasts } from "@/components/shared/item-toasts";
 import { useTransition } from "react";
 import SpinLoader from "@/components/shared/spin-loader";
 

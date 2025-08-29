@@ -33,7 +33,7 @@ export default function RootLayout({
       >
         <ReactQueryProvider>
           <Header />
-          <main>{children}</main>
+          {children}
           <Toaster />
           <Footer />
         </ReactQueryProvider>

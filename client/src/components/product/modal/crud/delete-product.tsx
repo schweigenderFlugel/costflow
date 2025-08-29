@@ -1,5 +1,4 @@
 "use client"
-import { itemToasts } from "@/components/item-toasts"
 import DetailProduct from "@/components/product/modal/crud/detail-product"
 import {
   AlertDialog,

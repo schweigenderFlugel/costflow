@@ -12,7 +12,7 @@ import {
   createCurrencyColumn,
   createDateColumn,
   createActionsColumn
-} from "@/components/data-table/column-helpers"
+} from "@/components/shared/data-table/column-helpers"
 
 const columns: ColumnDef<ObjFeedstock>[] = [
   createSelectColumn<ObjFeedstock>(),

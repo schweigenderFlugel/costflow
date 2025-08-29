@@ -27,7 +27,7 @@ export function EmailField<T extends { email: string } & FieldValues>({
             <Input
               type="text"
               placeholder="Ingresá tu correo electrónico"
-              className="placeholder:italic py-5 bg-white text-black "
+              className="py-5 bg-white text-black "
               {...field}
             />
           </FormControl>

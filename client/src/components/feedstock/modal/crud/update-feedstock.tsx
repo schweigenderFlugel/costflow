@@ -21,7 +21,7 @@ const UpdateFeedstock = () => {
     updateFeedstock.mutate(
       { feedstockId: feedstock.id, ...values },
       {
-        onSuccess: (data) => {
+        onSuccess: () => {
           setUpdatedFeedstockData(values)
           setAlreadyUpdated(true)
         }
@@ -46,9 +46,9 @@ const UpdateFeedstock = () => {
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-      <SheetContent className="py-6 px-4 gap-10 justify-start">
+      <SheetContent className="py-6 px-4 gap-1 justify-start">
 
-        <SheetHeader className={alreadyUpdated ? "sr-only" : " p-0"}>
+        <SheetHeader className={alreadyUpdated ? "sr-only" : " px-0"}>
           <SheetTitle className="text-xl">Editar insumo</SheetTitle>
           <SheetDescription className="text-left">
             Actualizá la información de un insumo ya cargado, modificando su nombre, cantidad, valor o cualquier otro dato relevante para mantener tus registros siempre correctos y actualizados.

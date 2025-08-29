@@ -58,7 +58,7 @@ export function IndirectCostSelector({
     }
 
     // CLAVE: Usar watchedIndirectCosts para obtener los IDs reales del formulario
-    const addedIndirectCostIds = (watchedIndirectCosts || []).map((item: any) => item?.id).filter(Boolean);
+    const addedIndirectCostIds = (watchedIndirectCosts || []).map((item) => item?.id).filter(Boolean);
 
     filtered = filtered.filter((ic: IndirectCostObj) => !addedIndirectCostIds.includes(ic.id));
 
@@ -67,7 +67,7 @@ export function IndirectCostSelector({
 
   const handleIndirectCostSelect = (indirectCost: IndirectCostObj) => {
     // Verificar si el costo indirecto ya está seleccionado usando watchedIndirectCosts
-    const alreadySelected = (watchedIndirectCosts || []).some((item: any) => item?.id === indirectCost.id);
+    const alreadySelected = (watchedIndirectCosts || []).some((item) => item?.id === indirectCost.id);
 
     if (alreadySelected) {
       return;
@@ -209,9 +209,9 @@ export function IndirectCostSelector({
 
       {/* Mensaje cuando no hay costos indirectos seleccionados */}
       {fields.length === 0 && (
-        <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg">
-          <p>No hay costos indirectos seleccionados</p>
-          <p className="text-sm">Usa el buscador para agregar costos indirectos al producto</p>
+        <div className="text-center py-6 px-2 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg">
+          <p className="text-sm">No hay costos seleccionados</p>
+          <p className="text-xs">Usa el buscador para agregar costos indirectos al producto</p>
         </div>
       )}
 

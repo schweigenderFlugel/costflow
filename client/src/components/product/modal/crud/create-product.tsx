@@ -17,7 +17,7 @@ const CreateProduct = () => {
 
   const handleCreate = (values: FormDataProduct) => {
     createProduct.mutate(values, {
-      onSuccess: (data) => {
+      onSuccess: () => {
         setCurrentProduct(values)
         setAlreadyCreated(true)
       }
@@ -38,13 +38,13 @@ const CreateProduct = () => {
 
   useEffect(() => {
     if (currentProduct) setCurrentProduct(null)
-  }, [currentProduct])
+  }, [])
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-      <SheetContent className="py-6 px-4 gap-10 justify-start sm:max-w-4xl">
+      <SheetContent className="py-6 px-4 gap-1 justify-start sm:max-w-4xl">
 
-        <SheetHeader className={alreadyCreated ? "sr-only" : "p-0"}>
+        <SheetHeader className={alreadyCreated ? "sr-only" : "px-0"}>
           <SheetTitle className="text-xl">Agregar producto</SheetTitle>
           <SheetDescription className="text-left">
             Acá vas a cargar y mantener la lista de {(" ")}

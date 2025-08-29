@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useDeleteIndirectCostDialog, useUpdateIndirectCostDialog } from "@/hooks/use-indirect-cost-dialog";
 import { IndirectCostObj } from "@/types/items/indirect-cost";
-import { Pencil, Trash2 } from "lucide-react";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 
 
@@ -24,16 +24,16 @@ const IndirectCostActions = ({ indirect_cost }: { indirect_cost: IndirectCostObj
   }
 
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-0.5 justify-center">
       <Button
         data-slot="product-update-dialog-trigger"
         onClick={handleUpdate}
         type="button"
         className="text-primary hover:text-primary cursor-pointer"
         variant={"outline-ghost"}
-        size={"sm"}
+        size={"icon"}
       >
-        <Pencil className="size-4" />
+        <PencilIcon className="size-5" />
       </Button>
 
       <Button
@@ -42,9 +42,9 @@ const IndirectCostActions = ({ indirect_cost }: { indirect_cost: IndirectCostObj
         type="button"
         className="text-red-800 hover:text-red-800 cursor-pointer"
         variant={"outline-ghost"}
-        size={"sm"}
+        size={"icon"}
       >
-        <Trash2 className="size-4" />
+        <TrashIcon className="size-5" />
       </Button>
     </div>
   )

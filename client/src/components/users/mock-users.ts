@@ -1,4 +1,4 @@
-import { UsersData, UserState } from "@/types/items/users";
+import { UsersData, UserState, UserRole } from "@/types/items/users";
 
 export const mockUsers: UsersData[] = [
   {
@@ -6,7 +6,7 @@ export const mockUsers: UsersData[] = [
     name: "Luis",
     lastname: "Ángel",
     email: "luis@example.com",
-    role: "Admin",
+    role: UserRole.ADMIN,
     workstation: "IT",
     state: UserState.PENDING,
     created_at: new Date().toISOString(),
@@ -18,7 +18,7 @@ export const mockUsers: UsersData[] = [
     name: "Ana",
     lastname: "García",
     email: "ana@example.com",
-    role: "User",
+    role: UserRole.EMPLOYEE,
     workstation: null,
     state: UserState.ACCEPTED,
     created_at: new Date().toISOString(),
@@ -26,11 +26,11 @@ export const mockUsers: UsersData[] = [
     recovery_code: null,
   },
   {
-    id: "2",
+    id: "3",
     name: "Cesar",
     lastname: "Noguera",
     email: "cesar@example.com",
-    role: "User",
+    role: UserRole.EMPLOYEE,
     workstation: null,
     state: UserState.REJECTED,
     created_at: new Date().toISOString(),

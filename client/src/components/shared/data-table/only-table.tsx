@@ -1,5 +1,5 @@
-import LoadingRow from "@/components/data-table/loading-row"
-import NoResult from "@/components/data-table/no-results"
+import LoadingRow from "@/components/shared/data-table/loading-row"
+import NoResult from "@/components/shared/data-table/no-results"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { flexRender, Table as ITTable } from "@tanstack/react-table"

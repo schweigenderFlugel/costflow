@@ -9,7 +9,7 @@ export const useDataQuery = <TData = unknown[]>(
   inputRequest: DataQueryType = "feedstock",
   initialData?: TData | []
 ) => {
-  const queryOptions: any = {
+  const baseQueryOptions = {
     queryKey: [inputRequest],
     queryFn: async (): Promise<TData> => {
       const response = await fetcher({ input: `/api/${inputRequest}` });
@@ -26,9 +26,9 @@ export const useDataQuery = <TData = unknown[]>(
   };
 
   // Solo agregar initialData si se proporciona
-  if (initialData !== undefined) {
-    queryOptions.initialData = initialData as TData;
-  }
+  const queryOptions = initialData !== undefined
+    ? { ...baseQueryOptions, initialData: initialData as TData }
+    : baseQueryOptions;
 
   const query = useQuery(queryOptions);
 

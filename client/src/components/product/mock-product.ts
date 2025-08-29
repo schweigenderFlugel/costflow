@@ -33,6 +33,17 @@ export const mockProducts: ObjProduct[] = [
     state: StateMatter.SOLID,
     measure_unit: MeasureUnit.UNITS,
     quantity: 50,
+    labour_time: 45, // 45 minutos
+    indirect_costs: [
+      {
+        id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
+        usage: 1.2
+      },
+      {
+        id: "9c6349f7-59ee-4c6b-81e6-9ecbb23361d0",
+        usage: 0.8
+      }
+    ],
     feedstocks: [
       {
         id: randomUUID(),
@@ -57,8 +68,7 @@ export const mockProducts: ObjProduct[] = [
         sku: "LEV-0010",
       },
     ],
-    created_at: new Date("2025-07-01"),
-    updated_at: new Date("2025-07-01"),
+    date: new Date("2025-07-01"),
     is_deleted: false,
   },
   {
@@ -69,6 +79,13 @@ export const mockProducts: ObjProduct[] = [
     state: StateMatter.SOLID,
     measure_unit: MeasureUnit.UNITS,
     quantity: 20,
+    labour_time: 60, // 60 minutos
+    indirect_costs: [
+      {
+        id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
+        usage: 1.5
+      }
+    ],
     feedstocks: [
       {
         id: randomUUID(),
@@ -115,8 +132,7 @@ export const mockProducts: ObjProduct[] = [
         sku: "ESV-0007",
       },
     ],
-    created_at: new Date("2025-07-02"),
-    updated_at: new Date("2025-07-02"),
+    date: new Date("2025-07-02"),
     is_deleted: false,
   },
   {
@@ -127,6 +143,17 @@ export const mockProducts: ObjProduct[] = [
     state: StateMatter.SOLID,
     measure_unit: MeasureUnit.UNITS,
     quantity: 15,
+    labour_time: 90, // 90 minutos
+    indirect_costs: [
+      {
+        id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
+        usage: 2.0
+      },
+      {
+        id: "9c6349f7-59ee-4c6b-81e6-9ecbb23361d0",
+        usage: 1.0
+      }
+    ],
     feedstocks: [
       {
         id: randomUUID(),
@@ -151,8 +178,7 @@ export const mockProducts: ObjProduct[] = [
         sku: "MAN-0009",
       },
     ],
-    created_at: new Date("2025-07-03"),
-    updated_at: new Date("2025-07-03"),
+    date: new Date("2025-07-03"),
     is_deleted: false,
   },
   {
@@ -163,6 +189,13 @@ export const mockProducts: ObjProduct[] = [
     state: StateMatter.SOLID,
     measure_unit: MeasureUnit.UNITS,
     quantity: 100,
+    labour_time: 30, // 30 minutos
+    indirect_costs: [
+      {
+        id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
+        usage: 0.8
+      }
+    ],
     feedstocks: [
       {
         id: randomUUID(),
@@ -187,116 +220,7 @@ export const mockProducts: ObjProduct[] = [
         sku: "CHO-0011",
       },
     ],
-    created_at: new Date("2025-07-04"),
-    updated_at: new Date("2025-07-04"),
-    is_deleted: false,
-  },
-  {
-    id: randomUUID(),
-    name: "Budín de Limón",
-    description: "Budín esponjoso sabor limón",
-    sku: "PROD-0005",
-    state: StateMatter.SOLID,
-    measure_unit: MeasureUnit.UNITS,
-    quantity: 25,
-    feedstocks: [
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.HARINA,
-        product: randomUUID(),
-        quantity_required: 300,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Harina de trigo 000",
-        unit_cost: 1200,
-        sku: "HAR-0001",
-      },
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.AZUCAR,
-        product: randomUUID(),
-        quantity_required: 180,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Azúcar refinada",
-        unit_cost: 950,
-        sku: "AZU-0002",
-      },
-    ],
-    created_at: new Date("2025-07-05"),
-    updated_at: new Date("2025-07-05"),
-    is_deleted: false,
-  },
-  {
-    id: randomUUID(),
-    name: "Alfajores de Maicena",
-    description: "Alfajores rellenos con dulce de leche",
-    sku: "PROD-0006",
-    state: StateMatter.SOLID,
-    measure_unit: MeasureUnit.UNITS,
-    quantity: 60,
-    feedstocks: [
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.HARINA,
-        product: randomUUID(),
-        quantity_required: 150,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Harina de trigo 000",
-        unit_cost: 1200,
-        sku: "HAR-0001",
-      },
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.MANTECA,
-        product: randomUUID(),
-        quantity_required: 80,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Manteca",
-        unit_cost: 2700,
-        sku: "MAN-0009",
-      },
-    ],
-    created_at: new Date("2025-07-06"),
-    updated_at: new Date("2025-07-06"),
-    is_deleted: false,
-  },
-  {
-    id: randomUUID(),
-    name: "Croissant",
-    description: "Medialuna de manteca estilo francés",
-    sku: "PROD-0007",
-    state: StateMatter.SOLID,
-    measure_unit: MeasureUnit.UNITS,
-    quantity: 40,
-    feedstocks: [
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.HARINA,
-        product: randomUUID(),
-        quantity_required: 250,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Harina de trigo 000",
-        unit_cost: 1200,
-        sku: "HAR-0001",
-      },
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.MANTECA,
-        product: randomUUID(),
-        quantity_required: 120,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Manteca",
-        unit_cost: 2700,
-        sku: "MAN-0009",
-      },
-    ],
-    created_at: new Date("2025-07-07"),
-    updated_at: new Date("2025-07-07"),
+    date: new Date("2025-07-04"),
     is_deleted: false,
   },
   {
@@ -307,6 +231,17 @@ export const mockProducts: ObjProduct[] = [
     state: StateMatter.SOLID,
     measure_unit: MeasureUnit.UNITS,
     quantity: 12,
+    labour_time: 25, // 25 minutos
+    indirect_costs: [
+      {
+        id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
+        usage: 1.8
+      },
+      {
+        id: "9c6349f7-59ee-4c6b-81e6-9ecbb23361d0",
+        usage: 1.2
+      }
+    ],
     feedstocks: [
       {
         id: randomUUID(),
@@ -342,91 +277,7 @@ export const mockProducts: ObjProduct[] = [
         sku: "TOM-0017",
       },
     ],
-    created_at: new Date("2025-07-08"),
-    updated_at: new Date("2025-07-08"),
-    is_deleted: false,
-  },
-  {
-    id: randomUUID(),
-    name: "Empanadas de Carne",
-    description: "Empanadas criollas fritas",
-    sku: "PROD-0009",
-    state: StateMatter.SOLID,
-    measure_unit: MeasureUnit.UNITS,
-    quantity: 80,
-    feedstocks: [
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.HARINA,
-        product: randomUUID(),
-        quantity_required: 300,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Harina de trigo 000",
-        unit_cost: 1200,
-        sku: "HAR-0001",
-      },
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.ACEITE,
-        product: randomUUID(),
-        quantity_required: 50,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.MILLILITERS,
-        name: "Aceite de girasol",
-        unit_cost: 2100,
-        sku: "ACE-0003",
-      },
-    ],
-    created_at: new Date("2025-07-09"),
-    updated_at: new Date("2025-07-09"),
-    is_deleted: false,
-  },
-  {
-    id: randomUUID(),
-    name: "Sándwich de Miga",
-    description: "Sándwich de jamón y queso sin corteza",
-    sku: "PROD-0010",
-    state: StateMatter.SOLID,
-    measure_unit: MeasureUnit.UNITS,
-    quantity: 50,
-    feedstocks: [
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.HARINA,
-        product: randomUUID(),
-        quantity_required: 100,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Harina de trigo 000",
-        unit_cost: 1200,
-        sku: "HAR-0001",
-      },
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.JAMON,
-        product: randomUUID(),
-        quantity_required: 80,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Jamón cocido",
-        unit_cost: 4200,
-        sku: "JAM-0018",
-      },
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.QUESO,
-        product: randomUUID(),
-        quantity_required: 60,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Queso mozzarella",
-        unit_cost: 3500,
-        sku: "QUE-0016",
-      },
-    ],
-    created_at: new Date("2025-07-10"),
-    updated_at: new Date("2025-07-10"),
+    date: new Date("2025-07-08"),
     is_deleted: false,
   },
   {
@@ -437,6 +288,17 @@ export const mockProducts: ObjProduct[] = [
     state: StateMatter.SOLID,
     measure_unit: MeasureUnit.UNITS,
     quantity: 10,
+    labour_time: 120, // 120 minutos
+    indirect_costs: [
+      {
+        id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
+        usage: 2.5
+      },
+      {
+        id: "9c6349f7-59ee-4c6b-81e6-9ecbb23361d0",
+        usage: 1.8
+      }
+    ],
     feedstocks: [
       {
         id: randomUUID(),
@@ -472,80 +334,7 @@ export const mockProducts: ObjProduct[] = [
         sku: "CRE-0014",
       },
     ],
-    created_at: new Date("2025-07-11"),
-    updated_at: new Date("2025-07-11"),
-    is_deleted: false,
-  },
-  {
-    id: randomUUID(),
-    name: "Medialunas de Grasa",
-    description: "Medialunas tradicionales argentinas",
-    sku: "PROD-0012",
-    state: StateMatter.SOLID,
-    measure_unit: MeasureUnit.UNITS,
-    quantity: 35,
-    feedstocks: [
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.HARINA,
-        product: randomUUID(),
-        quantity_required: 200,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Harina de trigo 000",
-        unit_cost: 1200,
-        sku: "HAR-0001",
-      },
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.ACEITE,
-        product: randomUUID(),
-        quantity_required: 30,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.MILLILITERS,
-        name: "Aceite de girasol",
-        unit_cost: 2100,
-        sku: "ACE-0003",
-      },
-    ],
-    created_at: new Date("2025-07-12"),
-    updated_at: new Date("2025-07-12"),
-    is_deleted: false,
-  },
-  {
-    id: randomUUID(),
-    name: "Focaccia",
-    description: "Pan italiano con aceite de oliva y hierbas",
-    sku: "PROD-0013",
-    state: StateMatter.SOLID,
-    measure_unit: MeasureUnit.UNITS,
-    quantity: 15,
-    feedstocks: [
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.HARINA,
-        product: randomUUID(),
-        quantity_required: 350,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Harina de trigo 000",
-        unit_cost: 1200,
-        sku: "HAR-0001",
-      },
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.ACEITE,
-        product: randomUUID(),
-        quantity_required: 40,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.MILLILITERS,
-        name: "Aceite de girasol",
-        unit_cost: 2100,
-        sku: "ACE-0003",
-      },
-    ],
-    created_at: new Date("2025-07-13"),
-    updated_at: new Date("2025-07-13"),
+    date: new Date("2025-07-11"),
     is_deleted: false,
   },
   {
@@ -556,6 +345,13 @@ export const mockProducts: ObjProduct[] = [
     state: StateMatter.SOLID,
     measure_unit: MeasureUnit.UNITS,
     quantity: 20,
+    labour_time: 50, // 50 minutos
+    indirect_costs: [
+      {
+        id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
+        usage: 1.5
+      }
+    ],
     feedstocks: [
       {
         id: randomUUID(),
@@ -580,44 +376,7 @@ export const mockProducts: ObjProduct[] = [
         sku: "NUE-0013",
       },
     ],
-    created_at: new Date("2025-07-14"),
-    updated_at: new Date("2025-07-14"),
+    date: new Date("2025-07-14"),
     is_deleted: false,
   },
-  {
-    id: randomUUID(),
-    name: "Cheesecake",
-    description: "Tarta de queso cremosa con base de galletas",
-    sku: "PROD-0015",
-    state: StateMatter.SOLID,
-    measure_unit: MeasureUnit.UNITS,
-    quantity: 8,
-    feedstocks: [
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.QUESO,
-        product: randomUUID(),
-        quantity_required: 400,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.GRAMS,
-        name: "Queso mozzarella",
-        unit_cost: 3500,
-        sku: "QUE-0016",
-      },
-      {
-        id: randomUUID(),
-        feedstock: FEEDSTOCK_IDS.CREMA,
-        product: randomUUID(),
-        quantity_required: 300,
-        currency: Currency.ARS,
-        measure_unit: MeasureUnit.MILLILITERS,
-        name: "Crema de leche",
-        unit_cost: 2500,
-        sku: "CRE-0014",
-      },
-    ],
-    created_at: new Date("2025-07-15"),
-    updated_at: new Date("2025-07-15"),
-    is_deleted: false,
-  }
 ];

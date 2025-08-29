@@ -1,9 +1,11 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { useCreateFeedstockDialog } from "@/hooks/use-feedstock-dialog"
-import { Plus } from "lucide-react"
+import { PlusIcon } from "@heroicons/react/24/outline"
 
 
-const CreateFeedstockTrigger = () => {
+const CreateFeedstockTrigger = ({ variant }: { variant?: "default" | "outline" }) => {
   const { setIsOpen } = useCreateFeedstockDialog()
 
   return (
@@ -12,8 +14,9 @@ const CreateFeedstockTrigger = () => {
       className="gap-2 flex"
       onClick={() => setIsOpen(true)}
       data-slot="feedstock-create-dialog-trigger"
+      variant={variant}
     >
-      <Plus />
+      <PlusIcon className="size-5" />
       Agregar insumo
     </Button >
   )

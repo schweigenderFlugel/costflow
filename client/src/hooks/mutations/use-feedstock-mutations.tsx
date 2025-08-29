@@ -2,7 +2,7 @@
 
 import { useDataMutation } from "@/hooks/use-data-mutation";
 import { fetcher } from "@/utils/fetcher";
-import { itemToasts } from "@/components/item-toasts";
+import { itemToasts } from "@/components/shared/item-toasts";
 import { FormDataFeedstock } from "@/schemas/feedstock-schema";
 
 export const useFeedstockMutations = () => {
@@ -55,7 +55,7 @@ export const useFeedstockMutations = () => {
 
       return data;
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (data) => {
       itemToasts.updateSuccess({ description: data.name });
     },
     onError: (error) => {

@@ -123,7 +123,7 @@ export function ProviderField<T extends FieldValues>({
                   {inputValue.trim() && !filteredProviders.some(p => p.toLowerCase() === inputValue.toLowerCase()) && (
                     <div className="px-3 py-2 text-xs text-gray-500 border-t bg-gray-50">
                       <span className="italic">
-                        Presiona Enter para usar "{inputValue}" como nuevo proveedor
+                        Presiona Enter para usar &quot;{inputValue}&quot; como nuevo proveedor
                       </span>
                     </div>
                   )}

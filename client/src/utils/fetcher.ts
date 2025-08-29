@@ -27,7 +27,7 @@ export const fetcher = async ({ input, method = "GET", body, headers, cache }: F
       } catch {
         try {
           errorDetail = await res?.text();
-        } catch (error) {
+        } catch {
           errorDetail = "Error desconocido";
         }
       }

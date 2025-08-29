@@ -2,11 +2,11 @@
 
 import { useDataMutation } from "@/hooks/use-data-mutation";
 import { fetcher } from "@/utils/fetcher";
-import { itemToasts } from "@/components/item-toasts";
+import { itemToasts } from "@/components/shared/item-toasts";
 import { FormDataProduct } from "@/schemas/product-schema";
 
 // Interfaces específicas para productos
-interface CreateProductVariables extends FormDataProduct { }
+type CreateProductVariables = FormDataProduct;
 
 interface UpdateProductVariables extends FormDataProduct {
   productId: string;

@@ -32,10 +32,14 @@ const DetailFeedstock = ({ feedstock }: { feedstock: ObjFeedstock | Feedstock | 
           <h3 className="text-sm">Costo unitario:</h3>
           <span className="text-sm font-medium text-foreground">
             {
-              (new Intl.NumberFormat("es-AR", {
-                style: "currency",
-                currency: feedstock.currency,
-              }).format(feedstock.unit_cost))
+              feedstock.currency ? (
+                new Intl.NumberFormat("es-AR", {
+                  style: "currency",
+                  currency: feedstock.currency,
+                }).format(feedstock.unit_cost)
+              ) : (
+                `$${feedstock.unit_cost}`
+              )
             }
           </span>
         </div>
@@ -58,26 +62,12 @@ const DetailFeedstock = ({ feedstock }: { feedstock: ObjFeedstock | Feedstock | 
           <h3 className="text-sm">Fecha de creación:</h3>
           <span className="text-sm font-medium text-foreground">
             {
-              'created_at' in feedstock ?
-                new Date(feedstock.created_at).toLocaleDateString()
+              'date' in feedstock ?
+                new Date(feedstock.date).toLocaleDateString()
                 : new Date().toLocaleDateString()
             }
           </span>
         </div>
-
-        {
-          'created_at' in feedstock &&
-            (feedstock.created_at === feedstock.updated_at) ?
-            <div className="flex justify-between items-center">
-              <h3 className="text-sm">Fecha de modificación:</h3>
-              <span className="text-sm font-medium text-foreground">
-                {
-                  new Date(feedstock.updated_at).toLocaleDateString()
-                }
-              </span>
-            </div>
-            : ""
-        }
 
       </div>
     </div >
