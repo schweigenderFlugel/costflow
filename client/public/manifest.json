@@ -1,0 +1,90 @@
+{
+  "name": "Cotzia - Calculadora de Costos Empresariales",
+  "short_name": "Cotzia",
+  "description": "Herramienta profesional para calcular costos de producción, gestionar insumos y crear presupuestos precisos para tu negocio.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "es",
+  "categories": [
+    "business",
+    "finance",
+    "productivity"
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/images/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Vista principal de Cotzia en desktop"
+    },
+    {
+      "src": "/assets/images/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Vista principal de Cotzia en móvil"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Calculadora",
+      "short_name": "Calcular",
+      "description": "Ir directamente a la calculadora de costos",
+      "url": "/calculadora",
+      "icons": [
+        {
+          "src": "/icons/calculator.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Productos",
+      "short_name": "Productos",
+      "description": "Gestionar productos",
+      "url": "/productos",
+      "icons": [
+        {
+          "src": "/icons/products.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Insumos",
+      "short_name": "Insumos",
+      "description": "Gestionar insumos",
+      "url": "/insumos",
+      "icons": [
+        {
+          "src": "/icons/feedstock.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

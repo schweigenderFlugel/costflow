@@ -9,10 +9,9 @@ import PageHeaderSection from "@/components/shared/page-header-section";
 import PageInfoDialog from "@/components/shared/page-info-dialog";
 import { fetcher } from "@/utils/fetcher";
 import { Suspense } from "react";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Inicio",
-};
+export const metadata = pageMetadata.dashboard();
 
 const infoList = [
   {

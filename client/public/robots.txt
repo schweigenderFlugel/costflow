@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Allow: /inicio-de-sesion
+Allow: /registro
+Allow: /olvide-mi-contrasena
+Disallow: /configuracion
+Disallow: /inicio
+Disallow: /calculadora
+Disallow: /productos
+Disallow: /insumos
+Disallow: /cambiar-contrasena
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://cotzia.vercel.app/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

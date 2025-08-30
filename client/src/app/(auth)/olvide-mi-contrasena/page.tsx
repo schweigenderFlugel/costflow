@@ -1,5 +1,8 @@
 import FormForgotPassword from "@/components/auth/form-forgot-password";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata = pageMetadata.forgotPassword();
 
 export default function RegisterPage() {
   return (

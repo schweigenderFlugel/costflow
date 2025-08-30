@@ -1,7 +1,8 @@
+"use client"
+import LabourForm from "@/components/indirect-cost/labour/labour-form"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -9,49 +10,66 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { PlusIcon } from "@heroicons/react/24/solid"
+import { fetcher } from "@/utils/fetcher"
+import { PlusIcon, MinusIcon } from "@heroicons/react/24/solid"
+import { Suspense, useEffect, useState } from "react"
 
 const LabourDialog = () => {
+  const [addLabour, setAddLabour] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [labour, setLabour] = useState([]);
+
+  useEffect(() => {
+    const fetchLabour = async () => {
+      setIsLoading(true);
+      const data = await fetcher({ input: `/api/labour` });
+      setLabour(data);
+      setIsLoading(false);
+    };
+
+    fetchLabour();
+  }, []);
+
   return (
     <Dialog>
-      <form>
-        <DialogTrigger asChild>
-          <Button variant="outline">Ver mano de obra</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-xl">
-          <DialogHeader>
-            <DialogTitle>Costos de mano de obra</DialogTitle>
-            <div className="flex justify-between items-center w-full">
-              <DialogDescription>
-                Valor por mes de los roles de trabajo.
-              </DialogDescription>
-              <Button size={"sm"} className="text-xs">
-                <PlusIcon className="w-4 h-4" />
-                Agregar mano de obra
-              </Button>
-            </div>
-          </DialogHeader>
-
-          <div className="grid gap-4">
-            <div className="grid gap-3">
-              <Label htmlFor="name-1">Name</Label>
-              <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="username-1">Username</Label>
-              <Input id="username-1" name="username" defaultValue="@peduarte" />
-            </div>
+      <DialogTrigger asChild>
+        <Button variant="outline">
+          <span className="sm:inline hidden">Ver {" "}</span>
+          Mano de Obra</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-4xl">
+        <DialogHeader>
+          <DialogTitle>Costos de mano de obra</DialogTitle>
+          <div className="flex justify-between sm:flex-row flex-col items-start gap-2 sm:items-center w-full">
+            <DialogDescription>
+              Valor por mes de los roles de trabajo.
+            </DialogDescription>
+            <Button size={"sm"} className="text-xs ml-auto" onClick={() => setAddLabour(!addLabour)}>
+              {!addLabour ? <PlusIcon className="w-4 h-4" /> : <MinusIcon className="w-4 h-4" />}
+              {!addLabour ? "Agregar mano de obra" : "No agregar mano de obra"}
+            </Button>
           </div>
+        </DialogHeader>
+        <Suspense>
+          {
+            (isLoading && !labour.length) ? "Cargando..." : (
+              <div className="flex flex-col gap-3 max-h-96 overflow-y-auto">
+                {labour?.map((item: { id: string, salary: number, hours: number, date: Date }) => {
+                  return (
+                    <LabourForm onCancel={() => { }} initialValues={item} key={item.id} isDisabled type="update" />
+                  )
+                })}
+              </div>
+            )
+          }
+
           <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <Button type="submit">Save changes</Button>
+            {
+              addLabour && <LabourForm onCancel={() => setAddLabour(false)} />
+            }
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </Suspense>
+      </DialogContent>
     </Dialog>
   )
 }

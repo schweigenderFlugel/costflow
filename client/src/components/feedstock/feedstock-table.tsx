@@ -13,7 +13,7 @@ const FeedstockTable = async () => {
       {
         (data.error || data.detail) &&
         <div className="flex sm:flex-row flex-col justify-between place-items-start sm:items-center px-5 py-3 border rounded-md bg-muted/80">
-          <p className="text-red-400">Mensaje del servidor: {data.error || data.detail}</p>
+          <p className="text-red-400">Mensaje del servidor: {data.detail || data.error}</p>
           <p className="text-xs text-muted-foreground">Usando datos de prueba</p>
         </div>
       }

@@ -13,7 +13,7 @@ const ConfigurationsTabs = () => {
   const { activeTab, setActiveTab } = useTabs()
 
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col gap-6 max-w-[calc(100svw-2rem)] w-6xl mx-auto px-1 sm:px-5">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col gap-6 max-w-[calc(100svw-2rem)] w-6xl mx-auto px-1 sm:px-5 overflow-x-auto">
       <TabsList asChild className="h-auto p-0 bg-transparent rounded-none">
         <nav>
           {tabsList.map((tab) => (
