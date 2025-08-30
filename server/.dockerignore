@@ -1,0 +1,6 @@
+*
+!/Pipfile
+!/Pipfile.lock
+!/api
+!/assets
+!/scripts
