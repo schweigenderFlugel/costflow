@@ -168,9 +168,6 @@ export function ProductTable({
             Utiliza el buscador para seleccionar los productos que quieras
             agregar a la lista.
           </p>
-          {/* <Button onClick={() => console.log("Abrir Sheet")}>
-            + Agregar producto
-          </Button> */}
         </div>
       )}
     </div>

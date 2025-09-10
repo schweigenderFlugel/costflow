@@ -20,8 +20,7 @@ export default function FormForgotPassword() {
     },
   });
 
-  const onSubmit = form.handleSubmit((values) => {
-    console.log("Valores del formulario:", values);
+  const onSubmit = form.handleSubmit(() => {
     const id = toast("Hemos enviado un correo electrónico a su dirección", {
       description: "Por favor revise su bandeja de entrada o spam",
       action: {

@@ -100,10 +100,9 @@ export default function AddFeedstockSheet({
   };
 
   const handleSelectFeedstock = (f: FeedstockOption) => {
-    console.log(f);
     setSelectedFeedstocks((prev) => {
       const existing = prev.find((sf) => sf.id === f.id);
-      if (existing) return prev; // ya está en la lista temporal, no agregamos otra vez
+      if (existing) return prev;
       const unitValue =
         f.currency === "USD"
           ? f.unit_cost * (latestPeriodData?.dolar.price ?? 1)
