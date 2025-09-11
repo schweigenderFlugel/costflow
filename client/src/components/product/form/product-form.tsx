@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { productSchema, FormDataProduct } from "@/schemas/product-schema";
+import { productSchema } from "@/schemas/product-schema";
 import { useMeasureUnitLogic } from "@/hooks/form/use-measure-unit-logic";
 import {
   SkuField,
@@ -16,6 +16,7 @@ import {
   IndirectCostSelector,
 } from "@/components/shared/form-fields";
 import { ProductFormProps } from "@/interfaces/interface-product-form-props";
+import { FormDataProduct } from "@/types/type-product";
 
 const ProductForm = ({ defaultValues, onSubmit, formId }: ProductFormProps) => {
   const form = useForm<FormDataProduct>({

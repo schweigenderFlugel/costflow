@@ -2,13 +2,7 @@
 import PageHeaderSection from "@/components/shared/page-header-section";
 import { useTabs } from "@/hooks/use-tabs";
 import { TabHeaderConfig } from "@/interfaces/interface-tab-header-config";
-
-type TabValue =
-  | "costs"
-  | "profile"
-  | "notifications"
-  | "user-management"
-  | "help";
+import type { TabValue } from "@/types/type-tab-value";
 
 const tabConfigs: Record<TabValue, TabHeaderConfig> = {
   costs: {

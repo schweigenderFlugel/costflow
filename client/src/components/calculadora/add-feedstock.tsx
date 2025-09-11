@@ -15,16 +15,9 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { HistorialData } from "@/interfaces/interface-historial";
 import FeedstockTable from "@/components/calculadora/table-feedstock";
-import { MeasureUnits } from "@/components/calculadora/measure-units";
+import { MeasureUnits } from "@/types/measure/type-measure-units";
 import { ProductCalculation } from "@/types/type-product-calculation";
-
-type FeedstockOption = {
-  id: string;
-  name: string;
-  currency: "ARS" | "USD";
-  unit_cost: number;
-  measure_unit: keyof typeof MeasureUnits;
-};
+import type { FeedstockOption } from "@/types/type-feedstock-option";
 
 export default function AddFeedstockSheet({
   setProducts,

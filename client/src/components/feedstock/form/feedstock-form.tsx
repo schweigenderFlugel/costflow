@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { feedstockSchema, FormDataFeedstock } from "@/schemas/feedstock-schema";
+import { feedstockSchema } from "@/schemas/feedstock-schema";
 import { useMeasureUnitLogic } from "@/hooks/form/use-measure-unit-logic";
 import {
   SkuField,
@@ -15,6 +15,7 @@ import {
   CurrencyField,
 } from "@/components/shared/form-fields";
 import { FeedstockFormProps } from "@/interfaces/interface-feedstock-form-props";
+import { FormDataFeedstock } from "@/types/type-feedstock";
 
 const FeedstockForm = ({
   defaultValues,

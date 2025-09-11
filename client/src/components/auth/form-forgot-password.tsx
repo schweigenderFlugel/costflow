@@ -6,11 +6,9 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EmailField } from "@/components/shared/auth-fields/email-field";
-import {
-  ForgotPasswordSchema,
-  forgotSchema,
-} from "@/schemas/forgot-password-schema";
+import { forgotSchema } from "@/schemas/forgot-password-schema";
 import { toast } from "sonner";
+import { ForgotPasswordSchema } from "@/types/type-forgot-password";
 
 export default function FormForgotPassword() {
   const form = useForm<ForgotPasswordSchema>({

@@ -22,7 +22,7 @@ import {
 import { Trash2 } from "lucide-react";
 import QuantityInput from "@/components/calculadora/quantity-input";
 import { FeedstockCalculation } from "../../types/feedstock-type";
-import { MeasureUnits } from "@/components/calculadora/measure-units";
+import { MeasureUnits } from "@/types/measure/type-measure-units";
 import { FeedstockTableProps } from "@/interfaces/interface-feedstock-table-props";
 
 export default function FeedstockTable({

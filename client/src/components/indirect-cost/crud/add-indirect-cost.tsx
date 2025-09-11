@@ -1,6 +1,5 @@
 "use client";
 
-import { FormDataIndirectCost } from "@/schemas/indirect-cost-schema";
 import { useIndirectCostMutations } from "@/hooks/mutations/use-indirect-cost-mutations";
 import IndirectCostForm from "@/components/indirect-cost/form/indirect-cost-form";
 import { useCreateIndirectCostDialog } from "@/hooks/use-indirect-cost-dialog";
@@ -16,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import DetailIndirectCost from "@/components/indirect-cost/crud/detail-indirect-cost";
 import { CheckCheck } from "lucide-react";
 import { IndirectCostInput } from "@/interfaces/interface-indirect-costs";
+import { FormDataIndirectCost } from "@/types/type-form-data-indirect-cost";
 
 const defaultValues = {
   type: "",

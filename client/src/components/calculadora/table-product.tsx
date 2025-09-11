@@ -21,16 +21,8 @@ import {
 } from "@/components/ui/table";
 import { Trash2 } from "lucide-react";
 import QuantityInput from "@/components/calculadora/quantity-input";
+import type { Product } from "@/types/product/type-product";
 
-// 🔹 Tipo de datos
-export type Product = {
-  id: string;
-  name: string;
-  quantity: number;
-  unit?: string;
-};
-
-// 🔹 Tabla ahora recibe productos desde el Sheet
 export function ProductTable({
   products,
   setProducts,
@@ -54,7 +46,6 @@ export function ProductTable({
     table.resetRowSelection();
   };
 
-  // 🔹 Definición de columnas
   const columns: ColumnDef<Product>[] = [
     {
       id: "select",

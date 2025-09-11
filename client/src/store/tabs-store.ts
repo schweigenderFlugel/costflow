@@ -1,13 +1,7 @@
 import { TabsState } from "@/interfaces/interface-tabs-state";
+import { TabValue } from "@/types/type-tab-value";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-
-type TabValue =
-  | "costs"
-  | "profile"
-  | "notifications"
-  | "user-management"
-  | "help";
 
 export const useTabsStore = create<TabsState>()(
   persist(

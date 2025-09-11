@@ -6,7 +6,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { Table } from "@tanstack/react-table";
 import {
   translateFeedstockHeaders,
   translateProductsHeaders,
@@ -17,11 +16,7 @@ import { translateIndirectCostHeaders } from "@/utils/translate/cost-translate";
 import { ObjFeedstock } from "@/interfaces/interface-obj-feedstock";
 import { IndirectCostInput } from "@/interfaces/interface-indirect-costs";
 import { ObjProduct } from "@/interfaces/interface-product";
-
-type DropdownProps<T> = {
-  table: Table<T>;
-  columnsTo: "feedstock" | "product" | "users" | "indirect_cost";
-};
+import { DropdownProps } from "@/types/type-dropdown-props";
 
 const ColumnsDropdown = <TData,>({
   table,

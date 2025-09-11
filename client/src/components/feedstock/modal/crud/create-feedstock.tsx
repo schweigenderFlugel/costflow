@@ -2,7 +2,6 @@
 import FeedstockForm from "@/components/feedstock/form/feedstock-form";
 import FormFeedstockFooter from "@/components/feedstock/form/form-feedstock-footer";
 import { useCreateFeedstockDialog } from "@/hooks/use-feedstock-dialog";
-import { FormDataFeedstock } from "@/schemas/feedstock-schema";
 import { useEffect, useState } from "react";
 import {
   Sheet,
@@ -14,6 +13,7 @@ import {
 import { useFeedstockMutations } from "@/hooks/mutations/use-feedstock-mutations";
 import FeedstockCreated from "@/components/feedstock/modal/crud/already/feedstock-created";
 import { Feedstock } from "@/interfaces/interface-feedstock";
+import { FormDataFeedstock } from "@/types/type-feedstock";
 
 const CreateFeedstock = () => {
   const [alreadyCreated, setAlreadyCreated] = useState<boolean>(false);

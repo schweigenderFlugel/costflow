@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { FormDataIndirectCost } from "@/schemas/indirect-cost-schema";
 import { useIndirectCostMutations } from "@/hooks/mutations/use-indirect-cost-mutations";
 import IndirectCostForm, {
   COST_TYPES,
@@ -19,6 +18,7 @@ import DetailIndirectCost from "@/components/indirect-cost/crud/detail-indirect-
 import { CheckCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IndirectCostInput } from "@/interfaces/interface-indirect-costs";
+import { FormDataIndirectCost } from "@/types/type-form-data-indirect-cost";
 
 const UpdateIndirectCost = () => {
   const [alreadyUpdated, setAlreadyUpdated] = useState<boolean>(false);

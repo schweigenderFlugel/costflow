@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Trash2 } from "lucide-react";
-import { MeasureUnits } from "@/components/calculadora/measure-units";
+import { MeasureUnits } from "@/types/measure/type-measure-units";
 import { ProductCalculation } from "@/types/type-product-calculation";
 
 export function CalculationTable({

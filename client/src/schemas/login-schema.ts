@@ -12,9 +12,5 @@ import { z } from "zod";
 
 export const userSchema = z.object({
   email: z.string().email({ message: "El correo no es válido" }).trim(),
-  password: z
-    .string()
-    .min(1, "Ingrese su contraseña")
+  password: z.string().min(1, "Ingrese su contraseña"),
 });
-
-export type LoginFormSchema = z.infer<typeof userSchema>;

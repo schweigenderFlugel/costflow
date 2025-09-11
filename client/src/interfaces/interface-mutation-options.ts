@@ -1,4 +1,4 @@
-type DataQueryType = "product" | "feedstock" | "users" | "indirect_cost";
+import { DataQueryType } from "@/types/type-data-query";
 
 export interface MutationOptions<TData, TVariables> {
   queryType: DataQueryType;

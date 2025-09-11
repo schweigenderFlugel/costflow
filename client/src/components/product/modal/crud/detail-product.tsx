@@ -1,6 +1,6 @@
 import { ObjProduct, Product } from "@/interfaces/interface-product";
 import { cn } from "@/lib/utils";
-import { FormDataProduct } from "@/schemas/product-schema";
+import { FormDataProduct } from "@/types/type-product";
 import { translateMeasureUnit } from "@/utils/translate/shared-translate";
 
 const DetailProduct = ({

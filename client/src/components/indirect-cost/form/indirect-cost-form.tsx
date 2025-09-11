@@ -1,9 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FormDataIndirectCost,
-  indirectCostSchema,
-} from "@/schemas/indirect-cost-schema";
+import { indirectCostSchema } from "@/schemas/indirect-cost-schema";
 import {
   Form,
   FormField,
@@ -26,6 +23,7 @@ import SpinLoader from "@/components/shared/spin-loader";
 import DateField from "@/components/shared/form-fields/date-field";
 import { UnitCostField } from "@/components/shared/form-fields";
 import { IndirectCostFormFormProps } from "@/interfaces/interface-indirect-cost-form-form-props";
+import { FormDataIndirectCost } from "@/types/type-form-data-indirect-cost";
 
 // Predefined cost types (you can modify these as needed)
 export const COST_TYPES = [

@@ -4,7 +4,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { Button } from "@/components/ui/button";
 import { ArrowDownIcon } from "@heroicons/react/24/outline";
-import { MeasureUnits } from "@/components/calculadora/measure-units";
+import { MeasureUnits } from "@/types/measure/type-measure-units";
 import { ProductCalculation } from "@/types/type-product-calculation";
 
 export function ExportPdfButton({

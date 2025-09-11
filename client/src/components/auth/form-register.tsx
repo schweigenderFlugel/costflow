@@ -1,11 +1,17 @@
 "use client";
 
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { registerSchema, RegisterFormSchema } from "@/schemas/register-schema";
+import { registerSchema } from "@/schemas/register-schema";
 import { TextField } from "@/components/shared/auth-fields/text-field";
 import { PasswordField } from "@/components/shared/auth-fields/password-field";
 import { fetcher } from "@/utils/fetcher";
@@ -13,20 +19,21 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { itemToasts } from "@/components/shared/item-toasts";
 import { useTransition } from "react";
 import SpinLoader from "@/components/shared/spin-loader";
+import { RegisterFormSchema } from "@/types/type-register-form-schema";
 
 const dtoValues = (values: {
-  name: string,
-  lastname: string,
-  workstation: string,
-  email: string,
-  password: string
+  name: string;
+  lastname: string;
+  workstation: string;
+  email: string;
+  password: string;
 }) => ({
-  "name": values.name,
-  "lastname": values.lastname,
-  "workstation": values.workstation,
-  "email": values.email,
-  "password": values.password
-})
+  name: values.name,
+  lastname: values.lastname,
+  workstation: values.workstation,
+  email: values.email,
+  password: values.password,
+});
 
 const defaultValues = {
   name: "",
@@ -36,10 +43,10 @@ const defaultValues = {
   passwordConfirmation: "",
   workstation: "",
   terms: false,
-}
+};
 
 export default function FormRegister() {
-  const [isPending, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition();
   const form = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: defaultValues,
@@ -50,16 +57,16 @@ export default function FormRegister() {
       const data = await fetcher({
         input: "/api/auth/register",
         method: "POST",
-        body: JSON.stringify(dtoValues(values))
-      })
+        body: JSON.stringify(dtoValues(values)),
+      });
 
-      form.reset()
+      form.reset();
 
       itemToasts.info({
         description: data?.success ? data.message : data,
-        type: "registro"
-      })
-    })
+        type: "registro",
+      });
+    });
   });
 
   return (
@@ -148,11 +155,13 @@ export default function FormRegister() {
         )}
 
         <div className="flex flex-col md:flex-row gap-2 col-span-full mt-4 *:font-bold ">
-          <Button variant="default" className="p-6 w-full md:flex-1" disabled={isPending}>
+          <Button
+            variant="default"
+            className="p-6 w-full md:flex-1"
+            disabled={isPending}
+          >
             {isPending && <SpinLoader isPending={isPending} />}
-            {
-              isPending ? "Creando..." : "  Crear cuenta"
-            }
+            {isPending ? "Creando..." : "  Crear cuenta"}
           </Button>
 
           <div className="flex items-center md:hidden my-2">
@@ -170,6 +179,6 @@ export default function FormRegister() {
           </Button>
         </div>
       </form>
-    </Form >
+    </Form>
   );
 }

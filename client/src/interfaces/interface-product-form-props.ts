@@ -1,4 +1,4 @@
-import { FormDataProduct } from "@/schemas/product-schema";
+import { FormDataProduct } from "@/types/type-product";
 
 export interface ProductFormProps {
   defaultValues: Partial<FormDataProduct>;

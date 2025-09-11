@@ -1,11 +1,16 @@
-type FetcherProps = RequestInit & {
-  input: string,
-}
+import { FetcherProps } from "@/types/type-fetcher-props";
 
-export const fetcher = async ({ input, method = "GET", body, headers, cache }: FetcherProps) => {
-  const hasHeaders = headers ? headers : {}
+export const fetcher = async ({
+  input,
+  method = "GET",
+  body,
+  headers,
+  cache,
+}: FetcherProps) => {
+  const hasHeaders = headers ? headers : {};
 
-  const hasDuplex = (method === "POST" || method === "PUT") ? { duplex: "half" } : {}
+  const hasDuplex =
+    method === "POST" || method === "PUT" ? { duplex: "half" } : {};
 
   try {
     const res = await fetch(input, {
@@ -17,7 +22,7 @@ export const fetcher = async ({ input, method = "GET", body, headers, cache }: F
       },
       ...hasDuplex,
       cache: cache ?? "no-store",
-    })
+    });
 
     if (!res.ok) {
       let errorDetail;
@@ -35,29 +40,32 @@ export const fetcher = async ({ input, method = "GET", body, headers, cache }: F
       if (res.status === 401 && errorDetail) {
         // Manejar el error 401 (no autorizado) de manera específica si es necesario
         if (errorDetail === "Authorization token is missing") {
-          return { detail: "Debe estar autenticado" }
+          return { detail: "Debe estar autenticado" };
         }
         if (errorDetail === "Invalid credentials") {
-          return { detail: "Credenciales inválidas" }
+          return { detail: "Credenciales inválidas" };
         }
       }
       if (res.status === 403 && errorDetail) {
         // Manejar el error 403 (prohibido) de manera específica si es necesario
         if (errorDetail === "Not allowed to access") {
-          return { detail: "No tienes permiso para acceder a este recurso" }
+          return { detail: "No tienes permiso para acceder a este recurso" };
         }
       }
-      const errorMessage = res.status ? `Error - ${res.status ?? "interno"}: ${res.statusText ?? "Inténtalo más tarde."}` : errorDetail;
+      const errorMessage = res.status
+        ? `Error - ${res.status ?? "interno"}: ${
+            res.statusText ?? "Inténtalo más tarde."
+          }`
+        : errorDetail;
 
-
-      return { error: errorMessage, detail: errorDetail }
+      return { error: errorMessage, detail: errorDetail };
     }
-    const data = await res.json()
+    const data = await res.json();
     return data;
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
       console.error(error);
     }
-    return { error: (error as Error).message }
+    return { error: (error as Error).message };
   }
-}
+};

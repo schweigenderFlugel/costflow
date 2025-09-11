@@ -2,10 +2,9 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "@/utils/fetcher";
+import { DataQueryType } from "@/types/type-data-query";
 
-type DataQueryType = "product" | "feedstock" | "users" | "indirect_cost";
-
-export const useDataQuery = <TData = unknown[]>(
+export const useDataQuery = <TData = unknown[],>(
   inputRequest: DataQueryType = "feedstock",
   initialData?: TData | []
 ) => {
@@ -16,7 +15,9 @@ export const useDataQuery = <TData = unknown[]>(
 
       // Handle error responses from fetcher
       if (response.error || response.detail) {
-        throw new Error(response.error || response.detail || "Failed to fetch data");
+        throw new Error(
+          response.error || response.detail || "Failed to fetch data"
+        );
       }
 
       return response as TData;
@@ -26,9 +27,10 @@ export const useDataQuery = <TData = unknown[]>(
   };
 
   // Solo agregar initialData si se proporciona
-  const queryOptions = initialData !== undefined
-    ? { ...baseQueryOptions, initialData: initialData as TData }
-    : baseQueryOptions;
+  const queryOptions =
+    initialData !== undefined
+      ? { ...baseQueryOptions, initialData: initialData as TData }
+      : baseQueryOptions;
 
   const query = useQuery(queryOptions);
 

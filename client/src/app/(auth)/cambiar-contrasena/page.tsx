@@ -2,30 +2,18 @@
 
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { passwordSchema } from "@/schemas/register-schema";
 import { PasswordField } from "@/components/shared/auth-fields/password-field";
 import { fetcher } from "@/utils/fetcher";
 import { itemToasts } from "@/components/shared/item-toasts";
 import { useTransition } from "react";
 import SpinLoader from "@/components/shared/spin-loader";
-
-const changePasswordSchema = z
-  .object({
-    password: passwordSchema,
-    confirmPassword: z.string().min(6, {
-      message: "Debes confirmar tu contraseña",
-    }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Las contraseñas no coinciden",
-  });
-
-type ChangePasswordForm = z.infer<typeof changePasswordSchema>;
+import {
+  changePasswordSchema,
+  type ChangePasswordForm,
+} from "@/types/type-password-schema";
 
 export default function CambiarContrasenaPage() {
   const searchParams = useSearchParams();

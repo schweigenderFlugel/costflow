@@ -14,22 +14,10 @@ import {
 } from "@/components/ui/sheet";
 import { useQuery } from "@tanstack/react-query";
 import { HistorialData } from "@/interfaces/interface-historial";
-import { Product, ProductTable } from "@/components/calculadora/table-product";
+import { ProductTable } from "@/components/calculadora/table-product";
 import { ProductCalculation } from "@/types/type-product-calculation";
-
-type ProductOption = {
-  id: string;
-  product_name: string;
-  indirect_costs: number;
-  feedstocks_costs: number;
-  labour_costs: number;
-};
-
-export type SelectedProduct = Product & {
-  indirect_costs: number;
-  feedstocks_costs: number;
-  labour_costs: number;
-};
+import type { ProductOption, SelectedProduct } from "@/types/type-product";
+import { Product } from "@/types/product/type-product";
 
 export default function AddProductSheet({
   setProducts,

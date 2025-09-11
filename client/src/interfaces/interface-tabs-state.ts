@@ -1,10 +1,4 @@
-type TabValue =
-  | "costs"
-  | "profile"
-  | "notifications"
-  | "user-management"
-  | "help";
-
+import type { TabValue } from "@/types/type-tab-value";
 export interface TabsState {
   activeTab: TabValue;
   visitedTabs: Set<TabValue>; // Track de tabs visitados para cache

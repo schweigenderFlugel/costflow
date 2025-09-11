@@ -3,13 +3,7 @@ import { Suspense } from "react";
 import PageInfoDialog from "@/components/shared/page-info-dialog";
 import { useTabs } from "@/hooks/use-tabs";
 import { TabInfoConfig } from "@/interfaces/interface-tab-info-config";
-
-type TabValue =
-  | "costs"
-  | "profile"
-  | "notifications"
-  | "user-management"
-  | "help";
+import type { TabValue } from "@/types/type-tab-value";
 
 const tabInfoConfigs: Record<TabValue, TabInfoConfig> = {
   costs: {

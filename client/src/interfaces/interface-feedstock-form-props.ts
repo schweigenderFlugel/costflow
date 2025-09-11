@@ -1,4 +1,4 @@
-import { FormDataFeedstock } from "@/schemas/feedstock-schema";
+import { FormDataFeedstock } from "@/types/type-feedstock";
 
 export interface FeedstockFormProps {
   defaultValues: Partial<FormDataFeedstock>;

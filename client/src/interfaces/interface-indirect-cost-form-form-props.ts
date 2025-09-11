@@ -1,4 +1,4 @@
-import { FormDataIndirectCost } from "@/schemas/indirect-cost-schema";
+import { FormDataIndirectCost } from "@/types/type-form-data-indirect-cost";
 import { ReactNode } from "react";
 
 export interface IndirectCostFormFormProps {
