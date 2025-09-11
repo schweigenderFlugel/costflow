@@ -3,19 +3,11 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { Control, FieldValues, Path } from "react-hook-form";
-
-interface DescriptionFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name?: Path<T>;
-  label?: string;
-  placeholder?: string;
-  optional?: boolean;
-  className?: string;
-}
+import { DescriptionFieldProps } from "@/interfaces/interface-description-field-props";
+import { FieldValues, Path } from "react-hook-form";
 
 export function DescriptionField<T extends FieldValues>({
   control,
@@ -23,7 +15,7 @@ export function DescriptionField<T extends FieldValues>({
   label = "Descripción",
   placeholder = "Descripción",
   optional = true,
-  className = "col-span-12"
+  className = "col-span-12",
 }: DescriptionFieldProps<T>) {
   return (
     <FormField

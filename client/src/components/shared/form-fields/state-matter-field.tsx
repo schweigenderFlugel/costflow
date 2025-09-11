@@ -3,27 +3,19 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
+import { StateMatterFieldProps } from "@/interfaces/interface-state-matter-field-props";
 import { StateMatter } from "@/types/measure/measure-unit";
 import { translateStateMatter } from "@/utils/translate/shared-translate";
-import { Control, FieldValues, Path } from "react-hook-form";
-
-interface StateMatterFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name?: Path<T>;
-  label?: string;
-  placeholder?: string;
-  onStateChange?: (value: StateMatter) => void;
-  disabled?: boolean;
-}
+import { FieldValues, Path } from "react-hook-form";
 
 export function StateMatterField<T extends FieldValues>({
   control,
@@ -31,7 +23,7 @@ export function StateMatterField<T extends FieldValues>({
   label = "Estado de la materia",
   placeholder = "Seleccionar estado",
   onStateChange,
-  disabled = false
+  disabled = false,
 }: StateMatterFieldProps<T>) {
   return (
     <FormField

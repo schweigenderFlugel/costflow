@@ -2,12 +2,7 @@
 import StatsChart from "@/components/dashboard/stats-chart";
 import { useEffect, useState } from "react";
 import { fetcher } from "@/utils/fetcher";
-
-type DataItem = {
-  month: string;
-  insumos: number;
-  productos: number;
-};
+import { DataItem } from "@/types/type-data-item";
 
 type Feedstock = {
   id: string;

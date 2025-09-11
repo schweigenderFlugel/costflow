@@ -9,12 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ProductCalculation } from "./table-calculation";
-
-interface BudgetTableProps {
-  products: ProductCalculation[];
-  ivaRate?: number; // por defecto 21%
-}
+import { BudgetTableProps } from "@/interfaces/interface-budget";
 
 export default function BudgetTable({
   products,

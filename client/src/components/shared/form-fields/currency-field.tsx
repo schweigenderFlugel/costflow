@@ -3,32 +3,25 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
+import { CurrencyFieldProps } from "@/interfaces/interface-currency-field-props";
 import { Currency } from "@/types/measure/currency";
-import { Control, FieldValues, Path } from "react-hook-form";
-
-interface CurrencyFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name?: Path<T>;
-  label?: string;
-  placeholder?: string;
-  disabled?: boolean;
-}
+import { FieldValues, Path } from "react-hook-form";
 
 export function CurrencyField<T extends FieldValues>({
   control,
   name = "currency" as Path<T>,
   label = "Moneda",
   placeholder = "Seleccionar moneda",
-  disabled = false
+  disabled = false,
 }: CurrencyFieldProps<T>) {
   return (
     <FormField

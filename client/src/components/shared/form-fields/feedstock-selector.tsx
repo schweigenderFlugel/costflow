@@ -1,41 +1,40 @@
 import { useState, useEffect } from "react";
-import { useFieldArray, Control, UseFormRegister, FieldErrors, useWatch } from "react-hook-form";
+import { useFieldArray, useWatch } from "react-hook-form";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
-import { ObjFeedstock } from "@/types/items/feedstock";
 import { useDataQuery } from "@/hooks/use-data-query";
 import { translateMeasureUnit } from "@/utils/translate/shared-translate";
-import { FormDataProduct } from "@/schemas/product-schema";
-
-interface FeedstockSelectorProps {
-  control: Control<FormDataProduct>;
-  formRegister: UseFormRegister<FormDataProduct>;
-  formErrors: FieldErrors<FormDataProduct>;
-}
+import { FeedstockSelectorProps } from "@/interfaces/interface-feedstock-selector-props";
+import { ObjFeedstock } from "@/interfaces/interface-obj-feedstock";
 
 export function FeedstockSelector({
   control,
   formRegister,
-  formErrors
+  formErrors,
 }: FeedstockSelectorProps) {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "feedstocks"
+    name: "feedstocks",
   });
 
   // Usar useWatch para obtener los valores reales del formulario
   const watchedFeedstocks = useWatch({
     control,
-    name: "feedstocks"
+    name: "feedstocks",
   });
 
   // Usar React Query para reutilizar datos cacheados - sin initialData para forzar fetch
-  const { data: feedstocks = [], isLoading } = useDataQuery<ObjFeedstock[]>("feedstock", undefined);
+  const { data: feedstocks = [], isLoading } = useDataQuery<ObjFeedstock[]>(
+    "feedstock",
+    undefined
+  );
 
-  const [filteredFeedstocks, setFilteredFeedstocks] = useState<ObjFeedstock[]>([]);
+  const [filteredFeedstocks, setFilteredFeedstocks] = useState<ObjFeedstock[]>(
+    []
+  );
   const [feedstockSearch, setFeedstockSearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -53,16 +52,22 @@ export function FeedstockSelector({
     }
 
     // CLAVE: Usar watchedFeedstocks para obtener los IDs reales del formulario
-    const addedFeedstockIds = (watchedFeedstocks || []).map((item) => item?.id).filter(Boolean);
+    const addedFeedstockIds = (watchedFeedstocks || [])
+      .map((item) => item?.id)
+      .filter(Boolean);
 
-    filtered = filtered.filter((fs: ObjFeedstock) => !addedFeedstockIds.includes(fs.id));
+    filtered = filtered.filter(
+      (fs: ObjFeedstock) => !addedFeedstockIds.includes(fs.id)
+    );
 
     setFilteredFeedstocks(filtered);
   }, [feedstockSearch, feedstocks, watchedFeedstocks]);
 
   const handleFeedstockSelect = (feedstock: ObjFeedstock) => {
     // Verificar si el insumo ya está seleccionado usando watchedFeedstocks
-    const alreadySelected = (watchedFeedstocks || []).some((item) => item?.id === feedstock.id);
+    const alreadySelected = (watchedFeedstocks || []).some(
+      (item) => item?.id === feedstock.id
+    );
 
     if (alreadySelected) {
       return;
@@ -73,7 +78,7 @@ export function FeedstockSelector({
       name: feedstock.name,
       measure_unit: feedstock.measure_unit,
       id: feedstock.id,
-      quantity_required: 1
+      quantity_required: 1,
     });
 
     // Limpiar búsqueda
@@ -129,13 +134,16 @@ export function FeedstockSelector({
               ))}
             </div>
           )}
-          {showDropdown && !isLoading && filteredFeedstocks.length === 0 && feedstockSearch && (
-            <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
-              <div className="px-3 py-2 text-sm text-gray-500">
-                No se encontraron insumos
+          {showDropdown &&
+            !isLoading &&
+            filteredFeedstocks.length === 0 &&
+            feedstockSearch && (
+              <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+                <div className="px-3 py-2 text-sm text-gray-500">
+                  No se encontraron insumos
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       </div>
 
@@ -146,7 +154,10 @@ export function FeedstockSelector({
           <div className="space-y-3 px-2 max-h-[400px] overflow-y-auto">
             {fields?.map((field, index) => {
               return (
-                <Card key={field.id} className="p-3 gap-1.5 animate-in slide-in-from-top-2 duration-300">
+                <Card
+                  key={field.id}
+                  className="p-3 gap-1.5 animate-in slide-in-from-top-2 duration-300"
+                >
                   <div className="flex items-center justify-between gap-2">
                     <h5 className="font-medium text-sm flex-1 break-words">
                       {field?.name}
@@ -163,7 +174,10 @@ export function FeedstockSelector({
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Label htmlFor={`quantity-${index}`} className="text-xs whitespace-nowrap">
+                    <Label
+                      htmlFor={`quantity-${index}`}
+                      className="text-xs whitespace-nowrap"
+                    >
                       Cantidad:
                     </Label>
                     <div className="relative flex-1">
@@ -173,7 +187,10 @@ export function FeedstockSelector({
                         // min=""
                         step="1"
                         className="pr-16"
-                        {...formRegister(`feedstocks.${index}.quantity_required`, { valueAsNumber: true })}
+                        {...formRegister(
+                          `feedstocks.${index}.quantity_required`,
+                          { valueAsNumber: true }
+                        )}
                       />
                       {field?.measure_unit && (
                         <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground whitespace-nowrap">
@@ -199,7 +216,9 @@ export function FeedstockSelector({
       {fields.length === 0 && (
         <div className="text-center py-6 px-2 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg">
           <p className="text-sm">No hay insumos seleccionados</p>
-          <p className="text-xs">Usa el buscador para agregar insumos al producto</p>
+          <p className="text-xs">
+            Usa el buscador para agregar insumos al producto
+          </p>
         </div>
       )}
     </div>

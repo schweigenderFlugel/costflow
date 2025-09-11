@@ -1,7 +1,13 @@
-import { IndirectCostInput, IndirectCostObj } from "@/types/items/indirect-cost"
+import {
+  IndirectCostInput,
+  IndirectCostObj,
+} from "@/interfaces/interface-indirect-costs";
 
-
-const DetailIndirectCost = ({ indirectCost }: { indirectCost: IndirectCostObj | IndirectCostInput | null }) => {
+const DetailIndirectCost = ({
+  indirectCost,
+}: {
+  indirectCost: IndirectCostObj | IndirectCostInput | null;
+}) => {
   if (indirectCost === null) return null;
   return (
     <div className="p-4 sm:p-6 bg-muted/70 rounded-xs text-muted-foreground">
@@ -20,10 +26,12 @@ const DetailIndirectCost = ({ indirectCost }: { indirectCost: IndirectCostObj | 
       </p>
       <p className="mt-2 text-sm flex justify-between px-3">
         <span className="font-semibold">Fecha:</span>
-        <span className="font-bold">{new Date(indirectCost.date).toLocaleDateString("es-AR")}</span>
+        <span className="font-bold">
+          {new Date(indirectCost.date).toLocaleDateString("es-AR")}
+        </span>
       </p>
     </div>
-  )
-}
+  );
+};
 
 export default DetailIndirectCost;

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useUserMutations } from "@/hooks/mutations/use-user-mutations";
-import { UsersData } from "@/types/items/users";
+import { UsersData } from "@/interfaces/interface-users";
 import {
   PencilIcon,
   TrashIcon,

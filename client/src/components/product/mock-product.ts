@@ -1,7 +1,7 @@
-import { ObjProduct } from "@/types/items/product";
 import { MeasureUnit, StateMatter } from "@/types/measure/measure-unit";
 import { Currency } from "@/types/measure/currency";
 import { randomUUID, UUID } from "crypto";
+import { ObjProduct } from "@/interfaces/interface-product";
 
 // UUIDs fijos para materias primas (para referencias consistentes)
 const FEEDSTOCK_IDS = {
@@ -21,7 +21,7 @@ const FEEDSTOCK_IDS = {
   CREMA: "550e8400-e29b-41d4-a716-446655440014" as UUID,
   QUESO: "550e8400-e29b-41d4-a716-446655440015" as UUID,
   TOMATE: "550e8400-e29b-41d4-a716-446655440016" as UUID,
-  JAMON: "550e8400-e29b-41d4-a716-446655440017" as UUID
+  JAMON: "550e8400-e29b-41d4-a716-446655440017" as UUID,
 };
 
 export const mockProducts: ObjProduct[] = [
@@ -37,12 +37,12 @@ export const mockProducts: ObjProduct[] = [
     indirect_costs: [
       {
         id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
-        usage: 1.2
+        usage: 1.2,
       },
       {
         id: "9c6349f7-59ee-4c6b-81e6-9ecbb23361d0",
-        usage: 0.8
-      }
+        usage: 0.8,
+      },
     ],
     feedstocks: [
       {
@@ -83,8 +83,8 @@ export const mockProducts: ObjProduct[] = [
     indirect_costs: [
       {
         id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
-        usage: 1.5
-      }
+        usage: 1.5,
+      },
     ],
     feedstocks: [
       {
@@ -147,12 +147,12 @@ export const mockProducts: ObjProduct[] = [
     indirect_costs: [
       {
         id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
-        usage: 2.0
+        usage: 2.0,
       },
       {
         id: "9c6349f7-59ee-4c6b-81e6-9ecbb23361d0",
-        usage: 1.0
-      }
+        usage: 1.0,
+      },
     ],
     feedstocks: [
       {
@@ -193,8 +193,8 @@ export const mockProducts: ObjProduct[] = [
     indirect_costs: [
       {
         id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
-        usage: 0.8
-      }
+        usage: 0.8,
+      },
     ],
     feedstocks: [
       {
@@ -235,12 +235,12 @@ export const mockProducts: ObjProduct[] = [
     indirect_costs: [
       {
         id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
-        usage: 1.8
+        usage: 1.8,
       },
       {
         id: "9c6349f7-59ee-4c6b-81e6-9ecbb23361d0",
-        usage: 1.2
-      }
+        usage: 1.2,
+      },
     ],
     feedstocks: [
       {
@@ -292,12 +292,12 @@ export const mockProducts: ObjProduct[] = [
     indirect_costs: [
       {
         id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
-        usage: 2.5
+        usage: 2.5,
       },
       {
         id: "9c6349f7-59ee-4c6b-81e6-9ecbb23361d0",
-        usage: 1.8
-      }
+        usage: 1.8,
+      },
     ],
     feedstocks: [
       {
@@ -349,8 +349,8 @@ export const mockProducts: ObjProduct[] = [
     indirect_costs: [
       {
         id: "9864fdee-1dc8-4c03-a95a-7d7ff854f425",
-        usage: 1.5
-      }
+        usage: 1.5,
+      },
     ],
     feedstocks: [
       {

@@ -4,31 +4,12 @@ import { useDataMutation } from "@/hooks/use-data-mutation";
 import { fetcher } from "@/utils/fetcher";
 import { itemToasts } from "@/components/shared/item-toasts";
 import { FormDataProduct } from "@/schemas/product-schema";
+import { UpdateProductVariables } from "@/interfaces/interface-update-product-variables";
+import { SuccessResponse } from "@/interfaces/interface-success-response";
+import { DeleteProductVariables } from "@/interfaces/interface-delete-product-variables";
 
 // Interfaces específicas para productos
 type CreateProductVariables = FormDataProduct;
-
-interface UpdateProductVariables extends FormDataProduct {
-  productId: string;
-}
-
-interface SuccessResponse {
-  description?: string;
-  message?: string;
-  error?: string;
-  detail?: [
-    {
-      loc: [string, number];
-      msg: string;
-      type: string;
-    }
-  ];
-}
-
-interface DeleteProductVariables {
-  productId: string;
-  productName: string;
-}
 
 /**
  * Hook especializado para mutaciones de productos

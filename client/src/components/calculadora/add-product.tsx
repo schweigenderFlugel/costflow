@@ -13,9 +13,9 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { useQuery } from "@tanstack/react-query";
-import { HistorialData } from "@/components/calculadora/interface-historial";
+import { HistorialData } from "@/interfaces/interface-historial";
 import { Product, ProductTable } from "@/components/calculadora/table-product";
-import { ProductCalculation } from "@/components/calculadora/table-calculation";
+import { ProductCalculation } from "@/types/type-product-calculation";
 
 type ProductOption = {
   id: string;

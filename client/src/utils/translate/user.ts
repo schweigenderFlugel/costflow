@@ -1,4 +1,4 @@
-import { UserRole, UsersData, UserState } from "@/types/items/users";
+import { UserRole, UsersData, UserState } from "@/interfaces/interface-users";
 
 const translationRole: Record<UserRole, string> = {
   [UserRole.ADMIN]: "Administrador",

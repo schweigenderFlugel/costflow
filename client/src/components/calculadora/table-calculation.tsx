@@ -21,14 +21,7 @@ import {
 } from "@/components/ui/table";
 import { Trash2 } from "lucide-react";
 import { MeasureUnits } from "@/components/calculadora/measure-units";
-
-export type ProductCalculation = {
-  id: string;
-  name: string;
-  quantity: number;
-  unit: string;
-  unitValue: number;
-};
+import { ProductCalculation } from "@/types/type-product-calculation";
 
 export function CalculationTable({
   products,

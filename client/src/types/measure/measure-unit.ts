@@ -1,4 +1,3 @@
-
 // Estado de la materia
 export enum StateMatter {
   SOLID = "SOLID",
@@ -26,7 +25,6 @@ export enum GasMeasure {
   LITERS_GAS = "LITERS_GAS",
 }
 
-
 // Unidades de medida
 export enum MeasureUnit {
   // Sólidos
@@ -45,10 +43,4 @@ export enum MeasureUnit {
   // Gases
   CUBIC_METERS = "CUBIC_METERS",
   LITERS_GAS = "LITERS_GAS",
-}
-
-export interface ItemMeasure {
-  state: StateMatter,
-  measure_unit: MeasureUnit,
-  quantity: number,
 }

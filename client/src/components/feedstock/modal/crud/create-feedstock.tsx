@@ -11,9 +11,9 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Feedstock } from "@/types/items/feedstock";
 import { useFeedstockMutations } from "@/hooks/mutations/use-feedstock-mutations";
 import FeedstockCreated from "@/components/feedstock/modal/crud/already/feedstock-created";
+import { Feedstock } from "@/interfaces/interface-feedstock";
 
 const CreateFeedstock = () => {
   const [alreadyCreated, setAlreadyCreated] = useState<boolean>(false);

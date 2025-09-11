@@ -13,10 +13,10 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { useQuery } from "@tanstack/react-query";
-import { HistorialData } from "@/components/calculadora/interface-historial";
-import { ProductCalculation } from "@/components/calculadora/table-calculation";
+import { HistorialData } from "@/interfaces/interface-historial";
 import FeedstockTable from "@/components/calculadora/table-feedstock";
 import { MeasureUnits } from "@/components/calculadora/measure-units";
+import { ProductCalculation } from "@/types/type-product-calculation";
 
 type FeedstockOption = {
   id: string;

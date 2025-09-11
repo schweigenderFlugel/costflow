@@ -1,10 +1,6 @@
-import PageHeaderSkeleton from "@/components/skeletons/page-header-skeleton"
-import TableSkeleton from "@/components/skeletons/table-skeleton"
-
-interface PageSkeletonProps {
-  type?: "feedstock" | "product"
-  rows?: number
-}
+import PageHeaderSkeleton from "@/components/skeletons/page-header-skeleton";
+import TableSkeleton from "@/components/skeletons/table-skeleton";
+import { PageSkeletonProps } from "@/interfaces/interface-page-skeleton-props";
 
 const PageSkeleton = ({ type = "feedstock", rows = 8 }: PageSkeletonProps) => {
   return (
@@ -12,7 +8,7 @@ const PageSkeleton = ({ type = "feedstock", rows = 8 }: PageSkeletonProps) => {
       <PageHeaderSkeleton />
       <TableSkeleton type={type} rows={rows} />
     </main>
-  )
-}
+  );
+};
 
-export default PageSkeleton
+export default PageSkeleton;

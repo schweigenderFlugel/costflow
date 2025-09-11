@@ -1,17 +1,13 @@
 import DetailProduct from "@/components/product/modal/crud/detail-product";
 import { Button } from "@/components/ui/button";
-import { ObjProduct, Product } from "@/types/items/product";
-import { FormDataProduct } from "@/schemas/product-schema";
+import { AlreadyUpdatedProps } from "@/interfaces/interface-already-updated-props";
 import { ClipboardCheck } from "lucide-react";
 
-interface AlreadyUpdatedProps {
-  product: ObjProduct | Product | FormDataProduct | null;
-  handleClose: () => void;
-  handleReturn: () => void;
-}
-
-const ProductUpdated = ({ product, handleClose, handleReturn }: AlreadyUpdatedProps) => {
-
+const ProductUpdated = ({
+  product,
+  handleClose,
+  handleReturn,
+}: AlreadyUpdatedProps) => {
   return (
     <div className="flex flex-col gap-6 my-auto px-0 sm:px-6">
       <div className="flex items-center flex-col gap-1">
@@ -24,7 +20,11 @@ const ProductUpdated = ({ product, handleClose, handleReturn }: AlreadyUpdatedPr
       <DetailProduct product={product} />
 
       <div className="grid grid-cols-2 gap-4 w-full mt-auto">
-        <Button onClick={handleClose} variant="outline" className="cursor-pointer">
+        <Button
+          onClick={handleClose}
+          variant="outline"
+          className="cursor-pointer"
+        >
           Cerrar
         </Button>
         <Button
@@ -36,7 +36,7 @@ const ProductUpdated = ({ product, handleClose, handleReturn }: AlreadyUpdatedPr
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductUpdated
+export default ProductUpdated;

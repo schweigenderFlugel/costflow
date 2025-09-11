@@ -3,23 +3,17 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Control, FieldValues, Path } from "react-hook-form";
-
-interface SkuFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name?: Path<T>;
-  label?: string;
-  placeholder?: string;
-}
+import { SkuFieldProps } from "@/interfaces/interface-sku-field-props";
+import { FieldValues, Path } from "react-hook-form";
 
 export function SkuField<T extends FieldValues>({
   control,
   name = "sku" as Path<T>,
   label = "SKU",
-  placeholder = "Código referencial"
+  placeholder = "Código referencial",
 }: SkuFieldProps<T>) {
   return (
     <FormField

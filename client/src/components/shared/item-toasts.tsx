@@ -1,19 +1,6 @@
 import { toast } from "sonner";
 import { Info } from "lucide-react";
-
-interface ItemToastData {
-  description: string;
-  type?:
-    | "insumo"
-    | "producto"
-    | "registro"
-    | "inicio de sesión"
-    | "usuario"
-    | "costo indirecto"
-    | "recuperación"
-    | "contraseña";
-  duration?: number;
-}
+import { ItemToastData } from "@/interfaces/interface-item-toast-data";
 
 export const itemToasts = {
   // Toast para eliminación exitosa

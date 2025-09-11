@@ -4,10 +4,7 @@ import AddFeedstockSheet from "@/components/calculadora/add-feedstock";
 import AddProductSheet from "@/components/calculadora/add-product";
 import BudgetTable from "@/components/calculadora/budget-table";
 import { ExportPdfButton } from "@/components/calculadora/export-pdf-button";
-import {
-  CalculationTable,
-  ProductCalculation,
-} from "@/components/calculadora/table-calculation";
+import { CalculationTable } from "@/components/calculadora/table-calculation";
 import PageHeaderSection from "@/components/shared/page-header-section";
 import {
   Card,
@@ -16,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ProductCalculation } from "@/types/type-product-calculation";
 import {
   CalculatorIcon,
   CurrencyDollarIcon,

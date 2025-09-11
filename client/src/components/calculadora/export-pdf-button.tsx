@@ -3,9 +3,9 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { Button } from "@/components/ui/button";
-import { ProductCalculation } from "@/components/calculadora/table-calculation";
 import { ArrowDownIcon } from "@heroicons/react/24/outline";
 import { MeasureUnits } from "@/components/calculadora/measure-units";
+import { ProductCalculation } from "@/types/type-product-calculation";
 
 export function ExportPdfButton({
   products,

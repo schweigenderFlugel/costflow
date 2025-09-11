@@ -2,12 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import * as React from "react";
-
-// T es cualquier tipo que tenga al menos id y quantity
-interface QuantityInputProps<T extends { id: string; quantity: number }> {
-  item: T;
-  setItems: React.Dispatch<React.SetStateAction<T[]>>;
-}
+import { QuantityInputProps } from "@/interfaces/interface-quantity-input-props";
 
 function QuantityInput<T extends { id: string; quantity: number }>({
   item,
