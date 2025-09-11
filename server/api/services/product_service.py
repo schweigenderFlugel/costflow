@@ -167,27 +167,34 @@ def create_product(db: SessionDep, cache: CacheDep, body: CreateProduct):
             db.add(feedstock_link)
             db.commit()
 
-        for ic in body.model_dump()['indirect_costs']:
-            indirect_cost = db.exec(select(IndirectCost).where(IndirectCost.id == ic['id'])).first()
-            cost_per_usage = float(indirect_cost.model_dump()['amount']) / float(indirect_cost.model_dump()['total_usage'])
-            indirect_cost_link = ProductIndirectCost(
-                product_id=product_id,
-                indirect_cost_id=ic['id'],
-                usage=ic['usage']
-            )
+        if body.indirect_costs is not None:
+            for ic in body.model_dump()['indirect_costs']:
+                indirect_cost = db.exec(select(IndirectCost).where(IndirectCost.id == ic['id'])).first()
+                cost_per_usage = float(indirect_cost.model_dump()['amount']) / float(indirect_cost.model_dump()['total_usage'])
+                indirect_cost_link = ProductIndirectCost(
+                    product_id=product_id,
+                    indirect_cost_id=ic['id'],
+                    usage=ic['usage']
+                )
 
-            indirect_cost = float(ic['usage']) * cost_per_usage
-            indirect_costs.append(indirect_cost)
+                indirect_cost = float(ic['usage']) * cost_per_usage
+                indirect_costs.append(indirect_cost)
 
-            db.add(indirect_cost_link)
-            db.commit()
+                db.add(indirect_cost_link)
+                db.commit()
 
         labour = db.exec(select(Labour).where(
             extract('month', Labour.date) == this_month,
             extract('year', Labour.date) == this_year)
         ).first()
-        cost_per_minutes = float(labour.model_dump()['salary']) / float(labour.model_dump()['hours']) / 60
 
+        if not labour:
+            raise HTTPException(
+                status_code=400,
+                detail="Labour not found. Labour config of this month should be set up first"
+            )
+
+        cost_per_minutes = float(labour.model_dump()['salary']) / float(labour.model_dump()['hours']) / 60
         labour_cost = round((float(body.model_dump()['labour_time']) * cost_per_minutes), 2)
 
         monthly_production = MonthlyProduction(
@@ -296,8 +303,13 @@ def update_product(db: SessionDep, cache: CacheDep, id: str, body: UpdateProduct
             extract('year', Labour.date) == this_year)
         ).first()
 
-        cost_per_minutes = float(labour.model_dump()['salary']) / float(labour.model_dump()['hours']) / 60
+        if not labour:
+            raise HTTPException(
+                status_code=400,
+                detail="Labour not found. Labour config of this month should be set up first"
+            )
 
+        cost_per_minutes = float(labour.model_dump()['salary']) / float(labour.model_dump()['hours']) / 60
         labour_cost = round((labour_time * cost_per_minutes), 2)
 
         monthly_production_statement = select(MonthlyProduction).where(
