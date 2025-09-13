@@ -23,7 +23,7 @@ const MaintenancePage = () => {
           Volvé a intentarlo en unos minutos.
         </p>
         <Button asChild variant="outline">
-          <Link href="/">Ir Atrás</Link>
+          <Link href="/inicio">Ir al Inicio</Link>
         </Button>
       </div>
     </div >

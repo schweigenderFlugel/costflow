@@ -31,21 +31,23 @@ export default function FormForgotPassword() {
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-y-2 max-w-md lg:max-w-full w-full mx-auto"
+        className="flex flex-col gap-y-4 lg:gap-y-5 justify-center mx-auto max-w-xs"
         onSubmit={onSubmit}
       >
         <EmailField control={form.control} errors={form.formState.errors} />
 
-        <Button>Reestablecer contraseña</Button>
+        <Button className="mt-4">Reestablecer contraseña</Button>
 
-        <div className="flex gap-2 justify-center mt-2 text-gray-500">
+        <div className="flex gap-2 justify-center mt-2 text-muted-foreground">
           <p className="text-sm">¿Ya tienes una cuenta?</p>
-          <Link
-            href="/inicio-de-sesion"
-            className="text-sm hover:text-gray-200 lg:hover:text-gray-700"
-          >
-            Inicia sesión
-          </Link>
+          <Button asChild variant={"link"} className="p-0 h-fit text-inherit">
+            <Link
+              href="/inicio-de-sesion"
+              className="text-sm"
+            >
+              Inicia sesión
+            </Link>
+          </Button>
         </div>
       </form>
     </Form>

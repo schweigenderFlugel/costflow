@@ -21,7 +21,7 @@ export default function NotFound() {
           Es posible que la página que buscas haya sido eliminada o no esté disponible temporalmente.
         </p>
         <Button asChild variant={"link"} className="font-semibold text-lg">
-          <Link href="/">Volver al inicio</Link>
+          <Link href="/inicio">Ir al inicio</Link>
         </Button>
       </div>
     </div>

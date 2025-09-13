@@ -54,7 +54,7 @@ export default function FormLogin() {
     <Form {...form}>
       <form
         autoComplete="off"
-        className="flex flex-col gap-y-5 lg:gap-y-6 max-w-lg mx-auto"
+        className="flex flex-col gap-y-4 lg:gap-y-5 justify-center mx-auto max-w-xs"
         onSubmit={onSubmit}
       >
         <EmailField control={form.control} errors={form.formState.errors} />
@@ -72,7 +72,7 @@ export default function FormLogin() {
           ¿Olvidaste la contraseña?
         </Link>
 
-        <div className="lg:flex lg:gap-2 lg:*:flex-1 *:font-bold *:w-full *:p-6">
+        <div className="lg:flex lg:gap-2 lg:*:flex-1 *:font-bold *:w-full *:p-6 mt-8">
           <Button variant="default" disabled={isPending}>
             {isPending && <SpinLoader isPending={isPending} />}
             {isPending ? "Iniciando..." : "Iniciar sesión"}

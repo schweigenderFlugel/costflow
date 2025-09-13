@@ -24,7 +24,7 @@ export function PasswordField<T extends FieldValues>({
       name={name}
       control={control}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="max-w-xs">
           <FormLabel htmlFor={name}>{label}</FormLabel>
           <FormControl>
             <div className="relative">

@@ -18,6 +18,7 @@ export const websiteName: NavItem = {
   title: "cotzia",
   href: "/",
   icon: undefined,
+  svgIcon: "assets/logo/logo.svg",
 };
 
 export const mainNavigation: NavItem[] = [
