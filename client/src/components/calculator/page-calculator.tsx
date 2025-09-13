@@ -1,10 +1,10 @@
 "use client";
 
-import AddFeedstockSheet from "@/components/calculadora/add-feedstock";
-import AddProductSheet from "@/components/calculadora/add-product";
-import BudgetTable from "@/components/calculadora/budget-table";
-import { ExportPdfButton } from "@/components/calculadora/export-pdf-button";
-import { CalculationTable } from "@/components/calculadora/table-calculation";
+import AddFeedstockSheet from "@/components/calculator/add-feedstock";
+import AddProductSheet from "@/components/calculator/add-product";
+import BudgetTable from "@/components/calculator/budget-table";
+import { ExportPdfButton } from "@/components/calculator/export-pdf-button";
+import { CalculationTable } from "@/components/calculator/table-calculation";
 import PageHeaderSection from "@/components/shared/page-header-section";
 import {
   Card,

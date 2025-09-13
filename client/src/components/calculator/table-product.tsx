@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Trash2 } from "lucide-react";
-import QuantityInput from "@/components/calculadora/quantity-input";
+import QuantityInput from "@/components/calculator/quantity-input";
 import type { Product } from "@/types/product/type-product";
 
 export function ProductTable({
@@ -127,9 +127,9 @@ export function ProductTable({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </TableHead>
                 ))}
               </TableRow>

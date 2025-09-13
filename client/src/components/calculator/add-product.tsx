@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sheet";
 import { useQuery } from "@tanstack/react-query";
 import { HistorialData } from "@/interfaces/interface-historial";
-import { ProductTable } from "@/components/calculadora/table-product";
+import { ProductTable } from "@/components/calculator/table-product";
 import { ProductCalculation } from "@/types/type-product-calculation";
 import type { ProductOption, SelectedProduct } from "@/types/type-product";
 import { Product } from "@/types/product/type-product";
@@ -199,11 +199,10 @@ export default function AddProductSheet({
                   {filteredProducts.map((p, idx) => (
                     <div
                       key={idx}
-                      className={`p-2 cursor-pointer text-sm ${
-                        idx === highlightedIndex
+                      className={`p-2 cursor-pointer text-sm ${idx === highlightedIndex
                           ? "bg-blue-200"
                           : "hover:bg-blue-200"
-                      }`}
+                        }`}
                       onClick={() => handleSelectProduct(p)}
                     >
                       {p.product_name}
