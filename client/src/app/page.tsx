@@ -12,7 +12,7 @@ const Page = () => {
   return (
     <>
       <Navbar5 />
-      <main className="!scroll-smooth">
+      <main className="!scroll-smooth" data-scroll-behavior="smooth">
         <Hero />
         <Features />
         <HowItWorks />

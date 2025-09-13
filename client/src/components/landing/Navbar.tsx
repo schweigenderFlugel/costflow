@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -33,7 +34,7 @@ const Navbar5 = () => {
         </Link>
 
         {/* Links del medio */}
-        <NavigationMenu className="hidden lg:block">
+        <NavigationMenu className="hidden md:block">
           <NavigationMenuList className="flex space-x-6 bg-transparent">
             {["Inicio", "Software", "Precios", "Contacto"].map((item) => (
               <NavigationMenuItem key={item}>
@@ -50,25 +51,27 @@ const Navbar5 = () => {
 
         {/* Botón */}
         <div className="hidden lg:flex">
-          <Button className="bg-blue-900 hover:bg-blue-700 text-white">
-            Probar gratis
+          <Button asChild className="bg-blue-900 hover:bg-blue-700 text-white">
+            <Link href={"/inicio-de-sesion"}>
+              Probar gratis
+            </Link>
           </Button>
         </div>
 
         {/* Sheet para móvil */}
         <Sheet>
-          <SheetTrigger asChild className="lg:hidden bg-transparent text-white">
+          <SheetTrigger asChild className="md:hidden bg-transparent text-white">
             <Button
-              variant="outline"
+              variant="outline-ghost"
               size="icon"
-              className="text-white border-white"
+              className="text-text-white hover:text-white"
             >
-              <MenuIcon className="h-4 w-4" />
+              <MenuIcon className="size-6" />
             </Button>
           </SheetTrigger>
           <SheetContent
             side="top"
-            className="max-h-screen overflow-auto bg-gray-700 text-white"
+            className="max-h-screen overflow-auto bg-gray-700 text-white border-none"
           >
             <SheetHeader>
               <SheetTitle>
@@ -86,19 +89,24 @@ const Navbar5 = () => {
                 </Link>
               </SheetTitle>
             </SheetHeader>
-            <div className="flex flex-col p-4 gap-4">
+            <div className="flex flex-col py-4 px-2 gap-4">
               {["Inicio", "Software", "Precios", "Contacto"].map((item) => (
-                <Link
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="font-medium text-white hover:bg-gray-600 px-2 py-1 rounded focus:bg-transparent focus:ring-0"
-                >
-                  {item}
-                </Link>
+                <SheetClose key={item} asChild>
+                  <Link
+                    href={`#${item.toLowerCase()}`}
+                    className="font-medium text-white hover:bg-gray-600 p-3 rounded focus:bg-transparent focus:ring-0"
+                  >
+                    {item}
+                  </Link>
+                </SheetClose>
               ))}
-              <Button className="bg-blue-900 hover:bg-blue-700 text-white">
-                Probar gratis
-              </Button>
+              <SheetClose key={"probar-gratis"} asChild>
+                <Button className="bg-blue-900 hover:bg-blue-700 text-white text-md py-6" asChild>
+                  <Link href={"/inicio-de-sesion"} >
+                    Probar gratis
+                  </Link>
+                </Button>
+              </SheetClose>
             </div>
           </SheetContent>
         </Sheet>
