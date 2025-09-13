@@ -2,36 +2,8 @@
 import StatsChart from "@/components/dashboard/stats-chart";
 import { useEffect, useState } from "react";
 import { fetcher } from "@/utils/fetcher";
-
-type DataItem = {
-  month: string;
-  insumos: number;
-  productos: number;
-};
-
-type Feedstock = {
-  id: string;
-  name: string;
-  quantity: number;
-  unit_cost: number;
-  total_cost: number;
-};
-
-type Product = {
-  id: string;
-  name: string;
-  quantity: number;
-  unit_cost: number;
-  total_cost: number;
-};
-
-type ApiResponseItem = {
-  period: string;
-  feedstocks: Feedstock[];
-  monthly_production: {
-    products: Product[];
-  };
-};
+import { DataItem } from "@/types/type-data-item";
+import { ApiResponseItem } from "@/types/monthly-statistics/type-monthly-statistics";
 
 const MonthlyStatistics = () => {
   const [chartData, setChartData] = useState<DataItem[]>([]);

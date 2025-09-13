@@ -6,11 +6,9 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EmailField } from "@/components/shared/auth-fields/email-field";
-import {
-  ForgotPasswordSchema,
-  forgotSchema,
-} from "@/schemas/forgot-password-schema";
+import { forgotSchema } from "@/schemas/forgot-password-schema";
 import { toast } from "sonner";
+import { ForgotPasswordSchema } from "@/types/type-forgot-password";
 
 export default function FormForgotPassword() {
   const form = useForm<ForgotPasswordSchema>({
@@ -20,8 +18,7 @@ export default function FormForgotPassword() {
     },
   });
 
-  const onSubmit = form.handleSubmit((values) => {
-    console.log("Valores del formulario:", values);
+  const onSubmit = form.handleSubmit(() => {
     const id = toast("Hemos enviado un correo electrónico a su dirección", {
       description: "Por favor revise su bandeja de entrada o spam",
       action: {

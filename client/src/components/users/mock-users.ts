@@ -1,4 +1,4 @@
-import { UsersData, UserState, UserRole } from "@/types/items/users";
+import { UsersData, UserState, UserRole } from "@/interfaces/interface-users";
 
 export const mockUsers: UsersData[] = [
   {

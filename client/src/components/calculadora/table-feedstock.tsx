@@ -21,14 +21,9 @@ import {
 } from "@/components/ui/table";
 import { Trash2 } from "lucide-react";
 import QuantityInput from "@/components/calculadora/quantity-input";
-import { FeedstockCalculation } from "./feedstock-type";
-import { MeasureUnits } from "@/components/calculadora/measure-units";
-
-interface FeedstockTableProps {
-  feedstocks: FeedstockCalculation[];
-  setFeedstocks: React.Dispatch<React.SetStateAction<FeedstockCalculation[]>>;
-  className?: string;
-}
+import { FeedstockCalculation } from "../../types/feedstock-type";
+import { MeasureUnits } from "@/types/measure/type-measure-units";
+import { FeedstockTableProps } from "@/interfaces/interface-feedstock-table-props";
 
 export default function FeedstockTable({
   feedstocks,

@@ -1,16 +1,13 @@
 import DetailFeedstock from "@/components/feedstock/modal/crud/detail-feedstock";
 import { Button } from "@/components/ui/button";
-import { Feedstock, ObjFeedstock } from "@/types/items/feedstock";
+import { AlreadyFeedstockCreatedProps } from "@/interfaces/interface-already-feedstock-created-props";
 import { ClipboardCheck } from "lucide-react";
 
-interface AlreadyFeedstockCreatedProps {
-  feedstock: ObjFeedstock | Feedstock | null;
-  handleClose: () => void;
-  handleReturn: () => void;
-}
-
-const FeedstockCreated = ({ feedstock, handleClose, handleReturn }: AlreadyFeedstockCreatedProps) => {
-
+const FeedstockCreated = ({
+  feedstock,
+  handleClose,
+  handleReturn,
+}: AlreadyFeedstockCreatedProps) => {
   return (
     <div className="flex flex-col gap-6 my-auto">
       <div className="flex items-center flex-col gap-1">
@@ -21,13 +18,23 @@ const FeedstockCreated = ({ feedstock, handleClose, handleReturn }: AlreadyFeeds
       <DetailFeedstock feedstock={feedstock} />
 
       <div className="grid grid-cols-2 gap-4 w-full justify-between items-center">
-        <Button onClick={handleClose} variant="outline" className="cursor-pointer rounded-xs">Cerrar</Button>
-        <Button onClick={handleReturn} variant="default" className="cursor-pointer rounded-xs">
+        <Button
+          onClick={handleClose}
+          variant="outline"
+          className="cursor-pointer rounded-xs"
+        >
+          Cerrar
+        </Button>
+        <Button
+          onClick={handleReturn}
+          variant="default"
+          className="cursor-pointer rounded-xs"
+        >
           Agregar otro
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FeedstockCreated
+export default FeedstockCreated;

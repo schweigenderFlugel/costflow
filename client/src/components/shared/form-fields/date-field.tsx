@@ -1,41 +1,61 @@
-"use client"
+"use client";
 
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { Control } from "react-hook-form"
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { Control } from "react-hook-form";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { es } from "date-fns/locale"
-import { FormDataIndirectCost } from "@/schemas/indirect-cost-schema"
+} from "@/components/ui/select";
+import { es } from "date-fns/locale";
+import { FormDataIndirectCost } from "@/types/type-form-data-indirect-cost";
 
-const DateField = ({ className, formControl, formatStr, fieldClassName }: { className?: string, formControl: Control<FormDataIndirectCost>, formatStr?: string, fieldClassName?: string }) => {
+const DateField = ({
+  className,
+  formControl,
+  formatStr,
+  fieldClassName,
+}: {
+  className?: string;
+  formControl: Control<FormDataIndirectCost>;
+  formatStr?: string;
+  fieldClassName?: string;
+}) => {
   const months = [
-    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-  ]
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
 
-  const currentYear = new Date().getFullYear()
-  const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i) // 5 años atrás y 5 adelante
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i); // 5 años atrás y 5 adelante
 
   return (
     <FormField
@@ -68,13 +88,21 @@ const DateField = ({ className, formControl, formatStr, fieldClassName }: { clas
               <div className="flex flex-col space-y-4">
                 <div className="flex space-x-2">
                   <div className="flex-1">
-                    <label className="text-sm font-medium mb-2 block">Mes</label>
+                    <label className="text-sm font-medium mb-2 block">
+                      Mes
+                    </label>
                     <Select
-                      value={field.value ? field.value.getMonth().toString() : ""}
+                      value={
+                        field.value ? field.value.getMonth().toString() : ""
+                      }
                       onValueChange={(month) => {
-                        const currentDate = field.value || new Date()
-                        const newDate = new Date(currentDate.getFullYear(), parseInt(month), 1)
-                        field.onChange(newDate)
+                        const currentDate = field.value || new Date();
+                        const newDate = new Date(
+                          currentDate.getFullYear(),
+                          parseInt(month),
+                          1
+                        );
+                        field.onChange(newDate);
                       }}
                     >
                       <SelectTrigger>
@@ -90,13 +118,21 @@ const DateField = ({ className, formControl, formatStr, fieldClassName }: { clas
                     </Select>
                   </div>
                   <div className="flex-1">
-                    <label className="text-sm font-medium mb-2 block">Año</label>
+                    <label className="text-sm font-medium mb-2 block">
+                      Año
+                    </label>
                     <Select
-                      value={field.value ? field.value.getFullYear().toString() : ""}
+                      value={
+                        field.value ? field.value.getFullYear().toString() : ""
+                      }
                       onValueChange={(year) => {
-                        const currentDate = field.value || new Date()
-                        const newDate = new Date(parseInt(year), currentDate.getMonth(), 1)
-                        field.onChange(newDate)
+                        const currentDate = field.value || new Date();
+                        const newDate = new Date(
+                          parseInt(year),
+                          currentDate.getMonth(),
+                          1
+                        );
+                        field.onChange(newDate);
                       }}
                     >
                       <SelectTrigger>
@@ -119,7 +155,7 @@ const DateField = ({ className, formControl, formatStr, fieldClassName }: { clas
         </FormItem>
       )}
     />
-  )
-}
+  );
+};
 
-export default DateField
+export default DateField;

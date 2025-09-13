@@ -13,18 +13,11 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { useQuery } from "@tanstack/react-query";
-import { HistorialData } from "@/components/calculadora/interface-historial";
-import { ProductCalculation } from "@/components/calculadora/table-calculation";
+import { HistorialData } from "@/interfaces/interface-historial";
 import FeedstockTable from "@/components/calculadora/table-feedstock";
-import { MeasureUnits } from "@/components/calculadora/measure-units";
-
-type FeedstockOption = {
-  id: string;
-  name: string;
-  currency: "ARS" | "USD";
-  unit_cost: number;
-  measure_unit: keyof typeof MeasureUnits;
-};
+import { MeasureUnits } from "@/types/measure/type-measure-units";
+import { ProductCalculation } from "@/types/type-product-calculation";
+import type { FeedstockOption } from "@/types/type-feedstock-option";
 
 export default function AddFeedstockSheet({
   setProducts,
@@ -100,10 +93,9 @@ export default function AddFeedstockSheet({
   };
 
   const handleSelectFeedstock = (f: FeedstockOption) => {
-    console.log(f);
     setSelectedFeedstocks((prev) => {
       const existing = prev.find((sf) => sf.id === f.id);
-      if (existing) return prev; // ya está en la lista temporal, no agregamos otra vez
+      if (existing) return prev;
       const unitValue =
         f.currency === "USD"
           ? f.unit_cost * (latestPeriodData?.dolar.price ?? 1)

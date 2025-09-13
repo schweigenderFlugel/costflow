@@ -1,15 +1,7 @@
 "use client";
 
+import { MutationOptions } from "@/interfaces/interface-mutation-options";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-type DataQueryType = "product" | "feedstock" | "users" | "indirect_cost";
-
-interface MutationOptions<TData, TVariables> {
-  queryType: DataQueryType;
-  mutationFn: (variables: TVariables) => Promise<TData>;
-  onSuccess?: (data: TData, variables: TVariables) => void;
-  onError?: (error: Error, variables: TVariables) => void;
-}
 
 /**
  * Generic mutation hook that automatically invalidates queries on success

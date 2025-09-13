@@ -1,14 +1,12 @@
-"use client"
+"use client";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { TableSkeletonProps } from "@/interfaces/interface-table-skeleton-props";
 
-import { Skeleton } from "@/components/ui/skeleton"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-
-interface TableSkeletonProps {
-  type?: "feedstock" | "product"
-  rows?: number
-}
-
-const TableSkeleton = ({ type = "feedstock", rows = 8 }: TableSkeletonProps) => {
+const TableSkeleton = ({
+  type = "feedstock",
+  rows = 8,
+}: TableSkeletonProps) => {
   const feedstockColumns = [
     { width: "w-16" }, // SKU
     { width: "w-40" }, // Nombre
@@ -17,8 +15,8 @@ const TableSkeleton = ({ type = "feedstock", rows = 8 }: TableSkeletonProps) => 
     { width: "w-28" }, // Costo Unitario
     { width: "w-20" }, // Moneda
     { width: "w-32" }, // Proveedor
-    { width: "w-20" }  // Acciones
-  ]
+    { width: "w-20" }, // Acciones
+  ];
 
   const productColumns = [
     { width: "w-40" }, // Nombre
@@ -27,10 +25,10 @@ const TableSkeleton = ({ type = "feedstock", rows = 8 }: TableSkeletonProps) => 
     { width: "w-20" }, // Cantidad
     { width: "w-20" }, // Unidad
     { width: "w-48" }, // Descripción
-    { width: "w-20" }  // Acciones
-  ]
+    { width: "w-20" }, // Acciones
+  ];
 
-  const columns = type === "product" ? productColumns : feedstockColumns
+  const columns = type === "product" ? productColumns : feedstockColumns;
 
   return (
     <section className="max-w-[calc(100svw-2rem)] w-6xl mx-auto my-8 px-1 sm:px-5">
@@ -58,11 +56,16 @@ const TableSkeleton = ({ type = "feedstock", rows = 8 }: TableSkeletonProps) => 
 
             {/* Table Rows */}
             {Array.from({ length: rows }).map((_, index) => (
-              <div key={index} className="flex gap-4 py-4 border-b border-gray-100">
+              <div
+                key={index}
+                className="flex gap-4 py-4 border-b border-gray-100"
+              >
                 {columns.map((col, colIndex) => (
                   <Skeleton
                     key={colIndex}
-                    className={`h-4 ${col.width} ${colIndex === columns.length - 1 ? 'flex gap-1' : ''}`}
+                    className={`h-4 ${col.width} ${
+                      colIndex === columns.length - 1 ? "flex gap-1" : ""
+                    }`}
                   />
                 ))}
               </div>
@@ -83,7 +86,7 @@ const TableSkeleton = ({ type = "feedstock", rows = 8 }: TableSkeletonProps) => 
         </CardContent>
       </Card>
     </section>
-  )
-}
+  );
+};
 
-export default TableSkeleton
+export default TableSkeleton;

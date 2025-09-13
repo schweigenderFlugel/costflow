@@ -3,29 +3,19 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
+import { MeasureUnitFieldProps } from "@/interfaces/interface-measure-unit-field-props";
 import { MeasureUnit } from "@/types/measure/measure-unit";
 import { translateMeasureUnit } from "@/utils/translate/shared-translate";
-import { Control, FieldValues, Path } from "react-hook-form";
-
-interface MeasureUnitFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name?: Path<T>;
-  label?: string;
-  placeholder?: string;
-  placeholderDisabled?: string;
-  availableUnits: string[];
-  disabled?: boolean;
-  className?: string;
-}
+import { FieldValues, Path } from "react-hook-form";
 
 export function MeasureUnitField<T extends FieldValues>({
   control,
@@ -35,7 +25,7 @@ export function MeasureUnitField<T extends FieldValues>({
   placeholderDisabled = "Selecciona el estado de la materia",
   availableUnits,
   disabled = false,
-  className
+  className,
 }: MeasureUnitFieldProps<T>) {
   return (
     <FormField
@@ -50,7 +40,9 @@ export function MeasureUnitField<T extends FieldValues>({
             disabled={disabled}
           >
             <FormControl className={`w-full ${className || ""}`}>
-              <SelectTrigger className={className?.includes("truncate") ? "truncate" : ""}>
+              <SelectTrigger
+                className={className?.includes("truncate") ? "truncate" : ""}
+              >
                 <SelectValue
                   placeholder={disabled ? placeholderDisabled : placeholder}
                   defaultValue={"DEFAULT"}

@@ -1,17 +1,13 @@
 import DetailProduct from "@/components/product/modal/crud/detail-product";
 import { Button } from "@/components/ui/button";
-import { ObjProduct, Product } from "@/types/items/product";
-import { FormDataProduct } from "@/schemas/product-schema";
+import { AlreadyCreatedProps } from "@/interfaces/interface-already-created-props";
 import { ClipboardCheck } from "lucide-react";
 
-interface AlreadyCreatedProps {
-  product: ObjProduct | Product | FormDataProduct | null;
-  handleClose: () => void;
-  handleReturn: () => void;
-}
-
-const ProductCreated = ({ product, handleClose, handleReturn }: AlreadyCreatedProps) => {
-
+const ProductCreated = ({
+  product,
+  handleClose,
+  handleReturn,
+}: AlreadyCreatedProps) => {
   return (
     <div className="flex flex-col gap-6 my-auto">
       <div className="flex items-center flex-col gap-1">
@@ -23,7 +19,8 @@ const ProductCreated = ({ product, handleClose, handleReturn }: AlreadyCreatedPr
 
       <div className="grid grid-cols-2 gap-4 w-full justify-between items-center">
         <Button
-          onClick={handleClose} variant="outline"
+          onClick={handleClose}
+          variant="outline"
           className="cursor-pointer rounded-xs"
         >
           Cerrar
@@ -37,7 +34,7 @@ const ProductCreated = ({ product, handleClose, handleReturn }: AlreadyCreatedPr
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductCreated
+export default ProductCreated;

@@ -10,6 +10,7 @@ import PageInfoDialog from "@/components/shared/page-info-dialog";
 import { fetcher } from "@/utils/fetcher";
 import { Suspense } from "react";
 import { pageMetadata } from "@/lib/seo";
+import type { Historial } from "@/types/type-historial";
 
 export const metadata = pageMetadata.dashboard();
 
@@ -52,19 +53,18 @@ function numberFormat(value: number | string) {
 
 export default async function Page() {
   const dollar = await getOfficialDollar();
+
   const historial = await getHistorial();
 
-  type Historial = {
-    period: string;
-    feedstocks?: { name: string }[];
-    monthly_production?: { products: { product_name: string }[] };
-  };
+  const historialArray = Array.isArray(historial) ? historial : [];
 
-  const historialOrdenado = historial.sort((a: Historial, b: Historial) => {
-    const [ma, ya] = a.period.split("-").map(Number);
-    const [mb, yb] = b.period.split("-").map(Number);
-    return ya - yb || ma - mb;
-  });
+  const historialOrdenado = historialArray.sort(
+    (a: Historial, b: Historial) => {
+      const [ma, ya] = a.period.split("-").map(Number);
+      const [mb, yb] = b.period.split("-").map(Number);
+      return ya - yb || ma - mb;
+    }
+  );
 
   const ultimoHistorial = historialOrdenado.at(-1);
   const anteriorHistorial = historialOrdenado.at(-2);

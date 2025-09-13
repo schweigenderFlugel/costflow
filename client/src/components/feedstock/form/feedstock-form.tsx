@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { feedstockSchema, FormDataFeedstock } from "@/schemas/feedstock-schema";
+import { feedstockSchema } from "@/schemas/feedstock-schema";
 import { useMeasureUnitLogic } from "@/hooks/form/use-measure-unit-logic";
 import {
   SkuField,
@@ -12,29 +12,26 @@ import {
   StateMatterField,
   MeasureUnitField,
   UnitCostField,
-  CurrencyField
+  CurrencyField,
 } from "@/components/shared/form-fields";
-
-interface FeedstockFormProps {
-  defaultValues: Partial<FormDataFeedstock>;
-  onSubmit: (values: FormDataFeedstock) => Promise<void> | void;
-  formId: string;
-}
+import { FeedstockFormProps } from "@/interfaces/interface-feedstock-form-props";
+import { FormDataFeedstock } from "@/types/type-feedstock";
 
 const FeedstockForm = ({
   defaultValues,
   onSubmit,
-  formId
+  formId,
 }: FeedstockFormProps) => {
   const form = useForm<FormDataFeedstock>({
     resolver: zodResolver(feedstockSchema),
     defaultValues,
   });
 
-  const { selectedState, getAvailableMeasureUnits, handleStateChange } = useMeasureUnitLogic({
-    watch: form.watch,
-    setValue: form.setValue
-  });
+  const { selectedState, getAvailableMeasureUnits, handleStateChange } =
+    useMeasureUnitLogic({
+      watch: form.watch,
+      setValue: form.setValue,
+    });
 
   return (
     <Form {...form}>
@@ -49,10 +46,7 @@ const FeedstockForm = ({
           placeholder="Código referencial del insumo"
         />
 
-        <NameField
-          control={form.control}
-          placeholder="Nombre del insumo"
-        />
+        <NameField control={form.control} placeholder="Nombre del insumo" />
 
         <ProviderField control={form.control} />
 
@@ -68,7 +62,6 @@ const FeedstockForm = ({
           className="overflow-hidden"
         />
         <div className="grid grid-cols-2 gap-1">
-
           <UnitCostField
             control={form.control}
             placeholder="Costo unitario del insumo"
@@ -76,10 +69,9 @@ const FeedstockForm = ({
 
           <CurrencyField control={form.control} />
         </div>
-
       </form>
     </Form>
   );
-}
+};
 
-export default FeedstockForm
+export default FeedstockForm;

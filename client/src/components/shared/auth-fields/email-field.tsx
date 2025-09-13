@@ -5,12 +5,8 @@ import {
   FormControl,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Control, FieldErrors, FieldValues, Path } from "react-hook-form";
-
-interface EmailFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  errors: FieldErrors<T>;
-}
+import { EmailFieldProps } from "@/interfaces/interface-email-field-props";
+import { FieldValues, Path } from "react-hook-form";
 
 export function EmailField<T extends { email: string } & FieldValues>({
   control,

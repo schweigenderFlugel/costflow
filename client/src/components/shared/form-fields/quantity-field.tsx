@@ -3,26 +3,18 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Control, FieldValues, Path } from "react-hook-form";
-
-interface QuantityFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name?: Path<T>;
-  label?: string;
-  placeholder?: string;
-  min?: number;
-  step?: string;
-}
+import { QuantityFieldProps } from "@/interfaces/interface-quantity-field-props";
+import { FieldValues, Path } from "react-hook-form";
 
 export function QuantityField<T extends FieldValues>({
   control,
   name = "quantity" as Path<T>,
   label = "Cantidad",
   placeholder = "Cantidad",
-  step = "1"
+  step = "1",
 }: QuantityFieldProps<T>) {
   return (
     <FormField

@@ -1,6 +1,5 @@
-
-import { ObjFeedstock } from "@/types/items/feedstock";
-import { ObjProduct } from "@/types/items/product";
+import { ObjFeedstock } from "@/interfaces/interface-obj-feedstock";
+import { ObjProduct } from "@/interfaces/interface-product";
 
 const translationsFeedstockHeaders: Record<keyof ObjFeedstock, string> = {
   // Información general
@@ -20,7 +19,6 @@ const translationsFeedstockHeaders: Record<keyof ObjFeedstock, string> = {
   currency: "Moneda",
   unit_cost: "Costo",
 };
-
 
 const translationsProductsHeaders: Record<keyof ObjProduct, string> = {
   // Información general
@@ -43,8 +41,7 @@ const translationsProductsHeaders: Record<keyof ObjProduct, string> = {
   indirect_costs: "Costos Indirectos",
 };
 
-
-
-
-export const translateFeedstockHeaders = (header: keyof ObjFeedstock) => translationsFeedstockHeaders[header]
-export const translateProductsHeaders = (header: keyof ObjProduct) => translationsProductsHeaders[header]
+export const translateFeedstockHeaders = (header: keyof ObjFeedstock) =>
+  translationsFeedstockHeaders[header];
+export const translateProductsHeaders = (header: keyof ObjProduct) =>
+  translationsProductsHeaders[header];

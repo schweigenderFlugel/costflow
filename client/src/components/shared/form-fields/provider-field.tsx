@@ -4,30 +4,26 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Control, FieldValues, Path } from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 import { useDataQuery } from "@/hooks/use-data-query";
-import { ObjFeedstock } from "@/types/items/feedstock";
-
-interface ProviderFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name?: Path<T>;
-  label?: string;
-  placeholder?: string;
-  optional?: boolean;
-}
+import { ProviderFieldProps } from "@/interfaces/interface-provider-field-props";
+import { ObjFeedstock } from "@/interfaces/interface-obj-feedstock";
 
 export function ProviderField<T extends FieldValues>({
   control,
   name = "provider" as Path<T>,
   label = "Proveedor",
   placeholder = "Nombre o alias del proveedor",
-  optional = true
+  optional = true,
 }: ProviderFieldProps<T>) {
   // Obtener datos de feedstock para extraer proveedores únicos
-  const { data: feedstocks = [] } = useDataQuery<ObjFeedstock[]>("feedstock", undefined);
+  const { data: feedstocks = [] } = useDataQuery<ObjFeedstock[]>(
+    "feedstock",
+    undefined
+  );
 
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -37,16 +33,19 @@ export function ProviderField<T extends FieldValues>({
     if (!Array.isArray(feedstocks)) return [];
 
     const providers = feedstocks
-      .map(fs => fs.provider)
+      .map((fs) => fs.provider)
       .filter((provider): provider is string => Boolean(provider?.trim()))
-      .map(provider => provider.trim());
+      .map((provider) => provider.trim());
 
     // Eliminar duplicados (case-insensitive) y ordenar
-    const uniqueSet = new Set(providers.map(p => p.toLowerCase()));
+    const uniqueSet = new Set(providers.map((p) => p.toLowerCase()));
     return Array.from(uniqueSet)
-      .map(lowerProvider => {
+      .map((lowerProvider) => {
         // Encontrar la versión original (con mayúsculas/minúsculas) del proveedor
-        return providers.find(p => p.toLowerCase() === lowerProvider) || lowerProvider;
+        return (
+          providers.find((p) => p.toLowerCase() === lowerProvider) ||
+          lowerProvider
+        );
       })
       .sort();
   }, [feedstocks]);
@@ -56,7 +55,7 @@ export function ProviderField<T extends FieldValues>({
     if (!inputValue.trim()) return uniqueProviders.slice(0, 5); // Mostrar los primeros 5 si no hay búsqueda
 
     return uniqueProviders
-      .filter(provider =>
+      .filter((provider) =>
         provider.toLowerCase().includes(inputValue.toLowerCase())
       )
       .slice(0, 8); // Limitar a 8 sugerencias
@@ -95,7 +94,7 @@ export function ProviderField<T extends FieldValues>({
                 }}
                 onKeyDown={(e) => {
                   // Cerrar sugerencias con Escape
-                  if (e.key === 'Escape') {
+                  if (e.key === "Escape") {
                     setShowSuggestions(false);
                   }
                 }}
@@ -120,13 +119,17 @@ export function ProviderField<T extends FieldValues>({
                   ))}
 
                   {/* Indicador de que se puede escribir uno nuevo */}
-                  {inputValue.trim() && !filteredProviders.some(p => p.toLowerCase() === inputValue.toLowerCase()) && (
-                    <div className="px-3 py-2 text-xs text-gray-500 border-t bg-gray-50">
-                      <span className="italic">
-                        Presiona Enter para usar &quot;{inputValue}&quot; como nuevo proveedor
-                      </span>
-                    </div>
-                  )}
+                  {inputValue.trim() &&
+                    !filteredProviders.some(
+                      (p) => p.toLowerCase() === inputValue.toLowerCase()
+                    ) && (
+                      <div className="px-3 py-2 text-xs text-gray-500 border-t bg-gray-50">
+                        <span className="italic">
+                          Presiona Enter para usar &quot;{inputValue}&quot; como
+                          nuevo proveedor
+                        </span>
+                      </div>
+                    )}
                 </div>
               )}
             </div>

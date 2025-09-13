@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { StatsChartProps } from "@/interfaces/interface-stats-chart-props";
 import { ChartPie } from "lucide-react";
 import {
   BarChart,
@@ -11,17 +12,6 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-
-type DataItem = {
-  month: string;
-  insumos: number;
-  productos: number;
-};
-
-interface StatsChartProps {
-  data: DataItem[];
-  loading: boolean;
-}
 
 export default function StatsChart({ data, loading }: StatsChartProps) {
   return (

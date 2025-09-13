@@ -1,22 +1,21 @@
-"use server"
+"use server";
 
 import { fetcher } from "@/utils/fetcher";
 import { getToken } from "@/utils/get-token";
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import z from "zod";
 
 const labourSchema = z.object({
   salary: z.coerce.number().min(1),
-  hours: z.coerce.number().min(1)
+  hours: z.coerce.number().min(1),
 });
 
 export const onCreateAction = async (values: FormData) => {
-  const token = await getToken()
+  const token = await getToken();
 
   if (!token) {
-    console.error("No estas autorizado.")
-    return { error: "No estas autorizado." }
+    console.error("No estas autorizado.");
+    return { error: "No estas autorizado." };
   }
 
   try {
@@ -36,20 +35,17 @@ export const onCreateAction = async (values: FormData) => {
       method: "POST",
       body: JSON.stringify(validated.data),
       headers: {
-        "Authorization": `Bearer ${token}`,
-      }
-    })
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    console.log(data);
-
-    // Revalidar la página actual para refrescar los datos
     revalidatePath("/configuracion");
 
     return { success: true, data };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
+    return { error: "Error desconocido" };
   }
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  catch (error: any) {
-    console.log(error);
-    return { error: error?.message ?? "Error desconocido" }
-  }
-}
+};

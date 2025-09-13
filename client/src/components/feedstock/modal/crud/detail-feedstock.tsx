@@ -1,9 +1,15 @@
-import { Feedstock, ObjFeedstock } from "@/types/items/feedstock";
-import { translateMeasureUnit, translateStateMatter } from "@/utils/translate/shared-translate";
+import { Feedstock } from "@/interfaces/interface-feedstock";
+import { ObjFeedstock } from "@/interfaces/interface-obj-feedstock";
+import {
+  translateMeasureUnit,
+  translateStateMatter,
+} from "@/utils/translate/shared-translate";
 
-
-const DetailFeedstock = ({ feedstock }: { feedstock: ObjFeedstock | Feedstock | null }) => {
-
+const DetailFeedstock = ({
+  feedstock,
+}: {
+  feedstock: ObjFeedstock | Feedstock | null;
+}) => {
   if (feedstock == null) return null;
 
   return (
@@ -13,17 +19,30 @@ const DetailFeedstock = ({ feedstock }: { feedstock: ObjFeedstock | Feedstock | 
       <div className="mt-3 space-y-2">
         <div className="flex justify-between items-center">
           <h3 className="text-sm">SKU:</h3>
-          <span className="text-sm font-medium text-foreground text-truncate pl-2" title={feedstock.sku}>{feedstock.sku}</span>
+          <span
+            className="text-sm font-medium text-foreground text-truncate pl-2"
+            title={feedstock.sku}
+          >
+            {feedstock.sku}
+          </span>
         </div>
 
         <div className="flex justify-between items-center">
           <h3 className="text-sm">Nombre:</h3>
-          <span className="text-sm font-medium text-foreground text-truncate pl-2" title={feedstock.name}>{feedstock.name}</span>
+          <span
+            className="text-sm font-medium text-foreground text-truncate pl-2"
+            title={feedstock.name}
+          >
+            {feedstock.name}
+          </span>
         </div>
 
         <div className="flex justify-between items-center">
           <h3 className="text-sm">Proveedor:</h3>
-          <span className="text-sm font-medium text-foreground text-truncate pl-2" title={feedstock.provider} >
+          <span
+            className="text-sm font-medium text-foreground text-truncate pl-2"
+            title={feedstock.provider}
+          >
             {feedstock.provider || "No especificado"}
           </span>
         </div>
@@ -31,16 +50,12 @@ const DetailFeedstock = ({ feedstock }: { feedstock: ObjFeedstock | Feedstock | 
         <div className="flex justify-between items-center">
           <h3 className="text-sm">Costo unitario:</h3>
           <span className="text-sm font-medium text-foreground">
-            {
-              feedstock.currency ? (
-                new Intl.NumberFormat("es-AR", {
+            {feedstock.currency
+              ? new Intl.NumberFormat("es-AR", {
                   style: "currency",
                   currency: feedstock.currency,
                 }).format(feedstock.unit_cost)
-              ) : (
-                `$${feedstock.unit_cost}`
-              )
-            }
+              : `$${feedstock.unit_cost}`}
           </span>
         </div>
 
@@ -61,17 +76,14 @@ const DetailFeedstock = ({ feedstock }: { feedstock: ObjFeedstock | Feedstock | 
         <div className="flex justify-between items-center">
           <h3 className="text-sm">Fecha de creación:</h3>
           <span className="text-sm font-medium text-foreground">
-            {
-              'date' in feedstock ?
-                new Date(feedstock.date).toLocaleDateString()
-                : new Date().toLocaleDateString()
-            }
+            {"date" in feedstock
+              ? new Date(feedstock.date).toLocaleDateString()
+              : new Date().toLocaleDateString()}
           </span>
         </div>
-
       </div>
-    </div >
-  )
-}
+    </div>
+  );
+};
 
-export default DetailFeedstock
+export default DetailFeedstock;

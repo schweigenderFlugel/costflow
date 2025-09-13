@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { productSchema, FormDataProduct } from "@/schemas/product-schema";
+import { productSchema } from "@/schemas/product-schema";
 import { useMeasureUnitLogic } from "@/hooks/form/use-measure-unit-logic";
 import {
   SkuField,
@@ -13,33 +13,26 @@ import {
   MeasureUnitField,
   DescriptionField,
   FeedstockSelector,
-  IndirectCostSelector
+  IndirectCostSelector,
 } from "@/components/shared/form-fields";
+import { ProductFormProps } from "@/interfaces/interface-product-form-props";
+import { FormDataProduct } from "@/types/type-product";
 
-interface ProductFormProps {
-  defaultValues: Partial<FormDataProduct>;
-  onSubmit: (values: FormDataProduct) => Promise<void> | void;
-  formId: string;
-}
-
-const ProductForm = ({
-  defaultValues,
-  onSubmit,
-  formId,
-}: ProductFormProps) => {
+const ProductForm = ({ defaultValues, onSubmit, formId }: ProductFormProps) => {
   const form = useForm<FormDataProduct>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       ...defaultValues,
       feedstocks: defaultValues.feedstocks,
-      indirect_costs: defaultValues.indirect_costs
+      indirect_costs: defaultValues.indirect_costs,
     },
   });
 
-  const { selectedState, getAvailableMeasureUnits, handleStateChange } = useMeasureUnitLogic({
-    watch: form.watch,
-    setValue: form.setValue
-  });
+  const { selectedState, getAvailableMeasureUnits, handleStateChange } =
+    useMeasureUnitLogic({
+      watch: form.watch,
+      setValue: form.setValue,
+    });
 
   return (
     <Form {...form}>
@@ -47,8 +40,8 @@ const ProductForm = ({
         autoComplete="off"
         onSubmit={form.handleSubmit(onSubmit)}
         id={formId}
-        className={`grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 px-2 sm:px-4 py-5`}>
-
+        className={`grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 px-2 sm:px-4 py-5`}
+      >
         <div className="flex flex-col col-span-1 gap-y-4">
           <SkuField
             control={form.control}
@@ -103,15 +96,14 @@ const ProductForm = ({
         />
 
         {/* Búsqueda y selección de costos indirectos */}
-        < IndirectCostSelector
+        <IndirectCostSelector
           control={form.control}
           formRegister={form.register}
           formErrors={form.formState.errors}
         />
-
       </form>
     </Form>
   );
-}
+};
 
-export default ProductForm
+export default ProductForm;
