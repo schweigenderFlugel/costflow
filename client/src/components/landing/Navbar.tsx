@@ -1,5 +1,3 @@
-"use client";
-
 import { MenuIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -20,8 +18,8 @@ import Link from "next/link";
 
 const Navbar5 = () => {
   return (
-    <section className="xl:py-7 fixed top-0 bottom-0 z-50 w-full h-fit" data-scroll-behavior="smooth">
-      <div className="container mx-auto flex justify-between items-center bg-gray-800/85 xl:rounded-xl text-white p-4">
+    <header className="xl:py-7 fixed top-0 bottom-0 z-50 w-full h-fit" data-scroll-behavior="smooth">
+      <nav className="container mx-auto flex justify-between items-center bg-gray-800/85 xl:rounded-xl text-white p-4">
         {/* Logo */}
         <Link href="#" className="flex items-center gap-2">
           <Image
@@ -104,8 +102,8 @@ const Navbar5 = () => {
             </div>
           </SheetContent>
         </Sheet>
-      </div>
-    </section>
+      </nav>
+    </header>
   );
 };
 
