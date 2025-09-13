@@ -74,7 +74,7 @@ const IndirectCostForm = ({
     onClose?.();
   };
   return (
-    <div className="space-y-12">
+    <div className="my-5 h-full flex flex-col justify-between">
       <Form {...form}>
         <form
           autoComplete="off"

@@ -44,7 +44,7 @@ const LabourDialog = () => {
             <DialogDescription>
               Valor por mes de los roles de trabajo.
             </DialogDescription>
-            <Button size={"sm"} className="text-xs ml-auto" onClick={() => setAddLabour(!addLabour)}>
+            <Button size={"sm"} className="text-xs ml-auto" variant={"not-default"} onClick={() => setAddLabour(!addLabour)}>
               {!addLabour ? <PlusIcon className="w-4 h-4" /> : <MinusIcon className="w-4 h-4" />}
               {!addLabour ? "Agregar mano de obra" : "No agregar mano de obra"}
             </Button>

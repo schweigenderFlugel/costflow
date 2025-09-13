@@ -12,6 +12,8 @@ import { Suspense } from "react";
 import { pageMetadata } from "@/lib/seo";
 import type { Historial } from "@/types/type-historial";
 
+export const revalidate = 6400;
+
 export const metadata = pageMetadata.dashboard();
 
 const infoList = [
