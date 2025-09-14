@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Trash2 } from "lucide-react";
-import QuantityInput from "@/components/calculadora/quantity-input";
+import QuantityInput from "@/components/calculator/quantity-input";
 import { FeedstockCalculation } from "../../types/feedstock-type";
 import { MeasureUnits } from "@/types/measure/type-measure-units";
 import { FeedstockTableProps } from "@/interfaces/interface-feedstock-table-props";
@@ -137,9 +137,9 @@ export default function FeedstockTable({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </TableHead>
                 ))}
               </TableRow>

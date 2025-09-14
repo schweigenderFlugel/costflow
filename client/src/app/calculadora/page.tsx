@@ -1,4 +1,4 @@
-import PageCalculator from "@/app/calculadora/page-calculator";
+import PageCalculator from "@/components/calculator/page-calculator";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata.calculator();

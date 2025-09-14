@@ -5,17 +5,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { feedstockSchema } from "@/schemas/feedstock-schema";
 import { useMeasureUnitLogic } from "@/hooks/form/use-measure-unit-logic";
-import {
-  SkuField,
-  NameField,
-  ProviderField,
-  StateMatterField,
-  MeasureUnitField,
-  UnitCostField,
-  CurrencyField,
-} from "@/components/shared/form-fields";
 import { FeedstockFormProps } from "@/interfaces/interface-feedstock-form-props";
 import { FormDataFeedstock } from "@/types/type-feedstock";
+import { CurrencyField } from "@/components/shared/form-fields/currency-field";
+import { UnitCostField } from "@/components/shared/form-fields/unit-cost-field";
+import { MeasureUnitField } from "@/components/shared/form-fields/measure-unit-field";
+import { StateMatterField } from "@/components/shared/form-fields/state-matter-field";
+import { ProviderField } from "@/components/shared/form-fields/provider-field";
+import { NameField } from "@/components/shared/form-fields/name-field";
+import { SkuField } from "@/components/shared/form-fields/sku-field";
 
 const FeedstockForm = ({
   defaultValues,

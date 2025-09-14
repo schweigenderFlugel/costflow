@@ -5,7 +5,7 @@ import { useCreateFeedstockDialog } from "@/hooks/use-feedstock-dialog"
 import { PlusIcon } from "@heroicons/react/24/outline"
 
 
-const CreateFeedstockTrigger = ({ variant }: { variant?: "default" | "outline" }) => {
+const CreateFeedstockTrigger = ({ variant }: { variant?: "not-default" | "default" | "outline" }) => {
   const { setIsOpen } = useCreateFeedstockDialog()
 
   return (

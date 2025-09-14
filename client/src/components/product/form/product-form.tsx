@@ -5,18 +5,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { productSchema } from "@/schemas/product-schema";
 import { useMeasureUnitLogic } from "@/hooks/form/use-measure-unit-logic";
-import {
-  SkuField,
-  NameField,
-  QuantityField,
-  StateMatterField,
-  MeasureUnitField,
-  DescriptionField,
-  FeedstockSelector,
-  IndirectCostSelector,
-} from "@/components/shared/form-fields";
 import { ProductFormProps } from "@/interfaces/interface-product-form-props";
 import { FormDataProduct } from "@/types/type-product";
+import { IndirectCostSelector } from "@/components/shared/form-fields/indirect-cost-selector";
+import { FeedstockSelector } from "@/components/shared/form-fields/feedstock-selector";
+import { DescriptionField } from "@/components/shared/form-fields/description-field";
+import { QuantityField } from "@/components/shared/form-fields/quantity-field";
+import { MeasureUnitField } from "@/components/shared/form-fields/measure-unit-field";
+import { StateMatterField } from "@/components/shared/form-fields/state-matter-field";
+import { NameField } from "@/components/shared/form-fields/name-field";
+import { SkuField } from "@/components/shared/form-fields/sku-field";
 
 const ProductForm = ({ defaultValues, onSubmit, formId }: ProductFormProps) => {
   const form = useForm<FormDataProduct>({

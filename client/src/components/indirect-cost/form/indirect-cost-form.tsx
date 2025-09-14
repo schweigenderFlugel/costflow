@@ -21,9 +21,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import SpinLoader from "@/components/shared/spin-loader";
 import DateField from "@/components/shared/form-fields/date-field";
-import { UnitCostField } from "@/components/shared/form-fields";
 import { IndirectCostFormFormProps } from "@/interfaces/interface-indirect-cost-form-form-props";
 import { FormDataIndirectCost } from "@/types/type-form-data-indirect-cost";
+import { UnitCostField } from "@/components/shared/form-fields/unit-cost-field";
 
 // Predefined cost types (you can modify these as needed)
 export const COST_TYPES = [
@@ -74,7 +74,7 @@ const IndirectCostForm = ({
     onClose?.();
   };
   return (
-    <div className="space-y-12">
+    <div className="my-5 h-full flex flex-col justify-between">
       <Form {...form}>
         <form
           autoComplete="off"

@@ -5,5 +5,6 @@ export type NavItem = {
   title: string;
   href: string;
   icon?: typeof HomeIcon;
+  svgIcon?: string;
   activeIcon?: typeof HomeIconActive;
 };

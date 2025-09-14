@@ -73,7 +73,7 @@ export default function FormRegister() {
     <Form {...form}>
       <form
         autoComplete="off"
-        className="grid xl:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-5 bg-login-transparent max-w-md md:max-w-full w-full mx-auto"
+        className="grid md:grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-5 bg-login-transparent max-w-full justify-center"
         onSubmit={onSubmit}
       >
         <TextField<RegisterFormSchema>
@@ -81,7 +81,7 @@ export default function FormRegister() {
           label="Nombre"
           control={form.control}
           errors={form.formState.errors}
-          className="py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full max-w-xs"
           placeholder="Ingresá tu nombre"
         />
 
@@ -90,7 +90,7 @@ export default function FormRegister() {
           label="Apellido"
           control={form.control}
           errors={form.formState.errors}
-          className="py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full max-w-xs"
           placeholder="Ingresá tu apellido"
         />
         <TextField<RegisterFormSchema>
@@ -98,7 +98,7 @@ export default function FormRegister() {
           label="Puesto"
           control={form.control}
           errors={form.formState.errors}
-          className="py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full max-w-xs"
           placeholder="Ingresá tu puesto"
         />
 
@@ -108,7 +108,7 @@ export default function FormRegister() {
           type="email"
           control={form.control}
           errors={form.formState.errors}
-          className="py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full max-w-xs"
           placeholder="Ingresá tu correo electrónico"
         />
 
@@ -125,14 +125,14 @@ export default function FormRegister() {
           errors={form.formState.errors}
           name="passwordConfirmation"
           label="Confirmar contraseña"
-          placeholder="Ingresá de nuevo tu contraseña"
+          placeholder="Ingresá confirmación"
         />
 
         <FormField
           name="terms"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex flex-row justify-center items-center space-y-0 col-span-full">
+            <FormItem className="flex flex-row justify-center items-center space-y-0 col-span-full max-w-xs">
               <FormControl>
                 <Checkbox
                   checked={field.value}
@@ -154,7 +154,7 @@ export default function FormRegister() {
           </p>
         )}
 
-        <div className="flex flex-col md:flex-row gap-2 col-span-full mt-4 *:font-bold ">
+        <div className="flex flex-col md:flex-row gap-2 col-span-full mt-8 *:font-bold">
           <Button
             variant="default"
             className="p-6 w-full md:flex-1"

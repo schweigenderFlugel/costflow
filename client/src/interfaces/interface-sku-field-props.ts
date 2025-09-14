@@ -5,4 +5,6 @@ export interface SkuFieldProps<T extends FieldValues> {
   name?: Path<T>;
   label?: string;
   placeholder?: string;
+  showGenerateButton?: boolean;
+  onGenerateSku?: () => string;
 }

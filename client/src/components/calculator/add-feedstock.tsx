@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sheet";
 import { useQuery } from "@tanstack/react-query";
 import { HistorialData } from "@/interfaces/interface-historial";
-import FeedstockTable from "@/components/calculadora/table-feedstock";
+import FeedstockTable from "@/components/calculator/table-feedstock";
 import { MeasureUnits } from "@/types/measure/type-measure-units";
 import { ProductCalculation } from "@/types/type-product-calculation";
 import type { FeedstockOption } from "@/types/type-feedstock-option";
@@ -180,11 +180,10 @@ export default function AddFeedstockSheet({
                   {filteredFeedstocks.map((f, idx) => (
                     <div
                       key={idx}
-                      className={`p-2 cursor-pointer text-sm ${
-                        idx === highlightedIndex
+                      className={`p-2 cursor-pointer text-sm ${idx === highlightedIndex
                           ? "bg-blue-200"
                           : "hover:bg-blue-200"
-                      }`}
+                        }`}
                       onClick={() => handleSelectFeedstock(f)}
                     >
                       {f.name}

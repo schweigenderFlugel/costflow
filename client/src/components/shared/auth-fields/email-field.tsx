@@ -17,7 +17,7 @@ export function EmailField<T extends { email: string } & FieldValues>({
       name={"email" as Path<T>}
       control={control}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="max-w-xs">
           <FormLabel>Correo electrónico</FormLabel>
           <FormControl>
             <Input
