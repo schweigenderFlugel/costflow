@@ -1,14 +1,29 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormDataIndirectCost, indirectCostSchema } from "@/schemas/indirect-cost-schema";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { indirectCostSchema } from "@/schemas/indirect-cost-schema";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ReactNode, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import SpinLoader from "@/components/shared/spin-loader";
 import DateField from "@/components/shared/form-fields/date-field";
-import { UnitCostField } from "@/components/shared/form-fields";
+import { IndirectCostFormFormProps } from "@/interfaces/interface-indirect-cost-form-form-props";
+import { FormDataIndirectCost } from "@/types/type-form-data-indirect-cost";
+import { UnitCostField } from "@/components/shared/form-fields/unit-cost-field";
 
 // Predefined cost types (you can modify these as needed)
 export const COST_TYPES = [
@@ -22,24 +37,20 @@ export const COST_TYPES = [
   "Seguridad",
   "Telefonía",
   "Internet",
-  "Otros"
+  "Otros",
 ] as const;
 
-
-interface IndirectCostFormFormProps {
-  defaultValues: Partial<FormDataIndirectCost>;
-  onSubmit: (values: FormDataIndirectCost) => Promise<void | boolean> | void;
-  onClose?: () => Promise<void> | void;
-  formId: string;
-  isPending: boolean;
-  submitingText: string;
-  submitText: string;
-  initialIsCustomType?: boolean;
-  errorMessage?: ReactNode;
-}
-
-
-const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose, submitingText, submitText, initialIsCustomType = false, errorMessage }: IndirectCostFormFormProps) => {
+const IndirectCostForm = ({
+  defaultValues,
+  onSubmit,
+  formId,
+  isPending,
+  onClose,
+  submitingText,
+  submitText,
+  initialIsCustomType = false,
+  errorMessage,
+}: IndirectCostFormFormProps) => {
   const [isCustomType, setIsCustomType] = useState(initialIsCustomType);
 
   const form = useForm<FormDataIndirectCost>({
@@ -49,22 +60,21 @@ const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose,
 
   const handleSubmit = form.handleSubmit(
     async (values: FormDataIndirectCost) => {
-      const isSuccess = await onSubmit(values)
+      const isSuccess = await onSubmit(values);
       if (isSuccess) {
-        setIsCustomType(false)
-        form.reset()
+        setIsCustomType(false);
+        form.reset();
       }
     }
-  )
-
+  );
 
   const handleCancel = () => {
-    form.reset()
+    form.reset();
     setIsCustomType(false);
     onClose?.();
-  }
+  };
   return (
-    <div className="space-y-12">
+    <div className="my-5 h-full flex flex-col justify-between">
       <Form {...form}>
         <form
           autoComplete="off"
@@ -72,7 +82,6 @@ const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose,
           onSubmit={handleSubmit}
           className="px-1.5 flex flex-col gap-y-5 py-3"
         >
-
           <FormField
             name="type"
             control={form.control}
@@ -93,7 +102,13 @@ const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose,
                     disabled={isPending}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder={isCustomType ? "Selecciona el tipo de costo indirecto" : "Selecciona tipo de costo"} />
+                      <SelectValue
+                        placeholder={
+                          isCustomType
+                            ? "Selecciona el tipo de costo indirecto"
+                            : "Selecciona tipo de costo"
+                        }
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       {COST_TYPES.map((type) => (
@@ -168,12 +183,9 @@ const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose,
             formControl={form.control}
             formatStr={"'Corresponde a' MMMM 'del año' yyyy"}
           />
-
         </form>
       </Form>
-      {
-        errorMessage && errorMessage
-      }
+      {errorMessage && errorMessage}
       <div className="grid grid-cols-2 gap-4 w-full">
         <Button
           type="button"
@@ -196,7 +208,7 @@ const IndirectCostForm = ({ defaultValues, onSubmit, formId, isPending, onClose,
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default IndirectCostForm;

@@ -27,7 +27,7 @@ const UserNavigation = () => {
         <Bell size={15} />
       </Button>
 
-      <Button className="bg-foreground hover:bg-foreground/85" onClick={onLogout} disabled={isPending}>
+      <Button variant={"outline"} onClick={onLogout} disabled={isPending}>
         <LogOut size={15} />
         <span className="hidden lg:inline">
           {isPending ? "Cerrando..." : "Cerrar sesión"}

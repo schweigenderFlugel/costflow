@@ -3,7 +3,7 @@
 import { useDataMutation } from "@/hooks/use-data-mutation";
 import { fetcher } from "@/utils/fetcher";
 import { itemToasts } from "@/components/shared/item-toasts";
-import { FormDataFeedstock } from "@/schemas/feedstock-schema";
+import { FormDataFeedstock } from "@/types/type-feedstock";
 
 export const useFeedstockMutations = () => {
   const createFeedstock = useDataMutation({
@@ -12,13 +12,16 @@ export const useFeedstockMutations = () => {
       const data = await fetcher({
         input: `/api/feedstock`,
         method: "POST",
-        body: JSON.stringify(values)
+        body: JSON.stringify(values),
       });
 
       if (data.error || !data.message?.includes("successfully")) {
-        let posibleMessage = data.detail || data.error || data.description || data.message;
+        let posibleMessage =
+          data.detail || data.error || data.description || data.message;
         if (Array.isArray(posibleMessage)) {
-          posibleMessage = (posibleMessage.map((detail) => detail.msg)).join(". \n");
+          posibleMessage = posibleMessage
+            .map((detail) => detail.msg)
+            .join(". \n");
         }
         throw new Error(posibleMessage || "Error al crear el insumo");
       }
@@ -31,24 +34,30 @@ export const useFeedstockMutations = () => {
     onError: (error) => {
       itemToasts.error({
         description: "Error al crear insumo",
-        message: error.message
+        message: error.message,
       });
-    }
+    },
   });
 
   const updateFeedstock = useDataMutation({
     queryType: "feedstock",
-    mutationFn: async ({ feedstockId, ...values }: FormDataFeedstock & { feedstockId: string }) => {
+    mutationFn: async ({
+      feedstockId,
+      ...values
+    }: FormDataFeedstock & { feedstockId: string }) => {
       const data = await fetcher({
         input: `/api/feedstock/${feedstockId}`,
         method: "PUT",
-        body: JSON.stringify(values)
+        body: JSON.stringify(values),
       });
 
       if (data.error || !data.message?.includes("successfully")) {
-        let posibleMessage = data.detail || data.error || data.description || data.message;
+        let posibleMessage =
+          data.detail || data.error || data.description || data.message;
         if (Array.isArray(posibleMessage)) {
-          posibleMessage = (posibleMessage.map((detail) => detail.msg)).join(". \n");
+          posibleMessage = posibleMessage
+            .map((detail) => detail.msg)
+            .join(". \n");
         }
         throw new Error(posibleMessage || "Error al actualizar el insumo");
       }
@@ -61,23 +70,32 @@ export const useFeedstockMutations = () => {
     onError: (error) => {
       itemToasts.error({
         description: "Error al actualizar insumo",
-        message: error.message
+        message: error.message,
       });
-    }
+    },
   });
 
   const deleteFeedstock = useDataMutation({
     queryType: "feedstock",
-    mutationFn: async ({ feedstockId, feedstockName }: { feedstockId: string; feedstockName: string }) => {
+    mutationFn: async ({
+      feedstockId,
+      feedstockName,
+    }: {
+      feedstockId: string;
+      feedstockName: string;
+    }) => {
       const data = await fetcher({
         input: `/api/feedstock/${feedstockId}`,
-        method: "DELETE"
+        method: "DELETE",
       });
 
       if (data.error || !data.message?.includes("successfully")) {
-        let posibleMessage = data.error || data.description || data.message || data.detail;
+        let posibleMessage =
+          data.error || data.description || data.message || data.detail;
         if (Array.isArray(posibleMessage)) {
-          posibleMessage = (posibleMessage.map((detail) => detail.msg)).join(". \n");
+          posibleMessage = posibleMessage
+            .map((detail) => detail.msg)
+            .join(". \n");
         }
         throw new Error(posibleMessage || "Error al eliminar el insumo");
       }
@@ -90,15 +108,15 @@ export const useFeedstockMutations = () => {
     onError: (error, variables) => {
       itemToasts.error({
         description: variables.feedstockName,
-        message: error.message
+        message: error.message,
       });
-    }
+    },
   });
 
   return {
     createFeedstock,
     updateFeedstock,
-    deleteFeedstock
+    deleteFeedstock,
   };
 };
 

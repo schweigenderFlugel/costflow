@@ -12,6 +12,7 @@ const CreateIndirectCostTrigger = () => {
       className="gap-2 flex"
       onClick={() => setIsOpen(true)}
       data-slot="indirect-cost-create-dialog-trigger"
+      variant={"not-default"}
     >
       <PlusIcon className="size-5" />
       Agregar Costo Indirecto

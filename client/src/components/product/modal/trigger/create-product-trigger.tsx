@@ -13,6 +13,7 @@ const CreateProductTrigger = () => {
       className="gap-2 flex"
       onClick={() => setIsOpen(true)}
       data-slot="product-create-dialog-trigger"
+      variant={"not-default"}
     >
       <PlusIcon className="size-5" />
       Agregar producto

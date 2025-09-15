@@ -12,11 +12,13 @@ const Page = () => {
   return (
     <>
       <Navbar5 />
-      <Hero />
-      <Features />
-      <HowItWorks />
-      <Pricing />
-      <Contact />
+      <main className="!scroll-smooth" data-scroll-behavior="smooth">
+        <Hero />
+        <Features />
+        <HowItWorks />
+        <Pricing />
+        <Contact />
+      </main>
     </>
   );
 };

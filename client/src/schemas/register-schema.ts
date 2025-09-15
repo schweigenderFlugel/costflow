@@ -42,5 +42,3 @@ export const registerSchema = z
     path: ["passwordConfirmation"],
     message: "Las contraseñas no coinciden",
   });
-
-export type RegisterFormSchema = z.infer<typeof registerSchema>;

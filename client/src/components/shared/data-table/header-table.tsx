@@ -54,7 +54,7 @@ const HeaderTable = <T,>({
       )}
 
       {columnsTo === "feedstock" ? (
-        <CreateFeedstockTrigger />
+        <CreateFeedstockTrigger variant="not-default" />
       ) : columnsTo === "product" ? (
         <CreateProductTrigger />
       ) : columnsTo === "indirect_cost" ? (

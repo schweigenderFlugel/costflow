@@ -8,50 +8,53 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema } from "@/schemas/login-schema";
 import { EmailField } from "@/components/shared/auth-fields/email-field";
 import { PasswordField } from "@/components/shared/auth-fields/password-field";
-import type { LoginFormSchema } from "@/schemas/login-schema";
 import { fetcher } from "@/utils/fetcher";
 import { itemToasts } from "@/components/shared/item-toasts";
 import { useTransition } from "react";
 import SpinLoader from "@/components/shared/spin-loader";
+import { LoginFormSchema } from "@/types/type-login-form-schema";
 
 const defaultValues = {
   email: "",
   password: "",
-}
-
+};
 
 export default function FormLogin() {
-  const [isPending, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition();
   const form = useForm<LoginFormSchema>({
     resolver: zodResolver(userSchema),
-    defaultValues
+    defaultValues,
   });
 
   const onSubmit = form.handleSubmit((values) => {
     startTransition(async () => {
-      const data = await fetcher({ input: "/api/auth/login", method: "POST", body: JSON.stringify(values) })
+      const data = await fetcher({
+        input: "/api/auth/login",
+        method: "POST",
+        body: JSON.stringify(values),
+      });
       if (data?.success) {
-        window.location.reload()
+        window.location.reload();
         itemToasts.info({
           description: data.message || data.description || data.detail,
-          type: "inicio de sesión"
-        })
+          type: "inicio de sesión",
+        });
         return;
       }
 
       itemToasts.error({
         description: data.message || data.description || data.detail,
-        type: "inicio de sesión"
-      })
-      form.reset()
-    })
+        type: "inicio de sesión",
+      });
+      form.reset();
+    });
   });
 
   return (
     <Form {...form}>
       <form
         autoComplete="off"
-        className="flex flex-col gap-y-5 lg:gap-y-6 max-w-lg mx-auto"
+        className="flex flex-col gap-y-4 lg:gap-y-5 justify-center mx-auto max-w-xs"
         onSubmit={onSubmit}
       >
         <EmailField control={form.control} errors={form.formState.errors} />
@@ -69,12 +72,10 @@ export default function FormLogin() {
           ¿Olvidaste la contraseña?
         </Link>
 
-        <div className="lg:flex lg:gap-2 lg:*:flex-1 *:font-bold *:w-full *:p-6">
+        <div className="lg:flex lg:gap-2 lg:*:flex-1 *:font-bold *:w-full *:p-6 mt-8">
           <Button variant="default" disabled={isPending}>
             {isPending && <SpinLoader isPending={isPending} />}
-            {
-              isPending ? "Iniciando..." : "Iniciar sesión"
-            }
+            {isPending ? "Iniciando..." : "Iniciar sesión"}
           </Button>
 
           <div className="flex items-center lg:hidden">

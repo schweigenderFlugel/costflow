@@ -3,7 +3,6 @@
 import { useState } from "react";
 import OnlyTable from "@/components/shared/data-table/only-table";
 import {
-  ColumnDef,
   ColumnFiltersState,
   getCoreRowModel,
   getFilteredRowModel,
@@ -16,29 +15,27 @@ import {
 import PaginationTable from "@/components/shared/data-table/pagination-table";
 import HeaderTable from "@/components/shared/data-table/header-table";
 import { useDataQuery } from "@/hooks/use-data-query";
+import { GenericDataTableProps } from "@/interfaces/interface-generic-data-table-props";
 
-interface GenericDataTableProps<TData> {
-  initialData: TData[]
-  columns: ColumnDef<TData>[]
-  columnsTo?: "product" | "feedstock" | "users" | "indirect_cost"
-}
-
-const GenericDataTable = <TData,>({ columns, columnsTo = "feedstock", initialData }: GenericDataTableProps<TData>) => {
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+const GenericDataTable = <TData,>({
+  columns,
+  columnsTo = "feedstock",
+  initialData,
+}: GenericDataTableProps<TData>) => {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     // Ocultar las columnas de fecha por defecto
     date: columnsTo === "indirect_cost" ? true : false,
     created_at: false,
     updated_at: false,
-  })
-  const [rowSelection, setRowSelection] = useState({})
+  });
+  const [rowSelection, setRowSelection] = useState({});
 
-  const {
-    data,
-    error,
-    isPending
-  } = useDataQuery<TData[]>(columnsTo, initialData)
+  const { data, error, isPending } = useDataQuery<TData[]>(
+    columnsTo,
+    initialData
+  );
 
   const table = useReactTable<TData>({
     data: Array.isArray(data) ? data : [],

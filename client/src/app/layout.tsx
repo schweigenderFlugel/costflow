@@ -5,23 +5,27 @@ import { Toaster } from "sonner";
 import Header from "@/layouts/header";
 import Footer from "@/layouts/footer";
 import ReactQueryProvider from "@/providers/query-client-provider";
-import { generateMetadata as generateSEOMetadata, generateJsonLd } from "@/lib/seo";
+import {
+  generateMetadata as generateSEOMetadata,
+  generateJsonLd,
+} from "@/lib/seo";
 
 const nunito = Nunito({
   variable: "--font-nunito",
   subsets: ["latin"],
-  display: 'swap',
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  display: 'swap',
+  display: "swap",
 });
 
 export const metadata: Metadata = generateSEOMetadata({
   title: "Cotzia - Calculadora de Costos y Presupuestos Empresariales",
-  description: "Herramienta profesional para calcular costos de producción, gestionar insumos y crear presupuestos precisos. Optimiza la rentabilidad de tu negocio con análisis detallados de costos.",
+  description:
+    "Herramienta profesional para calcular costos de producción, gestionar insumos y crear presupuestos precisos. Optimiza la rentabilidad de tu negocio con análisis detallados de costos.",
   keywords: [
     "calculadora de costos",
     "presupuestos empresariales",
@@ -32,18 +36,18 @@ export const metadata: Metadata = generateSEOMetadata({
     "control de costos",
     "presupuesto online",
     "gestión de productos",
-    "calculadora empresarial"
+    "calculadora empresarial",
   ],
   url: "/",
-  type: "website"
+  type: "website",
 });
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#1f2937' }
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#1f2937" },
   ],
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
@@ -54,9 +58,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const websiteJsonLd = generateJsonLd('WebSite');
-  const organizationJsonLd = generateJsonLd('Organization');
-  const webAppJsonLd = generateJsonLd('WebApplication');
+  const websiteJsonLd = generateJsonLd("WebSite");
+  const organizationJsonLd = generateJsonLd("Organization");
+  const webAppJsonLd = generateJsonLd("WebApplication");
 
   return (
     <html lang="es">
@@ -83,7 +87,11 @@ export default function RootLayout({
 
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
 
         {/* Additional meta tags */}
         <meta name="format-detection" content="telephone=no" />
@@ -95,7 +103,6 @@ export default function RootLayout({
         {/* Favicon and app icons */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body

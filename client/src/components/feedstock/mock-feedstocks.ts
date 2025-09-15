@@ -1,7 +1,7 @@
-import { ObjFeedstock } from "@/types/items/feedstock";
 import { MeasureUnit, StateMatter } from "@/types/measure/measure-unit";
 import { Currency } from "@/types/measure/currency";
 import { randomUUID } from "crypto";
+import { ObjFeedstock } from "@/interfaces/interface-obj-feedstock";
 
 export const mockFeedstocks: ObjFeedstock[] = [
   {
@@ -219,5 +219,5 @@ export const mockFeedstocks: ObjFeedstock[] = [
     provider: "Paladini",
     date: new Date("2025-06-25"),
     is_deleted: false,
-  }
+  },
 ];

@@ -1,24 +1,12 @@
-import { create } from "zustand"
+import { InfoDialogStore } from "@/interfaces/interface-info-dialog-store";
+import { create } from "zustand";
 
-type InfoDialogState = {
-  infoDialogIsOpen: boolean
-}
+const usePageInfoDialogStore = create<InfoDialogStore>()((set) => ({
+  // state
+  infoDialogIsOpen: false,
 
-type InfoDialogActions = {
-  setInfoDialogIsOpen: (open: boolean) => void;
-}
-
-interface InfoDialogStore extends InfoDialogState, InfoDialogActions { }
-
-const usePageInfoDialogStore = create<InfoDialogStore>()(
-  (set) => ({
-
-    // state
-    infoDialogIsOpen: false,
-
-    // set
-    setInfoDialogIsOpen: (open) => set({ infoDialogIsOpen: open }),
-  })
-)
+  // set
+  setInfoDialogIsOpen: (open) => set({ infoDialogIsOpen: open }),
+}));
 
 export default usePageInfoDialogStore;

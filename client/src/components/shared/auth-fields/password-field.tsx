@@ -7,15 +7,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { Control, FieldErrors, FieldValues, Path } from "react-hook-form";
-
-interface PasswordFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  errors: FieldErrors<T>;
-  name: Path<T>; // obligatorio
-  label?: string; // opcional
-  placeholder?: string;
-}
+import { FieldValues } from "react-hook-form";
+import { PasswordFieldProps } from "@/interfaces/interface-password-field-props";
 
 export function PasswordField<T extends FieldValues>({
   control,
@@ -31,7 +24,7 @@ export function PasswordField<T extends FieldValues>({
       name={name}
       control={control}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="max-w-xs">
           <FormLabel htmlFor={name}>{label}</FormLabel>
           <FormControl>
             <div className="relative">

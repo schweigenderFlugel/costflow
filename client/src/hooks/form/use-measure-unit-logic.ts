@@ -3,22 +3,16 @@ import {
   StateMatter,
   SolidMeasure,
   LiquidMeasure,
-  GasMeasure
+  GasMeasure,
 } from "@/types/measure/measure-unit";
-import { UseFormSetValue, UseFormWatch, FieldValues, Path, PathValue } from "react-hook-form";
-
-interface UseMeasureUnitLogicProps<T extends FieldValues> {
-  watch: UseFormWatch<T>;
-  setValue: UseFormSetValue<T>;
-  stateFieldName?: Path<T>;
-  measureUnitFieldName?: Path<T>;
-}
+import { FieldValues, Path, PathValue } from "react-hook-form";
+import { UseMeasureUnitLogicProps } from "@/interfaces/interface-use-measure-unit-logic-props";
 
 export function useMeasureUnitLogic<T extends FieldValues>({
   watch,
   setValue,
   stateFieldName = "state" as Path<T>,
-  measureUnitFieldName = "measure_unit" as Path<T>
+  measureUnitFieldName = "measure_unit" as Path<T>,
 }: UseMeasureUnitLogicProps<T>) {
   const selectedState = watch(stateFieldName);
 
@@ -35,14 +29,20 @@ export function useMeasureUnitLogic<T extends FieldValues>({
     }
   }, [selectedState]);
 
-  const handleStateChange = useCallback((value: StateMatter) => {
-    setValue(stateFieldName, value as PathValue<T, typeof stateFieldName>);
-    setValue(measureUnitFieldName, "DEFAULT" as PathValue<T, typeof measureUnitFieldName>);
-  }, [setValue, stateFieldName, measureUnitFieldName]);
+  const handleStateChange = useCallback(
+    (value: StateMatter) => {
+      setValue(stateFieldName, value as PathValue<T, typeof stateFieldName>);
+      setValue(
+        measureUnitFieldName,
+        "DEFAULT" as PathValue<T, typeof measureUnitFieldName>
+      );
+    },
+    [setValue, stateFieldName, measureUnitFieldName]
+  );
 
   return {
     selectedState,
     getAvailableMeasureUnits,
-    handleStateChange
+    handleStateChange,
   };
 }

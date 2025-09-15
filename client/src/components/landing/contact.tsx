@@ -1,8 +1,10 @@
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { FormEvent } from "react";
 
 export function Contact() {
   const RequiredIndicator = () => <span className="text-red-500 ml-1">*</span>;
@@ -16,9 +18,14 @@ export function Contact() {
           </h2>
         </div>
 
-        <Card className="max-w-4xl mx-auto p-6 md:p-10 shadow-lg rounded-xl">
+        <Card className="max-w-4xl mx-auto p-8 md:p-12 shadow-lg rounded-xl">
           <CardContent className="p-0">
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-x-8">
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-x-8" onSubmit={
+              (e: FormEvent<HTMLFormElement>) => {
+                e.preventDefault()
+                e.currentTarget.reset()
+              }
+            }>
 
               {/* --- Columna Izquierda --- */}
               <div className="flex flex-col gap-4">
@@ -43,7 +50,7 @@ export function Contact() {
               </div>
 
               {/* --- Columna Derecha --- */}
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-4">
                 <div className="flex-grow">
                   <Label htmlFor="message" className="font-semibold">
                     Mensaje <RequiredIndicator />
@@ -51,7 +58,7 @@ export function Contact() {
                   <Textarea
                     id="message"
                     placeholder="Escribí tu mensaje..."
-                    className="mt-2 h-full min-h-[220px] resize-none"
+                    className="mt-2 h-full min-h-full resize-none"
                   />
                 </div>
                 <Button
@@ -66,6 +73,6 @@ export function Contact() {
           </CardContent>
         </Card>
       </div>
-    </section>
+    </section >
   );
 }

@@ -1,11 +1,17 @@
 "use client";
 
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { registerSchema, RegisterFormSchema } from "@/schemas/register-schema";
+import { registerSchema } from "@/schemas/register-schema";
 import { TextField } from "@/components/shared/auth-fields/text-field";
 import { PasswordField } from "@/components/shared/auth-fields/password-field";
 import { fetcher } from "@/utils/fetcher";
@@ -13,20 +19,21 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { itemToasts } from "@/components/shared/item-toasts";
 import { useTransition } from "react";
 import SpinLoader from "@/components/shared/spin-loader";
+import { RegisterFormSchema } from "@/types/type-register-form-schema";
 
 const dtoValues = (values: {
-  name: string,
-  lastname: string,
-  workstation: string,
-  email: string,
-  password: string
+  name: string;
+  lastname: string;
+  workstation: string;
+  email: string;
+  password: string;
 }) => ({
-  "name": values.name,
-  "lastname": values.lastname,
-  "workstation": values.workstation,
-  "email": values.email,
-  "password": values.password
-})
+  name: values.name,
+  lastname: values.lastname,
+  workstation: values.workstation,
+  email: values.email,
+  password: values.password,
+});
 
 const defaultValues = {
   name: "",
@@ -36,10 +43,10 @@ const defaultValues = {
   passwordConfirmation: "",
   workstation: "",
   terms: false,
-}
+};
 
 export default function FormRegister() {
-  const [isPending, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition();
   const form = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: defaultValues,
@@ -50,23 +57,23 @@ export default function FormRegister() {
       const data = await fetcher({
         input: "/api/auth/register",
         method: "POST",
-        body: JSON.stringify(dtoValues(values))
-      })
+        body: JSON.stringify(dtoValues(values)),
+      });
 
-      form.reset()
+      form.reset();
 
       itemToasts.info({
         description: data?.success ? data.message : data,
-        type: "registro"
-      })
-    })
+        type: "registro",
+      });
+    });
   });
 
   return (
     <Form {...form}>
       <form
         autoComplete="off"
-        className="grid xl:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-5 bg-login-transparent max-w-md md:max-w-full w-full mx-auto"
+        className="grid md:grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-5 bg-login-transparent max-w-full justify-center"
         onSubmit={onSubmit}
       >
         <TextField<RegisterFormSchema>
@@ -74,7 +81,7 @@ export default function FormRegister() {
           label="Nombre"
           control={form.control}
           errors={form.formState.errors}
-          className="py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full max-w-xs"
           placeholder="Ingresá tu nombre"
         />
 
@@ -83,7 +90,7 @@ export default function FormRegister() {
           label="Apellido"
           control={form.control}
           errors={form.formState.errors}
-          className="py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full max-w-xs"
           placeholder="Ingresá tu apellido"
         />
         <TextField<RegisterFormSchema>
@@ -91,7 +98,7 @@ export default function FormRegister() {
           label="Puesto"
           control={form.control}
           errors={form.formState.errors}
-          className="py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full max-w-xs"
           placeholder="Ingresá tu puesto"
         />
 
@@ -101,7 +108,7 @@ export default function FormRegister() {
           type="email"
           control={form.control}
           errors={form.formState.errors}
-          className="py-5 xl:py-6 bg-white text-black w-full"
+          className="py-5 xl:py-6 bg-white text-black w-full max-w-xs"
           placeholder="Ingresá tu correo electrónico"
         />
 
@@ -118,14 +125,14 @@ export default function FormRegister() {
           errors={form.formState.errors}
           name="passwordConfirmation"
           label="Confirmar contraseña"
-          placeholder="Ingresá de nuevo tu contraseña"
+          placeholder="Ingresá confirmación"
         />
 
         <FormField
           name="terms"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="flex flex-row justify-center items-center space-y-0 col-span-full">
+            <FormItem className="flex flex-row justify-center items-center space-y-0 col-span-full max-w-xs">
               <FormControl>
                 <Checkbox
                   checked={field.value}
@@ -147,12 +154,14 @@ export default function FormRegister() {
           </p>
         )}
 
-        <div className="flex flex-col md:flex-row gap-2 col-span-full mt-4 *:font-bold ">
-          <Button variant="default" className="p-6 w-full md:flex-1" disabled={isPending}>
+        <div className="flex flex-col md:flex-row gap-2 col-span-full mt-8 *:font-bold">
+          <Button
+            variant="default"
+            className="p-6 w-full md:flex-1"
+            disabled={isPending}
+          >
             {isPending && <SpinLoader isPending={isPending} />}
-            {
-              isPending ? "Creando..." : "  Crear cuenta"
-            }
+            {isPending ? "Creando..." : "  Crear cuenta"}
           </Button>
 
           <div className="flex items-center md:hidden my-2">
@@ -170,6 +179,6 @@ export default function FormRegister() {
           </Button>
         </div>
       </form>
-    </Form >
+    </Form>
   );
 }

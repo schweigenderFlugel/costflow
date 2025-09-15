@@ -1,27 +1,34 @@
 import { Button } from "@/components/ui/button";
-import { useDeleteIndirectCostDialog, useUpdateIndirectCostDialog } from "@/hooks/use-indirect-cost-dialog";
-import { IndirectCostObj } from "@/types/items/indirect-cost";
+import {
+  useDeleteIndirectCostDialog,
+  useUpdateIndirectCostDialog,
+} from "@/hooks/use-indirect-cost-dialog";
+import { IndirectCostObj } from "@/interfaces/interface-indirect-costs";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-
-
-const IndirectCostActions = ({ indirect_cost }: { indirect_cost: IndirectCostObj }) => {
-  const { setIsOpen: setUpdateState, setIndirectCost: setUpdateIndirectCost,
+const IndirectCostActions = ({
+  indirect_cost,
+}: {
+  indirect_cost: IndirectCostObj;
+}) => {
+  const {
+    setIsOpen: setUpdateState,
+    setIndirectCost: setUpdateIndirectCost,
     // setIsLoadingIndirectCost
-  } = useUpdateIndirectCostDialog()
-  const { setIsOpen: setDeleteState, setIndirectCost: setDeleteIndirectCost } = useDeleteIndirectCostDialog()
-
+  } = useUpdateIndirectCostDialog();
+  const { setIsOpen: setDeleteState, setIndirectCost: setDeleteIndirectCost } =
+    useDeleteIndirectCostDialog();
 
   const handleUpdate = () => {
-    setUpdateIndirectCost(null)
-    setUpdateState(true)
-    setUpdateIndirectCost(indirect_cost)
-  }
+    setUpdateIndirectCost(null);
+    setUpdateState(true);
+    setUpdateIndirectCost(indirect_cost);
+  };
 
   const handleDelete = () => {
-    setDeleteState(true)
-    setDeleteIndirectCost(indirect_cost)
-  }
+    setDeleteState(true);
+    setDeleteIndirectCost(indirect_cost);
+  };
 
   return (
     <div className="flex gap-0.5 justify-center">
@@ -47,8 +54,7 @@ const IndirectCostActions = ({ indirect_cost }: { indirect_cost: IndirectCostObj
         <TrashIcon className="size-5" />
       </Button>
     </div>
-  )
-}
-
+  );
+};
 
 export default IndirectCostActions;

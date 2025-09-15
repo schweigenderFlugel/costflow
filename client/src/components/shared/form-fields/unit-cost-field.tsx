@@ -3,19 +3,11 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Control, FieldValues, Path } from "react-hook-form";
-
-interface UnitCostFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name?: Path<T>;
-  label?: string;
-  placeholder?: string;
-  min?: number;
-  step?: string;
-}
+import { UnitCostFieldProps } from "@/interfaces/interface-unit-cost-field-props";
+import { FieldValues, Path } from "react-hook-form";
 
 export function UnitCostField<T extends FieldValues>({
   control,
@@ -23,7 +15,7 @@ export function UnitCostField<T extends FieldValues>({
   label = "Costo unitario",
   placeholder = "Costo unitario",
   min = 0,
-  step = "0.01"
+  step = "0.01",
 }: UnitCostFieldProps<T>) {
   return (
     <FormField

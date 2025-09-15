@@ -1,8 +1,7 @@
 "use client";
 
+import { DataQueryType } from "@/types/type-data-query";
 import { useQueryClient } from "@tanstack/react-query";
-
-type DataQueryType = "product" | "feedstock" | "users" | "indirect_cost";
 
 /**
  * Custom hook para manejar actualizaciones de tablas de datos a través de la invalidación de React Query

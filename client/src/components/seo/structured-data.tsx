@@ -1,23 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-
-interface StructuredDataProps {
-  data: any
-}
+import { StructuredDataProps } from "@/interfaces/interface-structured-data-props";
+import { useEffect } from "react";
 
 export default function StructuredData({ data }: StructuredDataProps) {
   useEffect(() => {
-    const script = document.createElement('script')
-    script.type = 'application/ld+json'
-    script.text = JSON.stringify(data)
-    document.head.appendChild(script)
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.text = JSON.stringify(data);
+    document.head.appendChild(script);
 
     return () => {
-      document.head.removeChild(script)
-    }
-  }, [data])
+      document.head.removeChild(script);
+    };
+  }, [data]);
 
-  return null
+  return null;
 }
